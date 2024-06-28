@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('area_managers', function (Blueprint $table) {
-            $table->string('area_manager_cif')->primary->unique();
+            $table->string('area_manager_cif')->primary();
             $table->string('area_code');
             $table->foreign('area_manager_cif')->references('cif')->on('users');
             $table->foreign('area_code')->references('code')->on('areas');

@@ -47,11 +47,13 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
+    //Relacion Estudiantes
     public function students()
     {
         return $this->hasMany(Student::Class);
     }
 
+    //Relacion Area Managers
     public function area_managers()
     {
         return $this->hasMany(AreaManager::Class);

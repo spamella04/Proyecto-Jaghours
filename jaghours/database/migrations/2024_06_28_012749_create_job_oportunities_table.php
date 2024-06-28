@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use App\Enums\JobOpportunityStatus;
 
 return new class extends Migration
 {
@@ -15,20 +16,14 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->string('description');
-            $table->enum('status', [
-                JobOpportunityStatus::Draft,
-                JobOpportunityStatus::Pending,
-                JobOpportunityStatus::Published,
-                JobOpportunityStatus::Closed,
-                JobOpportunityStatus::Cancelled
-            ])->default(JobOpportunityStatus::Draft);
+            $table->enum('status',['Borrador','Solicitud','Publicado','Cerrado','Cancelada'])->default('Solicitud');   
             $table->date('start_date');
             $table->unsignedInteger('hours_validated');
             $table->unsignedInteger('number_applicants');
             $table->unsignedInteger('number_vacancies');
             $table->string('requirements');
             $table->string('area_manager_cif');
-            $table->foreign('area_manager_cif')->references('are_manager_cif')->on('area_managers');
+            $table->foreign('area_manager_cif')->references('area_manager_cif')->on('area_managers');
             $table->timestamps();
         });
     }

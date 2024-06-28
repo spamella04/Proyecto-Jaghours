@@ -21,6 +21,8 @@ class JobOportunity extends Model
         'area_manager_cif'
     ];
 
+    //Estado de la oportunidad de trabajo
+
     protected $casts = [
         'status' => JobOpportunityStatus::class,
     ];
@@ -35,20 +37,31 @@ class JobOportunity extends Model
         $this->attributes['status'] = $status->value;
     }
 
+    //Relacion Area Manager
     public function area_managers()
     {
         return $this->belongsTo(AreaManager::class);
     }
 
     //PREGUNTAR A DURAN COMO ES AGARRAR USER CON AREA MANAGER
+    
     public function getAreaManagers()
     {
         return $this->area_managers->area_code;
     }
 
+    //Relacion Postulaciones
+
     public function applications()
     {
         return $this->hasMany(Application::class);
+    }
+
+    //Relacion Registro de Horas
+
+    public function hourRecords()
+    {
+        return $this->hasMany(HourRecord::class);
     }
 
     

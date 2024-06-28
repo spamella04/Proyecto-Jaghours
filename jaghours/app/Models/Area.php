@@ -13,6 +13,7 @@ class Area extends Model
         protected $fillable = ['code','name', 'description'];
 
 
+    //Relacion AreaManager
     public function area_managers()
     {
         return $this->hasMany(AreaManager::Class);

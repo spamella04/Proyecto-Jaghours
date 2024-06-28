@@ -15,11 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('student_cif');
             $table->unsignedBigInteger('job_opportunity_id');
-            $table->enum('status', [
-                ApplicationStatus::Pending,
-                ApplicationStatus::Accepted,
-                ApplicationStatus::Rejected
-            ])->default(ApplicationStatus::Pending);
+            $table->enum('status',['Pendiente','Aceptado','No Aceptado'])->default('Pendiente');
             $table->foreign('student_cif')->references('student_cif')->on('students');
             $table->foreign('job_opportunity_id')->references('id')->on('job_oportunities');
             $table->timestamps();

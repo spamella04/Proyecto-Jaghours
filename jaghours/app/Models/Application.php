@@ -11,6 +11,8 @@ class Application extends Model
 
     protected $fillable = ['student_cif','job_opportunity_id', 'status', 'date'];
 
+
+    //Relacion Estudiante
     public function students()
     {
         return $this->belongsTo(Student::class);
@@ -21,6 +23,7 @@ class Application extends Model
         return $this->students->name->lastname->email->phone;
     }
 
+    //Relacion Oportunidades de Trabajo
     public function job_opportunities()
     {
         return $this->belongsTo(JobOpportunity::class);
@@ -30,5 +33,7 @@ class Application extends Model
     {
         return $this->job_opportunities->title->description->status->start_date->hours_validated->number_applicants->number_vacancies->requirements->area_manager_cif;
     }
+
+    
     
 }

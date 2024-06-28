@@ -13,6 +13,11 @@ return new class extends Migration
     {
         Schema::create('hour_tracking_per_semesters', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('semester_id');
+            $table->string('student_cif');
+            $table->string('hours_per_semester');
+            $table->foreign('semester_id')->references('id')->on('semesters');
+            $table->foreign('student_cif')->references('student_cif')->on('students');
             $table->timestamps();
         });
     }
