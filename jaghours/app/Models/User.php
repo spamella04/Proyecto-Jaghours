@@ -24,6 +24,7 @@ class User extends Authenticatable
         'name',
         'lastname',
         'email',
+        'phone',
         'password',
     ];
 
@@ -48,13 +49,13 @@ class User extends Authenticatable
     ];
 
     //Relacion Estudiantes
-    public function students()
+    public function student()
     {
-        return $this->hasMany(Student::Class);
+        return $this->hasMany(Student::Class, 'student_cif', 'cif');
     }
 
     //Relacion Area Managers
-    public function area_managers()
+    public function area_manager()
     {
         return $this->hasMany(AreaManager::Class);
     }

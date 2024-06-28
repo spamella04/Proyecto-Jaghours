@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Models\Degree;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -40,12 +41,22 @@ class RegisterController extends Controller
         $this->middleware('guest');
     }
 
+
+    public function showRegistrationForm()
+    {
+        $degrees = Degree::all(); 
+
+        return view('auth.register', ['degrees' => $degrees]); 
+    }
+
+
     /**
      * Get a validator for an incoming registration request.
      *
      * @param  array  $data
      * @return \Illuminate\Contracts\Validation\Validator
      */
+
     protected function validator(array $data)
     {
         return Validator::make($data, [
@@ -53,6 +64,8 @@ class RegisterController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'lastname' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'phone' => ['required', 'string', 'regex:/^[0-9]{8}$/', 'unique:users'],
+            'skills' => ['required', 'string', 'max:255'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
     }
@@ -65,12 +78,21 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
+        $user= User::create([
             'cif' => $data['cif'],
             'name' => $data['name'],
             'lastname' => $data['lastname'],
             'email' => $data['email'],
+            'phone' => $data['phone'],
             'password' => Hash::make($data['password']),
         ]);
+
+        $user->student()->create([
+            'student_cif' => $user->cif, 
+            'degree_code' => $data['degree_code'],
+            'skills' => $data['skills']
+        ]);
+
+        return $user;
     }
 }

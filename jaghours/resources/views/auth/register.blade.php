@@ -11,10 +11,13 @@
                     <form method="POST" action="{{ route('register') }}">
                         @csrf
                         <div class="row mb-3">
-                            <label for="cif" class="col-md-4 col-form-label text-md-end">{{ __('Cif') }}</label>
+                            <label for="cif"
+                                class="col-md-4 col-form-label text-md-end">{{ __('Cif') }}</label>
 
                             <div class="col-md-6">
-                                <input id="cif" type="text" class="form-control @error('cif') is-invalid @enderror" name="cif" value="{{ old('cif') }}" required autocomplete="cif" autofocus>
+                                <input id="cif" type="text" class="form-control @error('cif') is-invalid @enderror"
+                                    name="cif" value="{{ old('cif') }}" required autocomplete="cif"
+                                    autofocus>
 
                                 @error('cif')
                                     <span class="invalid-feedback" role="alert">
@@ -24,12 +27,32 @@
                             </div>
                         </div>
 
-
                         <div class="row mb-3">
-                            <label for="name" class="col-md-4 col-form-label text-md-end">{{ __('Name') }}</label>
+                            <label for="degree_code"
+                                class="col-md-4 col-form-label text-md-end">{{ __('Degree') }}</label>
+                            <div class="col-md-6">
+                                <select id="degree_code" class="form-control @error('degree_code') is-invalid @enderror"
+                                    name="degree_code" required autocomplete="degree_code">
+                                    <option value="">Elija su carrera principal</option>
+                                    @foreach($degrees as $degree)
+                                        <option value="{{ $degree->code }}">{{ $degree->name }}</option>
+                                    @endforeach
+                                </select>
+                                @error('degree_code')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label for="name"
+                                class="col-md-4 col-form-label text-md-end">{{ __('Name') }}</label>
 
                             <div class="col-md-6">
-                                <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
+                                <input id="name" type="text" class="form-control @error('name') is-invalid @enderror"
+                                    name="name" value="{{ old('name') }}" required autocomplete="name"
+                                    autofocus>
 
                                 @error('name')
                                     <span class="invalid-feedback" role="alert">
@@ -40,10 +63,14 @@
                         </div>
 
                         <div class="row mb-3">
-                            <label for="lastname" class="col-md-4 col-form-label text-md-end">{{ __('Lastname') }}</label>
+                            <label for="lastname"
+                                class="col-md-4 col-form-label text-md-end">{{ __('Lastname') }}</label>
 
                             <div class="col-md-6">
-                                <input id="lastname" type="text" class="form-control @error('lastname') is-invalid @enderror" name="lastname" value="{{ old('lastname') }}" required autocomplete="lastname" autofocus>
+                                <input id="lastname" type="text"
+                                    class="form-control @error('lastname') is-invalid @enderror" name="lastname"
+                                    value="{{ old('lastname') }}" required autocomplete="lastname"
+                                    autofocus>
 
                                 @error('lastname')
                                     <span class="invalid-feedback" role="alert">
@@ -52,13 +79,16 @@
                                 @enderror
                             </div>
                         </div>
-                        
+
 
                         <div class="row mb-3">
-                            <label for="email" class="col-md-4 col-form-label text-md-end">{{ __('Email Address') }}</label>
+                            <label for="email"
+                                class="col-md-4 col-form-label text-md-end">{{ __('Email Address') }}</label>
 
                             <div class="col-md-6">
-                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email">
+                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror"
+                                    name="email" value="{{ old('email') }}" required
+                                    autocomplete="email">
 
                                 @error('email')
                                     <span class="invalid-feedback" role="alert">
@@ -69,10 +99,48 @@
                         </div>
 
                         <div class="row mb-3">
-                            <label for="password" class="col-md-4 col-form-label text-md-end">{{ __('Password') }}</label>
+                            <label for="phone"
+                                class="col-md-4 col-form-label text-md-end">{{ __('Phone') }}</label>
 
                             <div class="col-md-6">
-                                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
+                                <input id="phone" type="text" class="form-control @error('phone') is-invalid @enderror"
+                                    name="phone" value="{{ old('phone') }}" required
+                                    autocomplete="phone" autofocus>
+
+                                @error('phone')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <label for="skills"
+                                class="col-md-4 col-form-label text-md-end">{{ __('Skills') }}</label>
+
+                            <div class="col-md-6">
+                                <input id="skills" type="text"
+                                    class="form-control @error('skills') is-invalid @enderror" name="skills"
+                                    value="{{ old('skills') }}" required autocomplete="skills"
+                                    autofocus>
+
+                                @error('skills')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <label for="password"
+                                class="col-md-4 col-form-label text-md-end">{{ __('Password') }}</label>
+
+                            <div class="col-md-6">
+                                <input id="password" type="password"
+                                    class="form-control @error('password') is-invalid @enderror" name="password"
+                                    required autocomplete="new-password">
 
                                 @error('password')
                                     <span class="invalid-feedback" role="alert">
@@ -83,10 +151,12 @@
                         </div>
 
                         <div class="row mb-3">
-                            <label for="password-confirm" class="col-md-4 col-form-label text-md-end">{{ __('Confirm Password') }}</label>
+                            <label for="password-confirm"
+                                class="col-md-4 col-form-label text-md-end">{{ __('Confirm Password') }}</label>
 
                             <div class="col-md-6">
-                                <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
+                                <input id="password-confirm" type="password" class="form-control"
+                                    name="password_confirmation" required autocomplete="new-password">
                             </div>
                         </div>
 

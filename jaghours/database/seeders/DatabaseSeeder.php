@@ -18,5 +18,13 @@ class DatabaseSeeder extends Seeder
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',
         // ]);
+
+        \App\Models\Degree::factory()->create(
+            [
+                'code' => '0001',
+                'name' => 'Ingenieria Sistemas',
+                
+            ]
+            );
     }
 }

@@ -12,6 +12,16 @@ class Student extends Model
 
     protected $fillable = ['student_cif','degree_code', 'skills'];
 
+    //Relacion Usuario
+    public function user()
+    {
+        return $this->belongsTo(User::Class, 'student_cif', 'cif');
+    }
+
+    public function getUser(){
+        return $this->user-> name->lastname->email->phone->password;
+    }
+
     //Relacion Carrera
     public function degree()
     {
