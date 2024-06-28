@@ -1,6 +1,7 @@
 Proyecto JagHours
 
 Por si no saben como hacerlo y cosas que deben agregar
+
 -Git
 En algun otro lado de su preferencia hacen una carpeta y hacen clone -> git clone "link ssh o http"
 Se les va a crear una carpeta "Proyecto-Jaghours" y dentro "jaghours" 
