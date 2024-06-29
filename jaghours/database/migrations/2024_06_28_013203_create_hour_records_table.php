@@ -17,12 +17,12 @@ return new class extends Migration
             $table->unsignedBigInteger('hours_worked');
             $table->unsignedBigInteger('semester_id');
             $table->unsignedBigInteger('job_opportunity_id');
-            $table->string('student_cif');
-            $table->string('area_manager_cif');
+            $table->unsignedBigInteger('student_id');
+            $table->unsignedBigInteger('area_manager_id');
             $table->foreign('semester_id')->references('id')->on('semesters');
             $table->foreign('job_opportunity_id')->references('id')->on('job_oportunities');
-            $table->foreign('student_cif')->references('student_cif')->on('students');
-            $table->foreign('area_manager_cif')->references('area_manager_cif')->on('area_managers');
+            $table->foreign('student_id')->references('id')->on('students');
+            $table->foreign('area_manager_id')->references('area_manager_id')->on('area_managers');
             $table->timestamps();
 
         });

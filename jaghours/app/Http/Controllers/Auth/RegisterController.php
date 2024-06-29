@@ -88,8 +88,8 @@ class RegisterController extends Controller
         ]);
 
         $user->student()->create([
-            'student_cif' => $user->cif, 
-            'degree_code' => $data['degree_code'],
+            'student_id' => $user->id, 
+            'degree_id' => $data['degree_id'],
             'skills' => $data['skills']
         ]);
 

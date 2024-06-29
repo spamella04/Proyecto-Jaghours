@@ -51,7 +51,7 @@ class User extends Authenticatable
     //Relacion Estudiantes
     public function student()
     {
-        return $this->hasMany(Student::Class, 'student_cif', 'cif');
+        return $this->hasMany(Student::Class,'student_id','id');
     }
 
     //Relacion Area Managers

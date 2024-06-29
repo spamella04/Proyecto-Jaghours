@@ -10,12 +10,12 @@ class Student extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['student_cif','degree_code', 'skills'];
+    protected $fillable = ['student_id','degree_id', 'skills'];
 
     //Relacion Usuario
     public function user()
     {
-        return $this->belongsTo(User::Class, 'student_cif', 'cif');
+        return $this->belongsTo(User::Class, 'student_id', 'id');
     }
 
     public function getUser(){

@@ -18,7 +18,7 @@ class JobOportunity extends Model
         'number_applicants',
         'number_vacancies',
         'requirements',
-        'area_manager_cif'
+        'area_manager_id'
     ];
 
     //Estado de la oportunidad de trabajo
@@ -43,11 +43,11 @@ class JobOportunity extends Model
         return $this->belongsTo(AreaManager::class);
     }
 
-    //PREGUNTAR A DURAN COMO ES AGARRAR USER CON AREA MANAGER
+
     
     public function getAreaManagers()
     {
-        return $this->area_managers->area_code;
+        return $this->area_managers->user->getUser();
     }
 
     //Relacion Postulaciones

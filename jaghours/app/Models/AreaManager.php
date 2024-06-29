@@ -11,13 +11,13 @@ class AreaManager extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['area_manager_cif','area_code'];
+    protected $fillable = ['area_manager_id','area_id'];
 
-    //  Es user o areaManager?
+
     //Relacion User
     public function users()
     {
-        return $this->belongsTo(User::class, 'area_manager_cif', 'cif');
+        return $this->belongsTo(User::class);
     }
 
     public function getUsers()
@@ -28,7 +28,7 @@ class AreaManager extends Model
     //Relacion Area
     public function areas()
     {
-        return $this->belongsTo(Area::class, 'area_code', 'code');
+        return $this->belongsTo(Area::class);
 
     }
     public function getAreas()
@@ -45,7 +45,7 @@ class AreaManager extends Model
     //Relacion Registros de Horas
     public function HoursRecords()
     {
-        return $this->hasMany(HourRecord::Class, 'area_manager_cif', 'cif');
+        return $this->hasMany(HourRecord::Class);
     }
 
 }

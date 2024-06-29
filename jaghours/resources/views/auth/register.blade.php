@@ -28,17 +28,17 @@
                         </div>
 
                         <div class="row mb-3">
-                            <label for="degree_code"
+                            <label for="degree_id"
                                 class="col-md-4 col-form-label text-md-end">{{ __('Degree') }}</label>
                             <div class="col-md-6">
-                                <select id="degree_code" class="form-control @error('degree_code') is-invalid @enderror"
-                                    name="degree_code" required autocomplete="degree_code">
+                                <select id="degree_id" class="form-control @error('degree_id') is-invalid @enderror"
+                                    name="degree_id" required autocomplete="degree_id">
                                     <option value="">Elija su carrera principal</option>
                                     @foreach($degrees as $degree)
-                                        <option value="{{ $degree->code }}">{{ $degree->name }}</option>
+                                        <option value="{{ $degree->id }}">{{ $degree->name }}</option>
                                     @endforeach
                                 </select>
-                                @error('degree_code')
+                                @error('degree_id')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>

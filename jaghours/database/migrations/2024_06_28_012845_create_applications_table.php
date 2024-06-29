@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('applications', function (Blueprint $table) {
             $table->id();
-            $table->string('student_cif');
+            $table->unsignedBigInteger('student_id');
             $table->unsignedBigInteger('job_opportunity_id');
             $table->enum('status',['Pendiente','Aceptado','No Aceptado'])->default('Pendiente');
-            $table->foreign('student_cif')->references('student_cif')->on('students');
+            $table->foreign('student_id')->references('student_id')->on('students');
             $table->foreign('job_opportunity_id')->references('id')->on('job_oportunities');
             $table->timestamps();
         });
