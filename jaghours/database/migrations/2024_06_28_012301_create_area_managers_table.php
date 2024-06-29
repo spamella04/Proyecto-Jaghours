@@ -12,10 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('area_managers', function (Blueprint $table) {
-            $table->string('area_manager_cif')->primary();
-            $table->string('area_code');
-            $table->foreign('area_manager_cif')->references('cif')->on('users');
-            $table->foreign('area_code')->references('code')->on('areas');
+            $table->id();
+            $table->unsignedBigInteger('area_manager_id');
+            $table->unsignedBigInteger('area_id');
+            $table->foreign('area_manager_id')->references('id')->on('users');
+            $table->foreign('area_id')->references('id')->on('areas');
             $table->timestamps();
         });
     }

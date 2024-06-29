@@ -9,7 +9,7 @@ class HourTrackingPerSemester extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['semester_id','student_cif','hours_per_semester'];
+    protected $fillable = ['semester_id','student_id','hours_per_semester'];
 
     //Relacion Semestre
     public function semester()
@@ -22,14 +22,13 @@ class HourTrackingPerSemester extends Model
     }
 
     //Relacion Estudiante
-    //Preguntar si es USER O STUDENT
     public function student()
     {
         return $this->belongsTo(Student::class);
     }
     
     public function getStudent(){
-        return $this->student->name;
+        return $this->student->user->getUser();
     }
 
 }

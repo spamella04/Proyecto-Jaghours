@@ -9,7 +9,7 @@ class Application extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['student_cif','job_opportunity_id', 'status', 'date'];
+    protected $fillable = ['student_id','job_opportunity_id', 'status', 'date'];
 
 
     //Relacion Estudiante
@@ -20,7 +20,7 @@ class Application extends Model
 
     public function getStudents()
     {
-        return $this->students->name->lastname->email->phone;
+        return $this->students->user->getUser();
     }
 
     //Relacion Oportunidades de Trabajo
