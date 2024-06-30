@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Area;
 
 class AreaController extends Controller
 {
@@ -12,6 +13,14 @@ class AreaController extends Controller
     public function index()
     {
         //
+        try {
+            $areas = Area::all();
+            return view('areas.index', compact('areas'));
+        }catch(\Exception $e)
+
+        {
+            return redirect()->route('home');
+        }
     }
 
     /**
@@ -20,6 +29,11 @@ class AreaController extends Controller
     public function create()
     {
         //
+        try {
+            return view('areas.create');
+        }catch(\Exception $e){
+            return redirect()->route('home');
+        }
     }
 
     /**
@@ -28,6 +42,18 @@ class AreaController extends Controller
     public function store(Request $request)
     {
         //
+        try {
+            $area = new Area();
+            $area->code = $request->code;
+            $area->name = $request->name;
+            $area->description = $request->description;
+            $area->save();
+            return redirect()->route('areas.index');
+        }catch(\Exception $e){
+            return redirect()->route('areas.create');
+        }
+    
+       
     }
 
     /**
@@ -36,6 +62,12 @@ class AreaController extends Controller
     public function show(string $id)
     {
         //
+        try {
+            $area = Area::find($id);
+                return view('areas.show', compact('area'));
+        } catch(\Exception $e){
+            return redirect()->route('areas.index');
+        }
     }
 
     /**
@@ -44,6 +76,12 @@ class AreaController extends Controller
     public function edit(string $id)
     {
         //
+        try {
+            $area = Area::find($id);
+            return view('areas.edit', compact('area'));
+        }catch(\Exception $e){
+            return redirect()->route('areas.index');
+        }
     }
 
     /**
@@ -52,6 +90,16 @@ class AreaController extends Controller
     public function update(Request $request, string $id)
     {
         //
+        try{
+            $area = Area::find($id);
+            $area->code = $request->code;
+            $area->name = $request->name;
+            $area->description = $request->description;
+            $area->save();
+            return redirect()->route('areas.index');
+        }catch(\Exception $e){
+            return redirect()->route('areas.edit', $id);
+        }
     }
 
     /**
@@ -60,5 +108,13 @@ class AreaController extends Controller
     public function destroy(string $id)
     {
         //
+        try{
+            $area = Area::find($id);
+            $area->delete();
+            return redirect()->route('areas.index');
+        }
+        catch(\Exception $e){
+            return redirect()->route('areas.index');
+        }
     }
 }
