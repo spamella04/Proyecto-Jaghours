@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use App\Models\Student;
+use App\Models\User;
+use App\Models\Degree;
+use Illuminate\Support\Facades\Hash;
 class StudentController extends Controller
 {
     /**
@@ -12,7 +15,10 @@ class StudentController extends Controller
     public function index()
     {
         //
-        return view('students.index');
+        $users=User::with('student')->get();
+        $students = Student::with('degree')->get();
+        return view('student.index', compact('users'));
+        
     }
 
     /**
@@ -20,7 +26,8 @@ class StudentController extends Controller
      */
     public function create()
     {
-        return view('students.create');
+        $degrees= Degree::all();
+        return view('student.create', compact('degrees'));
  
     }
 
@@ -30,7 +37,7 @@ class StudentController extends Controller
     public function store(Request $request)
     {
             // Validación de datos
-            $request->validate([
+             $request->validate([
             'cif' => 'required|string|max:255',
             'name' => 'required|string|max:255',
             'lastname' => 'required|string|max:255',
@@ -39,29 +46,27 @@ class StudentController extends Controller
             'password' => 'required|string|min:8',
             'degree_id' => 'required|exists:degrees,id',
             'skills' => 'required|string|max:255',
-            ]);
-    
-            // Crear el usuario
-            $user = User::create([
-                'cif' => $request->cif,
-                'name' => $request->name,
-                'lastname' => $request->lastname,
-                'email' => $request->email,
-                'phone' => $request->phone,
-                'password' => Hash::make($request->password),
-                'role' => 'student',
-            ]);
+            ]); 
+            
+            $user = new User();
+            $user->name = $request->name;
+            $user->cif = $request->cif;
+            $user->lastname = $request->lastname;
+            $user->email = $request->email;
+            $user->phone = $request->phone;
+            $user->password = Hash::make($request->password);
+            $user->role= 'student';
+            $user->save();
+
     
             // Asociar como estudiante
             $user->student()->create([
-                'student_id' => $user->id,
+                'student_id' => $user->id, 
                 'degree_id' => $request->degree_id,
-                'skills' => $request->skills,
+                'skills' => $request->skills
             ]);
-    
-            return null;
-            // Redireccionar u ofrecer algún feedback
-           // return redirect()->route('login')->with('success', '¡Usuario creado con éxito!');
+            
+            return redirect()->route('students.index')->with('success', '¡Usuario creado con éxito!');
     }
 
     /**
@@ -70,7 +75,7 @@ class StudentController extends Controller
     public function show(string $id)
     {
         //
-        return view('students.show');
+        return view('student.show');
     }
 
     /**
@@ -79,7 +84,7 @@ class StudentController extends Controller
     public function edit(string $id)
     {
         //
-        return view('students.edit');
+        return view('student.edit');
     }
 
     /**

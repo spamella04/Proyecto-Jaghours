@@ -53,7 +53,7 @@ class User extends Authenticatable
     //Relacion Estudiantes
     public function student()
     {
-        return $this->hasMany(Student::Class,'student_id','id');
+        return $this->hasOne(Student::Class,'student_id','id');
     }
 
     //Relacion Area Managers
@@ -61,4 +61,6 @@ class User extends Authenticatable
     {
         return $this->hasMany(AreaManager::Class);
     }
+
+
 }
