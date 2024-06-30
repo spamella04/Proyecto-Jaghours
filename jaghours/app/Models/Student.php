@@ -25,7 +25,7 @@ class Student extends Model
     //Relacion Carrera
     public function degree()
     {
-        return $this->belongsTo(Degree::Class);
+        return $this->belongsTo(Degree::Class, 'degree_id', 'id');
     }
 
     public function getDegree(){
