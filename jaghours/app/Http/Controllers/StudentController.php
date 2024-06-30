@@ -12,6 +12,7 @@ class StudentController extends Controller
     public function index()
     {
         //
+        return view('students.index');
     }
 
     /**
@@ -19,7 +20,8 @@ class StudentController extends Controller
      */
     public function create()
     {
-        //
+        return view('students.create');
+ 
     }
 
     /**
@@ -27,7 +29,39 @@ class StudentController extends Controller
      */
     public function store(Request $request)
     {
-        //
+            // Validación de datos
+            $request->validate([
+            'cif' => 'required|string|max:255',
+            'name' => 'required|string|max:255',
+            'lastname' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email',
+            'phone' => 'required|string|max:20',
+            'password' => 'required|string|min:8',
+            'degree_id' => 'required|exists:degrees,id',
+            'skills' => 'required|string|max:255',
+            ]);
+    
+            // Crear el usuario
+            $user = User::create([
+                'cif' => $request->cif,
+                'name' => $request->name,
+                'lastname' => $request->lastname,
+                'email' => $request->email,
+                'phone' => $request->phone,
+                'password' => Hash::make($request->password),
+                'role' => 'student',
+            ]);
+    
+            // Asociar como estudiante
+            $user->student()->create([
+                'student_id' => $user->id,
+                'degree_id' => $request->degree_id,
+                'skills' => $request->skills,
+            ]);
+    
+            return null;
+            // Redireccionar u ofrecer algún feedback
+           // return redirect()->route('login')->with('success', '¡Usuario creado con éxito!');
     }
 
     /**
@@ -36,6 +70,7 @@ class StudentController extends Controller
     public function show(string $id)
     {
         //
+        return view('students.show');
     }
 
     /**
@@ -44,6 +79,7 @@ class StudentController extends Controller
     public function edit(string $id)
     {
         //
+        return view('students.edit');
     }
 
     /**
