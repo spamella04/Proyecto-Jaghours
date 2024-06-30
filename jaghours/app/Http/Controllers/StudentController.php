@@ -12,6 +12,7 @@ class StudentController extends Controller
     public function index()
     {
         //
+        return view('students.index');
     }
 
     /**
@@ -19,7 +20,7 @@ class StudentController extends Controller
      */
     public function create()
     {
-        return view('auth.register');
+        return view('students.create');
  
     }
 
@@ -69,6 +70,7 @@ class StudentController extends Controller
     public function show(string $id)
     {
         //
+        return view('students.show');
     }
 
     /**
@@ -77,6 +79,7 @@ class StudentController extends Controller
     public function edit(string $id)
     {
         //
+        return view('students.edit');
     }
 
     /**
