@@ -7,10 +7,10 @@
         <div class="col-lg-8">
             <div class="card border-0 shadow-sm rounded-lg">
                 <div class="card-header bg-dark text-white text-center py-3">
-                    <h3 class="mb-0">Ingrese la información del Estudiante</h3>
+                    <h3 class="mb-0">Ingrese la información del Representante</h3>
                 </div>
                 <div class="card-body p-5">
-                    <form action="{{ route('students.store') }}" method="POST">
+                    <form action="{{ route('areamanagers.store') }}" method="POST">
                         @csrf
 
                         <div class="mb-3">
@@ -22,14 +22,14 @@
                         </div>
 
                         <div class="mb-3">
-                            <label for="degree_id" class="form-label font-weight-bold">Carrera Principal</label>
-                            <select class="form-select @error('degree_id') is-invalid @enderror" id="degree_id" name="degree_id" required>
-                                <option value="">Seleccione su carrera principal</option>
-                                @foreach($degrees as $degree)
-                                    <option value="{{ $degree->id }}">{{ $degree->code }} - {{ $degree->name }}</option>
+                            <label for="area_id" class="form-label font-weight-bold">Área Responsable</label>
+                            <select class="form-select @error('area_id') is-invalid @enderror" id="area_id" name="area_id" required>
+                                <option value="">Seleccionar área </option>
+                                @foreach($areas as $area)
+                                    <option value="{{ $area->id }}">{{ $area->code }} - {{ $area->name }}</option>
                                 @endforeach
                             </select>
-                            @error('degree_id')
+                            @error('area_id')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
@@ -59,13 +59,6 @@
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
-                            <div class="col-md-6">
-                                <label for="skills" class="form-label font-weight-bold">Habilidades</label>
-                                <textarea class="form-control @error('skills') is-invalid @enderror" id="skills" name="skills" rows="4" required>{{ old('skills') }}</textarea>
-                                @error('skills')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
                         </div>
 
                         <div class="mb-3">
@@ -84,11 +77,8 @@
                             @enderror
                         </div>
 
-                        
                         <div class="text-center">
-                        <div class="mb-3">
                             <button type="submit" class="btn btn-dark">{{ __('Guardar') }}</button>
-                        </div>
                         </div>
                     </form>
                 </div>

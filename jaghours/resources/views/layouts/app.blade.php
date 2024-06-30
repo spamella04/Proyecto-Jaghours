@@ -39,13 +39,13 @@
                         @guest
                             @if (Route::has('login'))
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
+                                    <a class="nav-link" href="{{ route('login') }}">{{ __('Iniciar Sesion') }}</a>
                                 </li>
                             @endif
 
                             @if (Route::has('register'))
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
+                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Crear Cuenta') }}</a>
                                 </li>
                             @endif
                         @else
@@ -53,6 +53,16 @@
                                 <li class="nav-item">
                                 <a class="nav-link" href="{{route('students.index')}}">Estudiantes</a>
                                 </li>
+
+                                <li class="nav-item">
+                                <a class="nav-link" href="{{route('areas.index')}}">Areas</a>
+                                </li>
+
+                                <li class="nav-item">
+                                <a class="nav-link" href="{{route('areamanagers.index')}}">Representantes de Area</a>
+                                </li>
+
+
                                 @endif
                             
 

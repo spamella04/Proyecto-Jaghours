@@ -59,7 +59,7 @@ class User extends Authenticatable
     //Relacion Area Managers
     public function area_manager()
     {
-        return $this->hasMany(AreaManager::Class);
+        return $this->hasOne(AreaManager::Class,'area_manager_id','id');
     }
 
 

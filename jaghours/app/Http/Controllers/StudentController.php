@@ -75,7 +75,12 @@ class StudentController extends Controller
     public function show(string $id)
     {
         //
-        return view('student.show');
+       try {
+            $user = User::find($id);
+            return view('student.show', compact('user'));
+        } catch(\Exception $e){
+            return redirect()->route('students.index');
+        }
     }
 
     /**
@@ -84,7 +89,13 @@ class StudentController extends Controller
     public function edit(string $id)
     {
         //
-        return view('student.edit');
+        try {
+            $user = User::find($id);
+            $degrees = Degree::all();
+            return view('student.edit', compact('user', 'degrees'));
+        }catch(\Exception $e){
+            return redirect()->route('students.index');
+        }
     }
 
     /**
@@ -93,6 +104,31 @@ class StudentController extends Controller
     public function update(Request $request, string $id)
     {
         //
+        try{
+            $user = User::find($id);
+            $user->name = $request->name;
+            $user->cif = $request->cif;
+            $user->lastname = $request->lastname;
+            $user->email = $request->email;
+            $user->phone = $request->phone;
+            if ($request->password) {
+                $user->password = Hash::make($request->password);
+            }
+
+            $user->role= 'student';
+            $user->save();
+
+            $student = $user->student;
+        if ($student) {
+            $student->degree_id = $request->degree_id;
+            $student->skills = $request->skills;
+            $student->save();
+        }
+
+            return redirect()->route('students.index');
+        }catch(\Exception $e){
+            return redirect()->route('students.edit', $id);
+        }
     }
 
     /**
@@ -101,5 +137,13 @@ class StudentController extends Controller
     public function destroy(string $id)
     {
         //
+        try{
+            $user = User::find($id);
+            $user->delete();
+            return redirect()->route('students.index');
+        }
+        catch(\Exception $e){
+            return redirect()->route('students.index');
+        }
     }
 }

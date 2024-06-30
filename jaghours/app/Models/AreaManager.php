@@ -17,7 +17,7 @@ class AreaManager extends Model
     //Relacion User
     public function users()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'area_manager_id', 'id');
     }
 
     public function getUsers()
@@ -28,7 +28,7 @@ class AreaManager extends Model
     //Relacion Area
     public function areas()
     {
-        return $this->belongsTo(Area::class);
+        return $this->belongsTo(Area::class, 'area_id', 'id');
 
     }
     public function getAreas()

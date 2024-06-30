@@ -3,6 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\AreaManager;
+use App\Models\User;
+use App\Models\Area;
+use Illuminate\Support\Facades\Hash;
 
 class AreaManagerController extends Controller
 {
@@ -12,6 +16,13 @@ class AreaManagerController extends Controller
     public function index()
     {
         //
+        try {
+            $users=User::with('area_manager')->get();
+            $areamanagers = AreaManager::with('areas')->get();
+            return view('areamanagers.index', compact('users'));
+        }   catch(\Exception $e) {
+            return redirect()->route('home');
+        }
     }
 
     /**
@@ -19,35 +30,13 @@ class AreaManagerController extends Controller
      */
     public function create(Request $request)
     {
-        // Validación de datos
-        $request->validate([
-            'cif' => 'required|string|max:255',
-            'name' => 'required|string|max:255',
-            'lastname' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
-            'phone' => 'required|string|max:20',
-            'password' => 'required|string|min:8',
-            // Otros campos necesarios para el Area Manager
-        ]);
-
-        // Crear el usuario
-        $user = User::create([
-            'cif' => $request->cif,
-            'name' => $request->name,
-            'lastname' => $request->lastname,
-            'email' => $request->email,
-            'phone' => $request->phone,
-            'password' => Hash::make($request->password),
-        ]);
-
-        // Asociar como Area Manager
-        $user->areaManager()->create([
-            'area_manager_id' => $user->id,
-            // Otros campos necesarios para el Area Manager
-        ]);
-
-        // Redireccionar u ofrecer algún feedback
-        return $user;
+        try {
+            $areas= Area::all();
+            return view('areamanagers.create', compact('areas'));
+        }catch(\Exception $e){
+            return redirect()->route('home');
+        }
+       
     }
 
 
@@ -57,6 +46,35 @@ class AreaManagerController extends Controller
     public function store(Request $request)
     {
         //
+              // Validación de datos
+              $request->validate([
+                'cif' => 'required|string|max:255',
+                'name' => 'required|string|max:255',
+                'lastname' => 'required|string|max:255',
+                'email' => 'required|email|unique:users,email',
+                'phone' => 'required|string|max:20',
+                'password' => 'required|string|min:8',
+                'area_id' => 'required|exists:areas,id',
+                ]); 
+                
+                $user = new User();
+                $user->name = $request->name;
+                $user->cif = $request->cif;
+                $user->lastname = $request->lastname;
+                $user->email = $request->email;
+                $user->phone = $request->phone;
+                $user->password = Hash::make($request->password);
+                $user->role= 'areamanager';
+                $user->save();
+
+                  // Asociar como Representante de Area
+            $user->area_manager()->create([
+                'area_manager_id' => $user->id, 
+                'area_id' => $request->area_id,
+            ]);
+            
+            return redirect()->route('areamanagers.index')->with('success', '¡Usuario creado con éxito!');
+
     }
 
     /**
@@ -64,7 +82,12 @@ class AreaManagerController extends Controller
      */
     public function show(string $id)
     {
-        //
+        try{
+            $user = User::find($id);
+            return view('areamanagers.show', compact('user'));
+        } catch(\Exception $e){
+            return redirect()->route('areamanagers.index');
+    }
     }
 
     /**
@@ -73,6 +96,13 @@ class AreaManagerController extends Controller
     public function edit(string $id)
     {
         //
+        try {
+            $user = User::find($id);
+            $areas = Area::all();
+            return view('areamanagers.edit', compact('user', 'areas'));
+        }catch(\Exception $e){
+            return redirect()->route('areamanagers.index');
+        }
     }
 
     /**
@@ -81,6 +111,29 @@ class AreaManagerController extends Controller
     public function update(Request $request, string $id)
     {
         //
+        try{
+            $user = User::find($id);
+            $user->name = $request->name;
+            $user->cif = $request->cif;
+            $user->lastname = $request->lastname;
+            $user->email = $request->email;
+            $user->phone = $request->phone;
+            if($request->password){
+                $user->password = Hash::make($request->password);
+                $user->save();
+            }
+            $user->role = 'areamanager';
+            $user->save();
+            $areaManager = $user->area_manager;
+            if($areaManager){
+
+                $areaManager->area_id = $request->area_id;
+                $areaManager->save();
+            }
+            return redirect()->route('areamanagers.index');
+        }catch(\Exception $e){
+            return redirect()->route('areamanagers.edit', $id);
+        }
     }
 
     /**
@@ -89,5 +142,12 @@ class AreaManagerController extends Controller
     public function destroy(string $id)
     {
         //
+        try{
+            $user = User::find($id);
+            $user->delete();
+            return redirect()->route('areamanagers.index');
+        }catch(\Exception $e){
+            return redirect()->route('areamanagers.index');
+        }
     }
 }
