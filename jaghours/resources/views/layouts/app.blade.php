@@ -9,6 +9,24 @@
 
     <!-- Fonts -->
     <link rel="stylesheet" href="https://fonts.bunny.net/css?family=Nunito">
+   
+
+    <style>
+      
+        .nav-image{
+            width: 100px;
+            height: 100px;
+        }
+
+        .navbar-nav .nav-link{
+            color: black;
+            font-weight: 500;
+        }
+
+        .navbar-nav .nav-item {
+         margin-right: 100px;
+        }
+    </style>
 
     <!-- Tailwind CSS -->
 <!--     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
@@ -18,10 +36,14 @@
  --></head>
 <body>
     <div id="app">
-    <nav class="navbar navbar-expand-md shadow-sm" style="background-color: #3CCFEC;">
+    <nav class="navbar navbar-expand-md shadow-sm">
             <div class="container">
-                <a class="navbar-brand" href="{{ url('/') }}">
-                <span class="fw-bold text-dark">{{ config('app.name', 'Laravel') }}</span>
+                    <div class="logo-nav pl-2">
+                    <img src="{{asset('assets/images/LogoJagHours.png') }}" alt="Logo Jaghours" class="nav-image">
+                    <a href="{{ url('/') }}" class="navbar-brand h1">JagHours</a>
+                    
+                    </div>
+                
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
