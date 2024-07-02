@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\JobOportunity;
+use Illuminate\Support\Facades\Auth;
 
 
 class JobOportunityController extends Controller
@@ -26,7 +27,6 @@ class JobOportunityController extends Controller
     public function create()
     {
         //
-
         return view('joboportunity.create');
     }
 
@@ -36,6 +36,21 @@ class JobOportunityController extends Controller
     public function store(Request $request)
     {
         //
+        
+        $jobOportunity = new JobOportunity();
+        $jobOportunity->title = $request->title;
+        $jobOportunity->description = $request->description;
+        $jobOportunity->start_date= $request->start_date;
+        $jobOportunity->hours_validated = $request->hours_validated;
+        $jobOportunity->number_applicants = $request->number_applicants;
+        $jobOportunity->number_vacancies = $request->number_vacancies;
+        $jobOportunity->requirements = $request->requirements;
+        $jobOportunity->area_manager_id = Auth::user()->area_manager->id;
+        $jobOportunity->save();
+        return redirect()->route('joboportunity.index');
+    
+
+        
     }
 
     /**

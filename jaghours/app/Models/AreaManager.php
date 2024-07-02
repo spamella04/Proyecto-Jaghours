@@ -37,9 +37,9 @@ class AreaManager extends Model
     }
 
     //Relacion Oportunidades de Trabajo
-    public function jobOpportunities()
+    public function jobOportunities()
     {
-        return $this->hasMany(JobOpportunity::class);
+        return $this->hasMany(JobOportunity::class);
     }
 
     //Relacion Registros de Horas
