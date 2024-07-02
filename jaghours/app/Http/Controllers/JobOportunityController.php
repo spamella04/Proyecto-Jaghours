@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\JobOportunity;
+use App\Enums\JobOportunityStatus;
 use Illuminate\Support\Facades\Auth;
+use App\Models\AreaManager;
+use App\Models\Area;
 
 
 class JobOportunityController extends Controller
@@ -15,8 +18,11 @@ class JobOportunityController extends Controller
     public function index()
     {
         //
+       
         $areaManager = Auth::user()->area_manager;
+        $area = $areaManager->area;
 
+       
     if ($areaManager) {
         // Obtener las oportunidades de trabajo asociadas a este AreaManager
         $jobOportunities = JobOportunity::where('area_manager_id', $areaManager->id)->get();
