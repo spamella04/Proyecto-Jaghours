@@ -76,16 +76,18 @@
                                 <a class="nav-link" href="{{route('students.index')}}">Estudiantes</a>
                                 </li>
 
-                                <li class="nav-item">
-                                <a class="nav-link" href="{{route('areas.index')}}">Areas</a>
-                                </li>
-
-                                <li class="nav-item">
-                                <a class="nav-link" href="{{route('areamanagers.index')}}">Representantes de Area</a>
-                                </li>
-
+                                
 
                                 @endif
+                            
+                           
+                                @if (Auth::user()->role === 'areamanager')
+                                    <li class="nav-item">
+                                    <a class="nav-link" href="{{route('joboportunity.index')}}">Solicitudes</a>
+                                    </li>
+
+
+                                    @endif
                             
 
                             <li class="nav-item dropdown">

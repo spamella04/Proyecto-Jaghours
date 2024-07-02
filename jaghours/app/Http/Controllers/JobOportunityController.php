@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\JobOportunity;
+
 
 class JobOportunityController extends Controller
 {
@@ -12,6 +14,10 @@ class JobOportunityController extends Controller
     public function index()
     {
         //
+        $jobOportunities = JobOportunity::all();
+        
+        // Pass the job opportunities to the view
+        return view('joboportunity.index', compact('jobOportunities'));
     }
 
     /**
@@ -20,6 +26,8 @@ class JobOportunityController extends Controller
     public function create()
     {
         //
+
+        return view('joboportunity.create');
     }
 
     /**
