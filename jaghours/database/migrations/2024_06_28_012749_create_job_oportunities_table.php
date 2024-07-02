@@ -23,7 +23,7 @@ return new class extends Migration
             $table->unsignedInteger('number_vacancies');
             $table->string('requirements');
             $table->unsignedBigInteger('area_manager_id');
-            $table->foreign('area_manager_id')->references('area_manager_id')->on('area_managers');
+            $table->foreign('area_manager_id')->references('id')->on('area_managers');
             $table->timestamps();
         });
     }

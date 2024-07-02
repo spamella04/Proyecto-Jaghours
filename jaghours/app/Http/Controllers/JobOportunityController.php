@@ -15,11 +15,14 @@ class JobOportunityController extends Controller
     public function index()
     {
         //
-        $jobOportunities = JobOportunity::all();
-        
-        // Pass the job opportunities to the view
-        return view('joboportunity.index', compact('jobOportunities'));
+        $areaManager = Auth::user()->area_manager;
+
+    if ($areaManager) {
+        // Obtener las oportunidades de trabajo asociadas a este AreaManager
+        $jobOportunities = JobOportunity::where('area_manager_id', $areaManager->id)->get();
     }
+    return view('joboportunity.index', compact('jobOportunities'));
+}
 
     /**
      * Show the form for creating a new resource.
@@ -37,6 +40,8 @@ class JobOportunityController extends Controller
     {
         //
         
+        $area_manager= Auth::user()->area_manager;
+
         $jobOportunity = new JobOportunity();
         $jobOportunity->title = $request->title;
         $jobOportunity->description = $request->description;
@@ -45,7 +50,7 @@ class JobOportunityController extends Controller
         $jobOportunity->number_applicants = $request->number_applicants;
         $jobOportunity->number_vacancies = $request->number_vacancies;
         $jobOportunity->requirements = $request->requirements;
-        $jobOportunity->area_manager_id = Auth::user()->area_manager->id;
+        $jobOportunity->area_manager_id = $area_manager->id;
         $jobOportunity->save();
         return redirect()->route('joboportunity.index');
     

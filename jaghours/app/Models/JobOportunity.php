@@ -40,7 +40,7 @@ class JobOportunity extends Model
     //Relacion Area Manager
     public function area_managers()
     {
-        return $this->belongsTo(AreaManager::class);
+        return $this->belongsTo(AreaManager::class, 'area_manager_id', 'id');
     }
 
 
