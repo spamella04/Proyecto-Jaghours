@@ -16,4 +16,14 @@ final class JobOportunityStatus extends Enum
     const Published = 'Publicado';
     const Closed = 'Cerrado';
     const Cancelled = 'Cancelado';
+
+    public static function fromValue($value): static
+    {
+        return parent::fromValue($value);
+    }
+
+    public function __toString(): string
+    {
+        return $this->value;
+    }
 }

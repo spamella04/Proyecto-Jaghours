@@ -77,15 +77,27 @@
                                 </li>
 
                                 <li class="nav-item">
-                                <a class="nav-link" href="{{route('areas.index')}}">Areas</a>
+                                <a class="nav-link" href="{{route('areamanagers.index')}}">Responsable Area</a>
                                 </li>
 
                                 <li class="nav-item">
-                                <a class="nav-link" href="{{route('areamanagers.index')}}">Representantes de Area</a>
+                                <a class="nav-link" href="{{route('areas.index')}}">Area</a>
                                 </li>
 
+                                 <!--AGREGAR AQUI CARRERA CUANDO ESTE HECHO -->
+
+                                
 
                                 @endif
+                            
+                           
+                                @if (Auth::user()->role === 'areamanager')
+                                    <li class="nav-item">
+                                    <a class="nav-link" href="{{route('joboportunity.index')}}">Solicitudes</a>
+                                    </li>
+
+
+                                    @endif
                             
 
                             <li class="nav-item dropdown">
