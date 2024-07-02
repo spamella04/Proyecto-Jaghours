@@ -76,6 +76,16 @@
                                 <a class="nav-link" href="{{route('students.index')}}">Estudiantes</a>
                                 </li>
 
+                                <li class="nav-item">
+                                <a class="nav-link" href="{{route('areamanagers.index')}}">Responsable Area</a>
+                                </li>
+
+                                <li class="nav-item">
+                                <a class="nav-link" href="{{route('areas.index')}}">Area</a>
+                                </li>
+
+                                 <!--AGREGAR AQUI CARRERA CUANDO ESTE HECHO -->
+
                                 
 
                                 @endif

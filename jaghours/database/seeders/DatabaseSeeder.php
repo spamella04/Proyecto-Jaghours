@@ -32,5 +32,33 @@ class DatabaseSeeder extends Seeder
                 
             ]
             );
+    
+
+    \App\Models\Area::factory()->create(
+      [
+          'code' => '0001',
+          'name' => 'Biblioteca',
+          'description' => 'Biblioteca',
+          
+      ]
+      );
+
+      \App\Models\User::factory()->create([
+        'cif' => '19014700',
+        'name' => 'Silvio',
+      'lastname' => 'V',
+        'phone' => '86035239',
+      'email' => 'savigil@uamv.edu.ni',
+     'password' => bcrypt('password123'),
+     'role' => 'areamanager', 
+
+  ]);
+
+  \App\Models\AreaManager::factory()->create([
+    'area_manager_id' => '2',
+    'area_id' => '1',
+
+
+]);
     }
 }
