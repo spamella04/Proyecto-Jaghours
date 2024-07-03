@@ -92,7 +92,7 @@
                                 <a class="nav-link" href="{{route('semesters.index')}}">Semestre</a>
                                 </li>
 
-                                 <!--AGREGAR AQUI CARRERA CUANDO ESTE HECHO -->
+                                 <!--YA AGREGUE AQUI CARRERA Y SEMESTRE COMO LO PIDIO SILVITO :D-->
 
                                 
 
