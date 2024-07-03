@@ -11,15 +11,22 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('hour_tracking_per_semesters', function (Blueprint $table) {
+        Schema::create('hour_records', function (Blueprint $table) {
             $table->id();
+            $table->date('work_date');
+            $table->unsignedBigInteger('hours_worked');
             $table->unsignedBigInteger('semester_id');
+            $table->unsignedBigInteger('job_id');
             $table->unsignedBigInteger('student_id');
-            $table->string('hours_per_semester');
+            $table->unsignedBigInteger('area_manager_id');
             $table->foreign('semester_id')->references('id')->on('semesters');
-            $table->foreign('student_id')->references('student_id')->on('students');
+            $table->foreign('job_id')->references('id')->on('jobs');
+            $table->foreign('student_id')->references('id')->on('students');
+            $table->foreign('area_manager_id')->references('area_manager_id')->on('area_managers');
             $table->timestamps();
+
         });
+        
     }
 
     /**
@@ -27,6 +34,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('hour_tracking_per_semesters');
+        Schema::dropIfExists('hour_records');
     }
 };

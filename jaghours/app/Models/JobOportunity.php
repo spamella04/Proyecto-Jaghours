@@ -65,6 +65,12 @@ class JobOportunity extends Model
         return $this->hasMany(HourRecord::class);
     }
 
+    //Relacion Trabajos
+    public function job()
+    {
+        return $this->hasOne(Job::class);
+    }
+
     
     
 }
