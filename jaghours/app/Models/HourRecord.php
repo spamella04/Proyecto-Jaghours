@@ -9,13 +9,13 @@ class HourRecord extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['work_date','hours_worked','job_opportunity_id','student_id','area_manager_id','semester_id'];
+    protected $fillable = ['work_date','hours_worked','job_id','student_id','area_manager_id','semester_id'];
 
    
     //Relacion Semestre
     public function semester()
     {
-        return $this->belongsTo(Semester::class);
+        return $this->belongsTo(Semester::class, 'semester_id', 'id');
     }
 
     public function getSemester()
@@ -23,21 +23,21 @@ class HourRecord extends Model
         return $this->semester->name;
     }
 
-    //Relacion Oportunidad de Trabajo
-    public function jobOpportunity()
+    //Relacion Trabajo
+    public function job()
     {
-        return $this->belongsTo(JobOpportunity::class);
+        return $this->belongsTo(Job::class, 'job_id', 'id');
     }
 
-    public function getJobOpportunity()
+    public function getJob()
     {
-        return $this->jobOpportunity->name;
+        return $this->job;
     }
 
     //Relacion Estudiante
     public function student()
     {
-        return $this->belongsTo(Student::class);
+        return $this->belongsTo(Student::class, 'student_id', 'id');
     }
 
     public function getStudent()
@@ -49,7 +49,7 @@ class HourRecord extends Model
 
     public function areaManager()
     {
-        return $this->belongsTo(AreaManager::class);
+        return $this->belongsTo(AreaManager::class, 'area_manager_id', 'id');
     }
 
     public function getAreaManager()

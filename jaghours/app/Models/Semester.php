@@ -17,10 +17,6 @@ class Semester extends Model
         return $this->hasMany(HourRecord::class);
     }
 
-    //Relacion Registros de Horas por Semestre
-    public function hourTrackingPerSemester()
-    {
-        return $this->hasMany(HourTrackingPerSemester::class);
-    }
+    
 
 }
