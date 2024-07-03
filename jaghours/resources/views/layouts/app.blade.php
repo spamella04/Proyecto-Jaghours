@@ -84,6 +84,14 @@
                                 <a class="nav-link" href="{{route('areas.index')}}">Area</a>
                                 </li>
 
+                                <li class="nav-item">
+                                <a class="nav-link" href="{{route('degrees.index')}}">Carrera</a>
+                                </li>
+
+                                <li class="nav-item">
+                                <a class="nav-link" href="{{route('semesters.index')}}">Semestre</a>
+                                </li>
+
                                  <!--AGREGAR AQUI CARRERA CUANDO ESTE HECHO -->
 
                                 

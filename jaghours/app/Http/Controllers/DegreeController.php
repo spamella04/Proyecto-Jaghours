@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Degree;
+use Exception;
 
 class DegreeController extends Controller
 {
@@ -11,7 +13,12 @@ class DegreeController extends Controller
      */
     public function index()
     {
-        //
+        try{
+            $degrees = Degree::all()->sortBy('code');
+            return view('degrees.index', compact('degrees'));
+        } catch (\Exception $e) {
+            return redirect()->route('degrees.index')->with('error', $e->getMessage());
+        }
     }
 
     /**
@@ -20,6 +27,11 @@ class DegreeController extends Controller
     public function create()
     {
         //
+        try{
+            return view('degrees.create');
+        } catch (\Exception $e) {
+            return redirect()->route('degrees.index')->with('error', $e->getMessage());
+        }
     }
 
     /**
@@ -28,6 +40,15 @@ class DegreeController extends Controller
     public function store(Request $request)
     {
         //
+        try{
+            $degree = new Degree();
+            $degree->code = $request->code;
+            $degree->name = $request->name;
+            $degree->save();
+            return redirect()->route('degrees.index')->with('success', 'Carrera Creada Exitosamente');
+        } catch (\Exception $e) {
+            return redirect()->route('degrees.index')->with('error', $e->getMessage());
+        }
     }
 
     /**
@@ -36,6 +57,12 @@ class DegreeController extends Controller
     public function show(string $id)
     {
         //
+        try{
+            $degree = Degree::find($id);
+            return view('degrees.show', compact('degree'));
+        } catch (\Exception $e) {
+            return redirect()->route('degrees.index')->with('error', $e->getMessage());
+        }
     }
 
     /**
@@ -44,6 +71,12 @@ class DegreeController extends Controller
     public function edit(string $id)
     {
         //
+        try{
+            $degree = Degree::find($id);
+            return view('degrees.edit', compact('degree'));
+        } catch (\Exception $e) {
+            return redirect()->route('degrees.index')->with('error', $e->getMessage());
+        }
     }
 
     /**
@@ -52,7 +85,16 @@ class DegreeController extends Controller
     public function update(Request $request, string $id)
     {
         //
-    }
+        try{
+            $degree = Degree::find($id);
+            $degree->code = $request->code;
+            $degree->name = $request->name;
+            $degree->save();
+            return redirect()->route('degrees.index')->with('success', 'Carrera Actualizada Exitosamente');
+        }catch (\Exception $e) {
+                return redirect()->route('degrees.index')->with('error', $e->getMessage());
+            }
+        }
 
     /**
      * Remove the specified resource from storage.
@@ -60,5 +102,12 @@ class DegreeController extends Controller
     public function destroy(string $id)
     {
         //
+        try{
+            $degree = Degree::find($id);
+            $degree->delete();
+            return redirect()->route('degrees.index')->with('success', 'Carrera Eliminada Exitosamente');
+        } catch (\Exception $e) {
+            return redirect()->route('degrees.index')->with('error', $e->getMessage());
+        }
     }
 }
