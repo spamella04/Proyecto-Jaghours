@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Semester;
+use Exception;
 
 class SemesterController extends Controller
 {
@@ -12,6 +14,12 @@ class SemesterController extends Controller
     public function index()
     {
         //
+        try{
+            $semesters = Semester::all()->sortBy('start_date');
+            return view('semesters.index', compact('semesters'));
+        } catch (\Exception $e){
+            return redirect()->route(semesters.index)->with('error', $e->getMessage());
+        }
     }
 
     /**
@@ -20,6 +28,11 @@ class SemesterController extends Controller
     public function create()
     {
         //
+        try{
+            return view('semesters.create');
+        } catch (\Exception $e){
+            return redirect()->route('semesters.index')->with('error', $e->getMessage());
+        }
     }
 
     /**
@@ -28,6 +41,16 @@ class SemesterController extends Controller
     public function store(Request $request)
     {
         //
+        try{
+            $semester = new Semester();
+            $semester->name = $request->name;
+            $semester->start_date = $request->start_date;
+            $semester->end_date = $request->end_date;
+            $semester->save();
+            return redirect()->route('semester.index')->with('success', 'Semestre Creado Exitosamente');
+        } catch (\Exception $e){
+            return redirect()->route('semesters.index')->with('error', $e->getMessage());
+        }
     }
 
     /**
@@ -36,6 +59,12 @@ class SemesterController extends Controller
     public function show(string $id)
     {
         //
+        try{
+            $semester = Semester::find($id);
+            return view('semesters.show', compact('semester'));
+        } catch (\Exception $e){
+            return redirect()->route('semesters.index')->with('error', $e->getMessage());
+        }
     }
 
     /**
@@ -44,6 +73,12 @@ class SemesterController extends Controller
     public function edit(string $id)
     {
         //
+        try{
+            $semester = Semester::find($id);
+            return view('semesters.edit', compact('semester'));
+        } catch (\Exception $e){
+            return redirect()->route('semesters.index')->with('error', $e->getMessage());
+        }
     }
 
     /**
@@ -52,6 +87,16 @@ class SemesterController extends Controller
     public function update(Request $request, string $id)
     {
         //
+        try{
+            $semester = Semester::find($id);
+            $semester->name = $request->name;
+            $semester->start_date = $request->start_date;
+            $semester->end_date = $request->end_date;
+            $semester->save();
+            return redirect()->route('semesters.index')->with('success', 'Semestre Actualizado Exitosamente');
+        } catch (\Exception $e){
+            return redirect()->route('semesters.index')->with('error', $e->getMessage());
+        }
     }
 
     /**
@@ -60,5 +105,12 @@ class SemesterController extends Controller
     public function destroy(string $id)
     {
         //
+        try{
+            $semester = Semester::find($id);
+            $semester->delete();
+            return redirect()->route('semesters.index')->with('success', 'Semestre Eliminado Exitosamente');
+        } catch (\Exception $e){
+            return redirect()->route('semesters.index')->with('error', $e->getMessage());
+        }
     }
 }

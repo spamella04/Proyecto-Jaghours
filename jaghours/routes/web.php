@@ -5,6 +5,8 @@ use App\Http\Controllers\StudentController;
 use App\Http\Controllers\AreaController;
 use App\Http\Controllers\AreaManagerController;
 use App\Http\Controllers\JobOportunityController;
+use App\Http\Controllers\DegreeController;
+use App\Http\Controllers\SemesterController;
 
 /*
 |--------------------------------------------------------------------------
@@ -59,5 +61,20 @@ Route::middleware('auth')->group(
         Route::put('/joboportunity/{joboportunity}', [JobOportunityController::class, 'update'])->name('joboportunity.update');
         Route::delete('/joboportunity/{joboportunity}', [JobOportunityController::class, 'destroy'])->name('joboportunity.destroy');
         
+        Route::get('/degrees', [DegreeController::class, 'index'])->name('degrees.index');
+        Route::get('/degrees/create', [DegreeController::class, 'create'])->name('degrees.create');
+        Route::post('/degrees', [DegreeController::class, 'store'])->name('degrees.store');
+        Route::get('/degrees/{degree}', [DegreeController::class, 'show'])->name('degrees.show');
+        Route::get('/degrees/{degree}/edit', [DegreeController::class, 'edit'])->name('degrees.edit');
+        Route::put('/degrees/{degree}', [DegreeController::class, 'update'])->name('degrees.update');
+        Route::delete('/degrees/{degree}', [DegreeController::class, 'destroy'])->name('degrees.destroy');
+
+        Route::get('/semesters', [SemesterController::class, 'index'])->name('semesters.index');
+        Route::get('/semesters/create', [SemesterController::class, 'create'])->name('semesters.create');
+        Route::post('/semesters', [SemesterController::class, 'store'])->name('semesters.store');
+        Route::get('/semesters/{semester}', [SemesterController::class, 'show'])->name('semesters.show');
+        Route::get('/semesters/{semester}/edit', [SemesterController::class, 'edit'])->name('semesters.edit');
+        Route::put('/semesters/{semester}', [SemesterController::class, 'update'])->name('semesters.update');
+        Route::delete('/semesters/{semester}', [SemesterController::class, 'destroy'])->name('semesters.destroy');
     }
 );
