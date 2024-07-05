@@ -10,6 +10,7 @@ use App\Models\AreaManager;
 use App\Models\Area;
 
 
+
 class JobOportunityController extends Controller
 {
     /**
@@ -19,15 +20,30 @@ class JobOportunityController extends Controller
     {
         //
        
-        $areaManager = Auth::user()->area_manager;
-        $area = $areaManager->area;
+        if(Auth::user()->role == 'areamanager'){
+            $areaManager = Auth::user()->area_manager;
+            $area = $areaManager->area;
 
+            if ($areaManager) {
+                // Obtener las oportunidades de trabajo asociadas a este AreaManager
+                $jobOportunities = JobOportunity::where('area_manager_id', $areaManager->id)->get();
+                return view('joboportunity.index', compact('jobOportunities'));
+            }
+        }
        
-    if ($areaManager) {
-        // Obtener las oportunidades de trabajo asociadas a este AreaManager
-        $jobOportunities = JobOportunity::where('area_manager_id', $areaManager->id)->get();
-    }
-    return view('joboportunity.index', compact('jobOportunities'));
+
+        if(Auth::user()->role == 'student'){
+        $student = Auth::user()->student;
+
+        if($student){
+            $jobOportunities = JobOportunity::where('status', 'Publicado')->get();
+            return view('joboportunity.indexStudent', compact('jobOportunities'));
+        }
+
+        }
+
+    
+   
 }
 
     /**
@@ -86,6 +102,22 @@ class JobOportunityController extends Controller
     public function update(Request $request, string $id)
     {
         //
+        try{
+            $jobOportunity = JobOportunity::findOrFail($id);
+            $jobOportunity->title = $request->title;
+            $jobOportunity->description = $request->description;
+            $jobOportunity->start_date = $request->start_date;
+            $jobOportunity->hours_validated = $request->hours_validated;
+            $jobOportunity->number_applicants = $request->number_applicants;
+            $jobOportunity->number_vacancies = $request->number_vacancies;
+            $jobOportunity->requirements = $request->requirements;
+            $jobOportunity->save();
+            return redirect()->route('joboportunity.index');
+        }
+        catch(\Exception $e){
+            return redirect()->route('joboportunity.edit');
+        }
+
     }
 
     /**

@@ -7,6 +7,8 @@ use App\Http\Controllers\AreaManagerController;
 use App\Http\Controllers\JobOportunityController;
 use App\Http\Controllers\DegreeController;
 use App\Http\Controllers\SemesterController;
+use App\Http\Controllers\AdminJobOpportunityController;
+use App\Http\Controllers\ApplicationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -60,6 +62,8 @@ Route::middleware('auth')->group(
         Route::get('/joboportunity/{joboportunity}/edit', [JobOportunityController::class, 'edit'])->name('joboportunity.edit');
         Route::put('/joboportunity/{joboportunity}', [JobOportunityController::class, 'update'])->name('joboportunity.update');
         Route::delete('/joboportunity/{joboportunity}', [JobOportunityController::class, 'destroy'])->name('joboportunity.destroy');
+        Route::get('/joboportunity', [JobOportunityController::class, 'index'])->name('joboportunity.indexStudent');
+
         
         Route::get('/degrees', [DegreeController::class, 'index'])->name('degrees.index');
         Route::get('/degrees/create', [DegreeController::class, 'create'])->name('degrees.create');
@@ -76,5 +80,29 @@ Route::middleware('auth')->group(
         Route::get('/semesters/{semester}/edit', [SemesterController::class, 'edit'])->name('semesters.edit');
         Route::put('/semesters/{semester}', [SemesterController::class, 'update'])->name('semesters.update');
         Route::delete('/semesters/{semester}', [SemesterController::class, 'destroy'])->name('semesters.destroy');
+
+        //JobOpportunity - Admin
+        Route::get('/adminjobopportunities', [AdminJobOpportunityController::class, 'index'])->name('adminjobopportunities.index');
+        Route::get('/adminjobopportunities/create', [AdminJobOpportunityController::class, 'create'])->name('adminjobopportunities.create');
+        Route::post('/adminjobopportunities', [AdminJobOpportunityController::class, 'store'])->name('adminjobopportunities.store');
+        Route::get('/adminjobopportunities/{adminjobopportunity}', [AdminJobOpportunityController::class, 'show'])->name('adminjobopportunities.show');
+        Route::get('/adminjobopportunities/{adminjobopportunity}/edit', [AdminJobOpportunityController::class, 'edit'])->name('adminjobopportunities.edit');
+        Route::put('/adminjobopportunities/{adminjobopportunity}', [AdminJobOpportunityController::class, 'update'])->name('adminjobopportunities.update');
+        Route::delete('/adminjobopportunities/{adminjobopportunity}', [AdminJobOpportunityController::class, 'destroy'])->name('adminjobopportunities.destroy');
+        Route::get('/adminjobopportunities/{adminjobopportunity}/publish', [AdminJobOpportunityController::class, 'publish'])->name('adminjobopportunities.publish');
+        Route::get('/adminjobopportunities/{adminjobopportunity}/reject', [AdminJobOpportunityController::class, 'reject'])->name('adminjobopportunities.reject');
+
+        //Applications
+        Route::get('/applications', [ApplicationController::class, 'index'])->name('applications.index');
+        Route::get('/applications/create', [ApplicationController::class, 'create'])->name('applications.create');
+        Route::post('/applications', [ApplicationController::class, 'store'])->name('applications.store');
+        Route::get('/applications/{application}', [ApplicationController::class, 'show'])->name('applications.show');
+        Route::get('/applications/{application}/edit', [ApplicationController::class, 'edit'])->name('applications.edit');
+        Route::put('/applications/{application}', [ApplicationController::class, 'update'])->name('applications.update');
+        Route::delete('/applications/{application}', [ApplicationController::class, 'destroy'])->name('applications.destroy');
+        
+
+
+
     }
 );

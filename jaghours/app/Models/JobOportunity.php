@@ -33,9 +33,9 @@ class JobOportunity extends Model
         return JobOportunityStatus::fromValue($value);
     }
 
-    public function setStatusAttribute(JobOportunityStatus $status)
+    public function setStatusAttribute( $JobOportunityStatus)
     {
-        $this->attributes['status'] = $status->value;
+        $this->attributes['status'] = JobOportunityStatus::fromValue($JobOportunityStatus);
     }
 
     //Relacion Area Manager

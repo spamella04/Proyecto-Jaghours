@@ -9,13 +9,13 @@ class Application extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['student_id','job_opportunity_id', 'status', 'date'];
+    protected $fillable = ['student_id','job_opportunity_id', 'status'];
 
 
     //Relacion Estudiante
     public function students()
     {
-        return $this->belongsTo(Student::class);
+        return $this->belongsTo(Student::class , 'student_id', 'id');
     }
 
     public function getStudents()
@@ -26,7 +26,7 @@ class Application extends Model
     //Relacion Oportunidades de Trabajo
     public function job_opportunities()
     {
-        return $this->belongsTo(JobOpportunity::class);
+        return $this->belongsTo(JobOpportunity::class, 'job_opportunity_id', 'id');
     }
     
     public function getJobOpportunities()
