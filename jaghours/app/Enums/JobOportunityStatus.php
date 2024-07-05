@@ -15,7 +15,7 @@ final class JobOportunityStatus extends Enum
     const Pending = 'Solicitud';
     const Published = 'Publicado';
     const Closed = 'Cerrado';
-    const Cancelled = 'Cancelado';
+    const Rejected = 'Rechazada';
 
     public static function fromValue($value): static
     {

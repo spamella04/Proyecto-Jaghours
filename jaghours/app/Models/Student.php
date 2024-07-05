@@ -35,7 +35,7 @@ class Student extends Model
     //Relacion Postulaciones
     public function applications()
     {
-        return $this->hasMany(Application::Class);
+        return $this->hasMany(Application::Class, 'student_id', 'id');
     }
 
     //Relacion Registros de Horas

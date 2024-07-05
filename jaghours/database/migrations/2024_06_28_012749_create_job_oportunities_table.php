@@ -16,7 +16,7 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->string('description');
-            $table->enum('status',['Borrador','Solicitud','Publicado','Cerrado','Cancelada'])->default('Solicitud');   
+            $table->enum('status',['Borrador','Solicitud','Publicado','Cerrado','Rechazada'])->default('Solicitud');   
             $table->date('start_date');
             $table->unsignedInteger('hours_validated');
             $table->unsignedInteger('number_applicants');
