@@ -2,54 +2,99 @@
 
 @section('content')
 
+<style>
+    .table-container {
+        padding: 1rem;
+        border-radius: 8px;
+        background-color: #f8f9fa;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .table-title {
+        font-size: 1.5rem;
+        font-weight: bold;
+        margin-bottom: 1rem;
+    }
+
+    .table {
+        width: 100%;
+        border-collapse: collapse;
+        background-color: #fff;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+        overflow: hidden;
+    }
+
+    .table th,
+    .table td {
+        padding: 0.75rem;
+        text-align: left;
+        vertical-align: middle;
+        border-top: 1px solid #dee2e6;
+    }
+
+    .table th {
+        background-color: #343a40;
+        color: #fff;
+    }
+
+    .table-striped tbody tr:nth-of-type(odd) {
+        background-color: #f8f9fa;
+    }
+
+    .btn-action {
+        margin-right: 0.5rem;
+    }
+</style>
+
 <div class="container py-5">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2 class="font-weight-bold">Listado de Estudiantes</h2>
         <a href="{{ route('students.create') }}" class="btn btn-primary btn-lg">Crear nuevo registro de estudiante</a>
     </div>
 
-    <div class="card shadow-sm rounded-lg">
-        <div class="card-body">
-            <div class="table-responsive">
-                <table class="table table-striped table-hover">
-                    <thead class="thead-dark">
-                        <tr>
-                            <th scope="col">CIF</th>
-                            <th scope="col">Nombre</th>
-                            <th scope="col">Apellido</th>
-                            <th scope="col">Correo</th>
-                            <th scope="col">Teléfono</th>
-                            <th scope="col">Curso</th>
-                            <th scope="col">Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($users as $user)
-                            @if($user->role == 'student')
-                                <tr>
-                                    <td>{{ $user->cif }}</td>
-                                    <td>{{ $user->name }}</td>
-                                    <td>{{ $user->lastname }}</td>
-                                    <td>{{ $user->email }}</td>
-                                    <td>{{ $user->phone }}</td>
-                                    <td>{{ $user->student->degree->name }}</td>
-                                    <td class="d-flex">
-                                        <a href="{{ route('students.show', $user->id) }}" class="btn btn-info btn-sm mr-2">Ver</a>
-                                        <a href="{{ route('students.edit', $user->id) }}" class="btn btn-warning btn-sm mr-2">Editar</a>
-                                        <form action="{{ route('students.destroy', $user->id) }}" method="POST" class="d-inline">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
-                                        </form>
-                                    </td>
-                                </tr>
-                            @endif
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
+    <div class="table-container">
+      
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>CIF</th>
+                        <th>Nombre</th>
+                        <th>Apellido</th>
+                        <th>Correo</th>
+                        <th>Teléfono</th>
+                        <th>Curso</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($users as $user)
+                    @if($user->role == 'student')
+                    <tr>
+                        <td>{{ $user->cif }}</td>
+                        <td>{{ $user->name }}</td>
+                        <td>{{ $user->lastname }}</td>
+                        <td>{{ $user->email }}</td>
+                        <td>{{ $user->phone }}</td>
+                        <td>{{ $user->student->degree->name }}</td>
+                        <td>
+                            <a href="{{ route('students.show', $user->id) }}" class="btn btn-info btn-sm btn-action">Ver</a>
+                            <a href="{{ route('students.edit', $user->id) }}" class="btn btn-warning btn-sm btn-action">Editar</a>
+                            <form action="{{ route('students.destroy', $user->id) }}" method="POST" class="d-inline">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger btn-sm btn-action">Eliminar</button>
+                            </form>
+                        </td>
+                    </tr>
+                    @endif
+                    @endforeach
+                </tbody>
+            </table>
         </div>
     </div>
 </div>
 
 @endsection
+

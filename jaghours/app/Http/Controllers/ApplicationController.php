@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use App\Models\Application;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Student;
-use App\Models\JobOpportunity;
 use App\Models\JobOportunity;
 
 
@@ -37,31 +36,54 @@ class ApplicationController extends Controller
     {
         //
 
+
+
     }
 
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-{
-    $request->validate([
-        'job_opportunity_id' => 'required|exists:job_oportunities,id',
-    ]);
-    
-    try {
-        $jobOpportunity = JobOportunity::findOrFail($request->job_opportunity_id);
-        $student = Auth::user()->student;
-        $application = new Application();
-        $application->student_id = $student->id;
-        $application->job_opportunity_id = $jobOpportunity->id;
-        $application->save();
+    {
+        // Validar el request
+        $request->validate([
+            'job_opportunity_id' => 'required|exists:job_oportunities,id',
+        ]);
 
-        return redirect()->route('applications.index')->with('success', 'Aplicación enviada con éxito.');
-    } catch (\Exception $e) {
-        return redirect()->back()->with('error', 'Hubo un error al enviar la aplicación.');
+        try {
+            // Verificar si el usuario está autenticado
+            if (!Auth::check()) {
+                return redirect()->route('login')->with('error', 'Debe iniciar sesión primero.');
+            }
+
+            // Obtener el estudiante autenticado
+            $student = Auth::user()->student;
+
+            // Verificar si el usuario autenticado es un estudiante
+            if (!$student) {
+                return redirect()->back()->with('error', 'El usuario no es un estudiante.');
+            }
+
+            // Encontrar la oportunidad de trabajo
+            $jobOpportunity = JobOportunity::findOrFail($request->job_opportunity_id);
+
+            // Crear una nueva aplicación
+            $application = new Application();
+            $application->student_id = $student->id;
+            $application->job_opportunity_id = $jobOpportunity->id;
+            $application->status = 'Pendiente'; // O el estado inicial que prefieras
+            $application->save();
+
+            // Redirigir a la vista de aplicaciones con éxito
+            return redirect()->route('applications.index')->with('success', 'Aplicación enviada con éxito.');
+        } catch (\Exception $e) {
+            // Registrar el error para depuración
+            \Log::error('Error al guardar la aplicación: ' . $e->getMessage());
+
+            // Redirigir de vuelta en caso de error
+            return redirect()->back()->with('error', 'Hubo un error al enviar la aplicación.');
+        }
     }
-}
-
     /**
      * Display the specified resource.
      */

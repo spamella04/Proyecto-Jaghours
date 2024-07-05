@@ -124,7 +124,7 @@
                             @if(Auth::user()->role === 'areamanager')
                                 <li class="nav-item">
                                     <a class="nav-link"
-                                        href="{{ route('joboportunity.indexStudent') }}">Solicitudes</a>
+                                        href="{{ route('joboportunity.index') }}">Solicitudes</a>
                                 </li>
 
 

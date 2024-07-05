@@ -55,14 +55,15 @@ Route::middleware('auth')->group(
         Route::put('/areamanagers/{areamanager}', [AreaManagerController::class, 'update'])->name('areamanagers.update');
         Route::delete('/areamanagers/{areamanager}', [AreaManagerController::class, 'destroy'])->name('areamanagers.destroy');
 
-        Route::get('/joboportunity', [JobOportunityController::class, 'index'])->name('joboportunity.index');
+        Route::get('/joboportunity/manager', [JobOportunityController::class, 'index'])->name('joboportunity.index');
+        Route::get('/joboportunity/student', [JobOportunityController::class, 'indexStudent'])->name('joboportunity.indexStudent');
         Route::get('/joboportunity/create', [JobOportunityController::class, 'create'])->name('joboportunity.create');
         Route::post('/joboportunity', [JobOportunityController::class, 'store'])->name('joboportunity.store');
         Route::get('/joboportunity/{joboportunity}', [JobOportunityController::class, 'show'])->name('joboportunity.show');
         Route::get('/joboportunity/{joboportunity}/edit', [JobOportunityController::class, 'edit'])->name('joboportunity.edit');
         Route::put('/joboportunity/{joboportunity}', [JobOportunityController::class, 'update'])->name('joboportunity.update');
         Route::delete('/joboportunity/{joboportunity}', [JobOportunityController::class, 'destroy'])->name('joboportunity.destroy');
-        Route::get('/joboportunity', [JobOportunityController::class, 'index'])->name('joboportunity.indexStudent');
+
 
         
         Route::get('/degrees', [DegreeController::class, 'index'])->name('degrees.index');

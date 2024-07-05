@@ -55,7 +55,7 @@ class JobOportunity extends Model
 
     public function applications()
     {
-        return $this->hasMany(Application::class);
+        return $this->hasMany(Application::class, 'job_opportunity_id', 'id');
     }
 
     //Relacion Registro de Horas
