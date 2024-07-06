@@ -187,7 +187,11 @@
                             </div>
                             @if ($application->status == 'Aceptado')
                                 <span class="fw-bold text-success">Aceptado</span>
-                            @else
+                            @endif
+                            @if ($application->status == 'No Aceptado')
+                                <span class="fw-bold text-success">No Aceptado</span>
+                            @endif
+                            @if($application->status == 'Pendiente')
                                 @if ($acceptedCount >= $joboportunity->number_vacancies)
                                     <button type="button" class="btn btn-info btn-sm btn-action" disabled>Aceptar Aplicantes</button>
                                 @else

@@ -10,6 +10,7 @@ use App\Http\Controllers\SemesterController;
 use App\Http\Controllers\AdminJobOpportunityController;
 use App\Http\Controllers\ApplicationController;
 use App\Http\Controllers\JobController;
+use App\Http\Controllers\HourRecordController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -102,9 +103,13 @@ Route::middleware('auth')->group(
         Route::get('/applications/{application}/edit', [ApplicationController::class, 'edit'])->name('applications.edit');
         Route::put('/applications/{application}', [ApplicationController::class, 'update'])->name('applications.update');
         Route::delete('/applications/{application}', [ApplicationController::class, 'destroy'])->name('applications.destroy');
-        
+        //Jobs
+        Route::get('/job', [JobController::class, 'index'])->name('job.index');
         Route::post('/job', [JobController::class, 'store'])->name('job.store');
-
+        
+        //Hour Records
+        Route::get('/hourrecord/create/{job_id}', [HourRecordController::class, 'create'])->name('hourrecords.create');
+        Route::post('/hourrecord/store', [HourRecordController::class, 'store'])->name('hourrecords.store');
 
     }
 );

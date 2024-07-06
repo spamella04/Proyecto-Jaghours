@@ -115,7 +115,7 @@
                                 </li>
 
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('areas.index') }}">Convalidar</a>
+                                    <a class="nav-link" href="{{ route('job.index') }}">Convalidar</a>
                                 </li>
                                 
                             @endif

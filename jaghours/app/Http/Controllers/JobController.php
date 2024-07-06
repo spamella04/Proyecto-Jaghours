@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Job;
 use App\Models\Application;
+use App\Models\JobOportunity;
 class JobController extends Controller
 {
     /**
@@ -13,6 +14,8 @@ class JobController extends Controller
     public function index()
     {
         //
+        $jobs=Job::with('job_opportunity')->get();
+        return view('hourrecord.index', compact('jobs'));
     }
 
     /**
@@ -37,16 +40,24 @@ class JobController extends Controller
 
         // Obtener la aplicación basada en el ID proporcionado en la solicitud
         $application = Application::findOrFail($request->application_id);
-
-        // Actualizar el estado de la aplicación a "Aceptado"
         $application->status = 'Aceptado';
         $application->save();
 
-        // Crear un nuevo trabajo (job) y asignar el job_opportunity_id de la aplicación
+        // Crear un nuevo trabajo  
         $job = new Job();
-        $job->job_opportunity_id = $application->job_opportunity_id; // Asignar el job_opportunity_id de la aplicación
+        $job->job_opportunity_id = $application->job_opportunity_id; 
         $job->student_id = $application->student_id;
         $job->save();
+
+        // Verificar si se alcanzó el número máximo de vacantes aceptadas
+        $joboportunity = JobOportunity::findOrFail($application->job_opportunity_id);
+        $acceptedCount = $joboportunity->applications()->where('status', 'Aceptado')->count();
+
+        if ($acceptedCount >= $joboportunity->number_vacancies) {
+            // Actualizar las solicitudes pendientes a rechazadas
+            $joboportunity->applications()->where('status', 'Pendiente')->update(['status' => 'No Aceptado']);
+        }
+
 
         // Redirigir o cargar la vista de vuelta con los datos necesarios
         return redirect()->route('joboportunity.showapplicants', ['id' => $job->job_opportunity_id]);
