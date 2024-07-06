@@ -9,7 +9,7 @@ class HourRecord extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['work_date','hours_worked','job_id','student_id','area_manager_id','semester_id'];
+    protected $fillable = ['work_date','hours_worked','job_id','area_manager_id','semester_id'];
 
    
     //Relacion Semestre
@@ -34,16 +34,8 @@ class HourRecord extends Model
         return $this->job;
     }
 
-    //Relacion Estudiante
-    public function student()
-    {
-        return $this->belongsTo(Student::class, 'student_id', 'id');
-    }
-
-    public function getStudent()
-    {
-        return $this->student->user->getUser();
-    }
+    
+    
 
     //Relacion Area Manager
 

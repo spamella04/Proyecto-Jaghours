@@ -39,11 +39,15 @@ class Student extends Model
     }
 
     //Relacion Registros de Horas
-    public function hoursRecords()
+    public function hoursrecords()
     {
         return $this->hasMany(HourRecord::Class);
     }
 
+    public function jobs()
+    {
+        return $this->hasMany(Job::Class);
+    }
     
 
     

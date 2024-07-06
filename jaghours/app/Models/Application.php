@@ -29,15 +29,12 @@ class Application extends Model
     }
 
     //Relacion Estudiante
-    public function students()
+    public function student()
     {
         return $this->belongsTo(Student::class , 'student_id', 'id');
     }
 
-    public function getStudents()
-    {
-        return $this->students->user->getUser();
-    }
+    
 
     //Relacion Oportunidades de Trabajo
     public function job_opportunities()
@@ -45,10 +42,7 @@ class Application extends Model
         return $this->belongsTo(JobOportunity::class, 'job_opportunity_id', 'id');
     }
     
-    public function getJobOpportunities()
-    {
-        return $this->job_opportunities->title->description->status->start_date->hours_validated->number_applicants->number_vacancies->requirements->area_manager_cif;
-    }
+   
 
     
     

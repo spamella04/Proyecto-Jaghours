@@ -68,7 +68,7 @@ class JobOportunity extends Model
     //Relacion Trabajos
     public function job()
     {
-        return $this->hasOne(Job::class);
+        return $this->hasMany(Job::class);
     }
 
     
