@@ -111,11 +111,11 @@
 
                                 <li class="nav-item">
                                     <a class="nav-link"
-                                        href="{{ route('areas.index') }}">Publicaciones</a>
+                                        href="{{ route('joboportunity.index') }}">Publicaciones</a>
                                 </li>
 
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('areas.index') }}">Trabajos</a>
+                                    <a class="nav-link" href="{{ route('areas.index') }}">Convalidar</a>
                                 </li>
                                 
                             @endif

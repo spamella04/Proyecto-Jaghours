@@ -27,6 +27,16 @@ class JobOportunityController extends Controller
                 return view('joboportunity.index', compact('jobOportunities'));
             }
         }
+
+        if (Auth::user()->role == 'admin') {
+            $admin = Auth::user()->role=='admin';
+
+            if ($admin) {
+                $jobOportunities = JobOportunity::with('applications.student')->where('status', 'Publicado')->get();
+                return view('joboportunity.index', compact('jobOportunities'));
+            }
+        }
+
         return redirect()->route('home'); // Redirigir a una página de inicio o de error si el usuario no es un area manager
     }
 
@@ -104,6 +114,13 @@ class JobOportunityController extends Controller
     public function show(string $id)
     {
         //
+    }
+
+    public function showApplicants($id)
+    {
+        $joboportunity = JobOportunity::with('applications.student.user')->findOrFail($id);
+
+        return view('joboportunity.showapplicants', compact('joboportunity'));
     }
 
     /**

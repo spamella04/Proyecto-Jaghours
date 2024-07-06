@@ -9,7 +9,7 @@ use App\Http\Controllers\DegreeController;
 use App\Http\Controllers\SemesterController;
 use App\Http\Controllers\AdminJobOpportunityController;
 use App\Http\Controllers\ApplicationController;
-
+use App\Http\Controllers\JobController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -63,6 +63,7 @@ Route::middleware('auth')->group(
         Route::get('/joboportunity/{joboportunity}/edit', [JobOportunityController::class, 'edit'])->name('joboportunity.edit');
         Route::put('/joboportunity/{joboportunity}', [JobOportunityController::class, 'update'])->name('joboportunity.update');
         Route::delete('/joboportunity/{joboportunity}', [JobOportunityController::class, 'destroy'])->name('joboportunity.destroy');
+        Route::get('/joboportunity/{id}/showapplicants', [JobOportunityController::class, 'showApplicants'])->name('joboportunity.showapplicants');
 
 
         
@@ -102,7 +103,7 @@ Route::middleware('auth')->group(
         Route::put('/applications/{application}', [ApplicationController::class, 'update'])->name('applications.update');
         Route::delete('/applications/{application}', [ApplicationController::class, 'destroy'])->name('applications.destroy');
         
-
+        Route::post('/job', [JobController::class, 'store'])->name('job.store');
 
 
     }

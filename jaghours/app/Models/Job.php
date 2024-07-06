@@ -10,7 +10,7 @@ class Job extends Model
     use HasFactory;
 
     protected $fillable = [
-        'job_oportunity_id'
+        'job_oportunity_id','student_id'
     ];
 
     //Relacion Oportunidad de Trabajo
@@ -22,6 +22,16 @@ class Job extends Model
     public function getJobOpportunity()
     {
         return $this->job_opportunity;
+    }
+
+    public function student()
+    {
+        return $this->belongsTo(Student::class, 'student_id', 'id');
+    }
+
+    public function getStudent()
+    {
+        return $this->student->user->getUser();
     }
 
     //Relacion Registros de Horas
