@@ -46,6 +46,7 @@ class SemesterController extends Controller
             $semester->name = $request->name;
             $semester->start_date = $request->start_date;
             $semester->end_date = $request->end_date;
+            $semester->hours_required = $request->hours_required;
             $semester->save();
             return redirect()->route('semester.index')->with('success', 'Semestre Creado Exitosamente');
         } catch (\Exception $e){
@@ -92,6 +93,7 @@ class SemesterController extends Controller
             $semester->name = $request->name;
             $semester->start_date = $request->start_date;
             $semester->end_date = $request->end_date;
+            $semester->hours_required = $request->hours_required;
             $semester->save();
             return redirect()->route('semesters.index')->with('success', 'Semestre Actualizado Exitosamente');
         } catch (\Exception $e){

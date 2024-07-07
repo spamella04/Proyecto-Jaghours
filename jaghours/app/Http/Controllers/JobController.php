@@ -13,10 +13,13 @@ class JobController extends Controller
      */
     public function index()
     {
-        //
-        $jobs=Job::with('job_opportunity')->get();
+        $jobs = Job::with(['job_opportunity', 'job_opportunity.area_managers.areas', 'student.user', 'hourRecords'])
+                    ->get();
+    
         return view('hourrecord.index', compact('jobs'));
     }
+    
+    
 
     /**
      * Show the form for creating a new resource.

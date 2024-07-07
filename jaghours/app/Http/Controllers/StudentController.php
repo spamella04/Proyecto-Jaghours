@@ -7,7 +7,13 @@ use App\Models\Student;
 use App\Models\User;
 use App\Models\Degree;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
+use App\Models\Job;
+use App\Models\HourRecord;
+use App\Models\Semester;
+
 class StudentController extends Controller
+
 {
     /**
      * Display a listing of the resource.
@@ -81,6 +87,47 @@ class StudentController extends Controller
         } catch(\Exception $e){
             return redirect()->route('students.index');
         }
+    }
+
+
+    public function showJobs()
+    {
+  
+    
+     
+    $student = Auth::user()->student;
+
+    // Obtener todos los semestres
+    $semesters = Semester::all();
+
+    // Preparar un array para almacenar el progreso de cada semestre
+    $semesterProgress = [];
+
+    foreach ($semesters as $semester) {
+        // Obtener todos los registros de horas del estudiante para este semestre
+        $hourRecords = HourRecord::where('semester_id', $semester->id)
+            ->whereHas('job', function ($query) use ($student) {
+                $query->where('student_id', $student->id);
+            })
+            ->get();
+
+        // Calcular las horas totales trabajadas en este semestre
+        $totalHoursWorked = $hourRecords->sum('hours_worked');
+
+        // Calcular el porcentaje de progreso
+        $requiredHours = $semester->hours_required;
+        $percentage = $totalHoursWorked > 0 ? ($totalHoursWorked / $requiredHours) * 100 : 0;
+
+        // Almacenar el progreso del semestre
+        $semesterProgress[] = [
+            'semester' => $semester,
+            'totalHoursWorked' => $totalHoursWorked,
+            'requiredHours' => $requiredHours,
+            'percentage' => $percentage,
+        ];
+    }
+
+    return view('student.jobs', compact('semesterProgress'));
     }
 
     /**
