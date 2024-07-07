@@ -37,6 +37,6 @@ class Job extends Model
     //Relacion Registros de Horas
     public function hourRecords()
     {
-        return $this->hasMany(HourRecord::class);
+        return $this->hasMany(HourRecord::class , 'job_id', 'id');
     }
 }

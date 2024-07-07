@@ -38,6 +38,13 @@
                             @enderror
                         </div>
 
+                        <div class="mb-3">
+                            <label for="hours_required" class="form-label font-weight-bold">{{ __('Horas Requeridas') }}</label>
+                            <input id="hours_required" name="hours_required" type="number" class="form-control @error('hours_required') is-invalid @enderror" value="{{ old('hours_required', $semester->hours_required) }}" required>
+                            @error('hours_required')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+
                         <div class="text-center">
                             <button type="submit" class="btn btn-dark">{{ __('Editar Semestre') }}</button>
                         </div>

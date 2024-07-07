@@ -127,6 +127,10 @@
                                         href="{{ route('joboportunity.index') }}">Solicitudes</a>
                                 </li>
 
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('job.index') }}">Convalidar</a>
+                                </li>
+
 
                             @endif
 
@@ -139,6 +143,17 @@
                                     <a class="nav-link"
                                         href="{{ route('applications.index') }}">Postulaciones</a>
                                 </li>
+
+                                <li class="nav-item">
+                                    <a class="nav-link"
+                                        href="{{ route('student.jobs') }}">Historial</a>
+                                </li>
+
+                                <li class="nav-item">
+                                    <a class="nav-link"
+                                        href="{{ route('student.jobs') }}">Perfil</a>
+                                </li>
+
 
 
                             @endif

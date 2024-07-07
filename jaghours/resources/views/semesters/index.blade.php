@@ -25,6 +25,7 @@
                                 <td>{{ $semester->name }}</td>
                                 <td>{{ $semester->start_date }}</td>
                                 <td>{{ $semester->end_date }}</td>
+                                <td>{{ $semester->hours_required}}</td>
                                 <td class="d-flex">
                                     <a href="{{ route('semesters.edit', $semester->id) }}" class="btn btn-warning btn-sm mr-2">Editar</a>
                                     <form action="{{ route('semesters.destroy', $semester->id) }}" method="POST" class="d-inline">

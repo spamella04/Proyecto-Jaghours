@@ -39,6 +39,7 @@ Route::middleware('auth')->group(
         Route::get('/students/{student}/edit', [StudentController::class, 'edit'])->name('students.edit');
         Route::put('/students/{student}', [StudentController::class, 'update'])->name('students.update');
         Route::delete('/students/{student}', [StudentController::class, 'destroy'])->name('students.destroy');
+        Route::get('/student/jobs', [StudentController::class, 'showJobs'])->name('student.jobs');
 
         Route::get('/areas', [AreaController::class, 'index'])->name('areas.index');
         Route::get('/areas/create', [AreaController::class, 'create'])->name('areas.create');

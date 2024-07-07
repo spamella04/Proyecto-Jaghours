@@ -60,5 +60,16 @@ class DatabaseSeeder extends Seeder
 
 
 ]);
+
+\App\Models\Semester::factory()->create(
+  [
+      'name' => 'I Semestre 2024',
+      'start_date' => '2024-03-15',
+      'end_date' => '2024-07-12',
+      'hours_required' => '25',
+
+  ]);
+
+
     }
 }

@@ -1,4 +1,5 @@
 @extends('layouts.app')
+
 @section('content')
 
 <head>
@@ -9,12 +10,40 @@
             background-color: #219EBC;
             color: #fff;
             border-radius: 0.25rem;
-            /* Bordes redondeados */
         }
+
+        .job-card {
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+
+        .job-card-title {
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        .job-card-area {
+            color: gray;
+            font-size: 0.9em;
+        }
+
+        .job-card-details {
+            margin-top: 10px;
+            color: gray;
+            font-size: 0.9em;
+        }
+
         .job-card-hours {
             margin-top: 15px;
             text-align: right;
         }
+
         .job-card-hours a.btn {
             background-color: #219EBC;
             border: none;
@@ -25,55 +54,52 @@
             text-decoration: none;
             font-weight: bold;
         }
+
         .job-card-hours a.btn:hover {
             background-color: #17699E;
         }
-        
-
     </style>
 </head>
 <div class="container mt-4">
-    @if(Auth::user()->role == 'admin')
+    @if(Auth::user()->role == 'admin' || Auth::user()->role == 'areamanager')
         <h1 class="text-center">Listado de Trabajos</h1>
 
         @foreach($jobs as $job)
-            
-                <div class="job-card shadow-lg p-3 mb-5 bg-white rounded"
-                    style="word-wrap:break-word; overflow-wrap: break-word;">
-                    <div class="d-flex align-items-center">
-
-                        <div>
-                            <div class="job-card-title fw-bold fs-4">{{ $job->job_opportunity->title }}</div>
-                            <div class="job-card-area mt-1">
-                                <span class="fw-bold"
-                                    style="color:gray;">{{ $job->job_opportunity->area_managers->areas->name }}</span>
-                            </div>
-                           
+            <div class="job-card">
+                <div class="d-flex align-items-center">
+                    <div>
+                        <div class="job-card-title">{{ $job->job_opportunity->title }}</div>
+                        <div class="job-card-area">
+                            <span>{{ $job->job_opportunity->area_managers->areas->name }}</span>
                         </div>
                     </div>
-                    <div class="job-card-details mt-3">
-                        <span class="fw-bold" style="font:10px; color:#219EBC; font-weight:500;">Fecha:</span>
-                        <span class="fw-light" style="color:gray;">{{ $job->job_opportunity->start_date }}</span>
-                        <br>
-                        <span class="fw-bold" style="font:10px; color:#219EBC; font-weight:500;">Total Horas
-                            Convalidables:</span>
-                        <span class="fw-light" style="color:gray;"> {{ $job->job_opportunity->hours_validated }} horas</span>
-                        <br>
-                        <span class="fw-bold" style="font:10px; color:#219EBC; font-weight:500;">Estudiante:</span>
-                        <span class="fw-light" style="color:gray;"> {{ $job->student->user->name }} {{ $job->student->user->lastname }}</span>
-                        <br>
-                        <span class="fw-bold" style="font:10px; color:#219EBC; font-weight:500;">Cif:</span>
-                        <span class="fw-light" style="color:gray;">{{ $job->student->user->cif}}</span>
-                        
-                    </div>
-                    <div class="job-card-hours mt-3">
-                    <a href="{{ route('hourrecords.create', $job->id) }}" class="btn btn-info btn-sm btn-action ">Convalidar Horas</a>
-                    </div>
                 </div>
-            
+                <div class="job-card-details mt-3">
+                    <span class="fw-bold" style="color:#219EBC;">Fecha:</span>
+                    <span>{{ $job->job_opportunity->start_date }}</span>
+                    <br>
+                    <span class="fw-bold" style="color:#219EBC;">Total Horas Convalidables:</span>
+                    <span>{{ $job->job_opportunity->hours_validated }} horas</span>
+                    <br>
+                    <span class="fw-bold" style="color:#219EBC;">Estudiante:</span>
+                    <span>{{ $job->student->user->name }} {{ $job->student->user->lastname }}</span>
+                    <br>
+                    <span class="fw-bold" style="color:#219EBC;">CIF:</span>
+                    <span>{{ $job->student->user->cif }}</span>
+                </div>
+                <div class="job-card-hours mt-3">
+                    @php
+                        $total_hours = $job->hourRecords->sum('hours_worked');
+                    @endphp
+
+                    @if($total_hours >= $job->job_opportunity->hours_validated)
+                        <span class="text-success fw-bold">Trabajo Convalidado</span>
+                    @else
+                        <a href="{{ route('hourrecords.create', $job->id) }}" class="btn">Convalidar Horas</a>
+                    @endif
+                </div>
+            </div>
         @endforeach
     @endif
-
-
 </div>
 @endsection

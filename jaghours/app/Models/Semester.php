@@ -9,7 +9,7 @@ class Semester extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name','start_date','end_date'];
+    protected $fillable = ['name','start_date','end_date','hours_required'];
 
     //Relacion Registros de Horas
     public function hourRecords()
