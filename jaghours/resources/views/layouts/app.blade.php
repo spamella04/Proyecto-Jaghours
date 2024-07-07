@@ -151,7 +151,7 @@
 
                                 <li class="nav-item">
                                     <a class="nav-link"
-                                        href="{{ route('student.jobs') }}">Perfil</a>
+                                        href="{{ route('student.profile') }}">Perfil</a>
                                 </li>
 
 
