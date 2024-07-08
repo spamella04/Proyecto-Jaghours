@@ -193,4 +193,35 @@ class StudentController extends Controller
             return redirect()->route('students.index');
         }
     }
+
+    public function profile()
+    {
+        $student = Auth::user()->student()->with('user', 'degree')->first();
+    
+        return view('student.profile', compact('student'));
+    }
+
+    public function updateProfile(Request $request)
+    {
+        $request->validate([
+            'phone' => 'required|string|max:20',
+            'skills' => 'required|string|max:255',
+        ]);
+    
+        $user = Auth::user();
+        $student = $user->student;
+    
+        // Update phone in the users table
+        $user->phone = $request->phone;
+        $user->save();
+    
+        // Update skills in the students table
+        $student->skills = $request->skills;
+        $student->save();
+    
+        return redirect()->route('student.profile')->with('success', 'Profile updated successfully!');
+    }
+    
+
+    
 }

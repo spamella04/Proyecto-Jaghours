@@ -40,6 +40,11 @@ Route::middleware('auth')->group(
         Route::put('/students/{student}', [StudentController::class, 'update'])->name('students.update');
         Route::delete('/students/{student}', [StudentController::class, 'destroy'])->name('students.destroy');
         Route::get('/student/jobs', [StudentController::class, 'showJobs'])->name('student.jobs');
+        Route::get('/student/profile', [StudentController::class, 'profile'])->name('student.profile');
+        Route::put('/student/profile', [StudentController::class, 'updateProfile'])->name('student.updateProfile');
+
+
+        
 
         Route::get('/areas', [AreaController::class, 'index'])->name('areas.index');
         Route::get('/areas/create', [AreaController::class, 'create'])->name('areas.create');
@@ -111,6 +116,11 @@ Route::middleware('auth')->group(
         //Hour Records
         Route::get('/hourrecord/create/{job_id}', [HourRecordController::class, 'create'])->name('hourrecords.create');
         Route::post('/hourrecord/store', [HourRecordController::class, 'store'])->name('hourrecords.store');
+
+      
+        //Profile
+        
+        
 
     }
 );
