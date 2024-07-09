@@ -28,7 +28,6 @@
             height: 50px;
             border-radius: 50%;
             margin-right: 15px;
-            background-color: #ddd;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -57,25 +56,18 @@
             margin-top: 15px;
             text-align: right;
         }
-        .job-card-apply button {
-            background-color: #219EBC;
-            border: none;
-            padding: 10px 20px;
-            color: #fff;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        .job-card-apply button:hover {
-            background-color: #1b82a6;
+        .job-card-apply p {
+            color: #219EBC;
+            font-weight: bold;
         }
     </style>
 </head>
 
 <div class="container mt-4">
-    <h1 class="text-center">Mis Aplicaciones</h1>
+    <h1 class="">Mis Postulaciones</h1>
 
     @if($applications->isEmpty())
-        <p class="text-center">No tienes aplicaciones registradas.</p>
+        <p class="text-center">No tienes Postulaciones registradas.</p>
     @else
         <div class="row">
             @foreach($applications as $application)
@@ -83,7 +75,7 @@
                     <div class="job-card shadow-lg p-3 mb-5 bg-white rounded">
                         <div class="job-card-header">
                             <div class="job-card-avatar">
-                                {{ substr($application->job_opportunities->area_managers->name, 0, 1) }}
+                                {{ substr($application->job_opportunities->area_managers->areas->name, 0, 1) }}
                             </div>
                             <div>
                                 <div class="job-card-title">{{ $application->job_opportunities->title }}</div>
@@ -100,7 +92,7 @@
                             <div><span class="fw-bold" style="color:#219EBC;">Fecha de Inicio:</span> {{ $application->job_opportunities->start_date }}</div>
                         </div>
                         <div class="job-card-apply mt-3">
-                            <p><strong>Estado:</strong> {{ $application->status }}</p>
+                            <p>{{ $application->status }}</p>
                         </div>
                     </div>
                 </div>

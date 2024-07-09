@@ -33,14 +33,14 @@
                 </div>
 
                 <div class="d-grid">
-                    <button type="submit" class="btn btn-primary">
+                    <button type="submit" class="btn btn-primary"  style="background-color: #219EBC; border-color: #219EBC;">
                         {{ __('Iniciar sesión') }}
                     </button>
                 </div>
 
                 @if (Route::has('password.request'))
                     <div class="text-center mt-3">
-                        <a href="{{ route('password.request') }}" class="text-decoration-none">{{ __('Olvidaste tu contraseña?') }}</a>
+                        <a href="{{ route('password.request') }}" class="text-decoration-none" style="color: #219EBC; ">{{ __('Olvidaste tu contraseña?') }}</a>
                     </div>
                 @endif
             </form>

@@ -62,7 +62,7 @@
 </head>
 <div class="container mt-4">
     @if(Auth::user()->role == 'admin' || Auth::user()->role == 'areamanager')
-        <h1 class="text-center">Listado de Trabajos</h1>
+        <h1 class="">Listado de Trabajos</h1>
 
         @foreach($jobs as $job)
             <div class="job-card">

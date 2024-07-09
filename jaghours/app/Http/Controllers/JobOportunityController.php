@@ -45,12 +45,9 @@ class JobOportunityController extends Controller
       
         if (Auth::user()->role == 'student') {
             $student = Auth::user()->student;
-    
             if ($student) {
                 // Obtener los IDs de las oportunidades a las cuales el estudiante ha aplicado
                 $appliedOpportunityIds = $student->applications()->pluck('job_opportunity_id')->toArray();
-                
-    
                 // Obtener las oportunidades publicadas que el estudiante no ha aplicado aún
                 $jobOportunities = JobOportunity::where('status', 'Publicado')
                     ->whereNotIn('id', $appliedOpportunityIds)

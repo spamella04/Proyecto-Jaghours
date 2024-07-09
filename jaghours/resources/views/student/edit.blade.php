@@ -86,7 +86,7 @@
                         </div>
 
                         <div class="text-center">
-                            <button type="submit" class="btn btn-dark">{{ __('Guardar') }}</button>
+                            <button type="submit" class="btn btn-primary" style="background-color: #219EBC; border-color: #219EBC;">{{ __('Guardar') }}</button>
                         </div>
                     </form>
                 </div>
@@ -96,4 +96,3 @@
 </div>
 
 @endsection
-

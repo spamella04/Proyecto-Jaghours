@@ -44,15 +44,20 @@
                             @error('hours_required')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
+                        </div>
 
                         <div class="text-center">
-                            <button type="submit" class="btn btn-dark">{{ __('Editar Semestre') }}</button>
+                            <button type="submit" class="btn btn-dark" style="background-color: #219EBC; border-color: #219EBC;">{{ __('Editar Semestre') }}</button>
                         </div>
                     </form>
+                
                 </div>
             </div>
+
         </div>
     </div>
 </div>
+
+
 
 @endsection

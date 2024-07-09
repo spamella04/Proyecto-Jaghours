@@ -130,7 +130,10 @@
 @enderror
                         </div>
                     -->
-                        <button type="submit" class="btn btn-primary">Registrar Horas</button>
+                        <div class = "text-center">
+                        <button type="submit" class="btn btn-primary"  style="background-color: #219EBC; border-color: #219EBC;">Registrar Horas</button>
+                        </div>
+                       
                     </form>
                 </div>
             </div>
