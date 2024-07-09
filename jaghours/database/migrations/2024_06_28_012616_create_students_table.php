@@ -14,10 +14,10 @@ return new class extends Migration
         Schema::create('students', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('student_id');
-            $table->unsignedBigInteger('degree_id');
+            $table->unsignedBigInteger('degree_id')->nullable();
             $table->string('skills');
-            $table->foreign('student_id')->references('id')->on('users');
-            $table->foreign('degree_id')->references('id')->on('degrees');
+            $table->foreign('student_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('degree_id')->references('id')->on('degrees')->onDelete('set null');
             $table->timestamps();
         });
     }

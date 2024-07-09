@@ -45,8 +45,8 @@
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
 
-                        <div class="text-center">
-                            <button type="submit" class="btn btn-dark">{{ __('Crear Semestre') }}</button>
+                        <div class="mb-3; text-center">
+                            <button type="submit" class="btn btn-dark" style="background-color: #219EBC; border-color: #219EBC;">{{ __('Crear Semestre') }}</button>
                         </div>
                     </form>
 

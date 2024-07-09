@@ -31,7 +31,7 @@
                         </div>
 
                         <div class="text-center">
-                            <button type="submit" class="btn btn-dark">{{ __('Editar Carrera') }}</button>
+                            <button type="submit" class="btn btn-dark" style="background-color: #219EBC; border-color: #219EBC;">{{ __('Editar Carrera') }}</button>
                         </div>
                     </form>
                 </div>

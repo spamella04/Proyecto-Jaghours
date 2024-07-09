@@ -15,15 +15,22 @@
         .job-card {
             margin-bottom: 20px;
             padding: 20px;
-            border: 1px solid #ddd;
+            border: none;
             border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            background-color: #fff;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+            background-color: #f9f9f9;
+            transition: transform 0.3s ease;
+        }
+
+        .job-card:hover {
+            transform: translateY(-5px);
         }
 
         .job-card-title {
-            font-size: 1.5em;
+            font-size: 1.75em;
             margin-bottom: 10px;
+            color: #333;
+            font-weight: bold;
         }
 
         .job-card-area,
@@ -31,11 +38,14 @@
         .job-card-details span,
         .job-card-status span {
             font-size: 0.9em;
+            color: #555;
         }
 
         .job-card-description {
             margin-top: 15px;
             margin-bottom: 15px;
+            color: #444;
+            line-height: 1.5;
         }
 
         .job-card-applicants {
@@ -43,13 +53,18 @@
         }
 
         .applicant-card {
-            padding: 10px;
+            padding: 15px;
             border: 1px solid #ddd;
-            border-radius: 5px;
+            border-radius: 10px;
             margin-bottom: 10px;
-            background-color: #f9f9f9;
+            background-color: #fff;
             cursor: pointer;
             position: relative;
+            transition: background-color 0.3s ease;
+        }
+
+        .applicant-card:hover {
+            background-color: #e9f5fb;
         }
 
         .applicant-card-header {
@@ -66,17 +81,24 @@
 
         .applicant-card h5 {
             margin: 0;
-            font-size: 1em;
+            font-size: 1.1em;
+            font-weight: bold;
+            color: #333;
         }
 
         .applicant-card button {
             background-color: #219EBC;
             border: none;
-            padding: 5px 10px;
+            padding: 8px 12px;
             color: #fff;
             border-radius: 5px;
             cursor: pointer;
             margin-top: 10px;
+            transition: background-color 0.3s ease;
+        }
+
+        .applicant-card button:hover {
+            background-color: #17699E;
         }
 
         .applicant-details {
@@ -84,6 +106,8 @@
             padding: 10px;
             border-top: 1px solid #ddd;
             margin-top: 10px;
+            background-color: #f1f1f1;
+            border-radius: 0 0 10px 10px;
         }
 
         .expanded .applicant-card-header {
@@ -102,6 +126,7 @@
             font-weight: bold;
             margin-top: 15px;
             text-align: right;
+            transition: background-color 0.3s ease;
         }
 
         .job-card-applicants a.btn:hover {
@@ -125,11 +150,11 @@
 
 <div class="container mt-4">
     @if(Auth::user()->role == 'admin')
-        <h1 class="text-center">Aplicantes</h1>
+        <h1 class="" style="color: #333; font-weight: bold;">Aplicantes</h1>
         <div class="job-card shadow-lg p-3 mb-5 bg-white rounded">
             <div class="d-flex align-items-center">
                 <div>
-                    <div class="job-card-title fw-bold">{{ $joboportunity->title }}</div>
+                    <div class="job-card-title">{{ $joboportunity->title }}</div>
                     <div class="job-card-area mt-1">
                         <span class="fw-bold" style="color:gray;">{{ $joboportunity->area_managers->areas->name }}</span>
                     </div>
@@ -170,6 +195,9 @@
                             <div class="applicant-details">
                                 <div class="details">
                                     <p style="font-weight: bold;">Habilidades:</p>
+                                   
+                                </div>
+                                <div class="details">
                                     <p style="color:gray;">{{ $application->student->skills }}</p>
                                 </div>
                                 <div class="details">
@@ -177,7 +205,7 @@
                                     <p style="color:gray;">{{ $application->student->user->email }}</p>
                                 </div>
                                 <div class="details">
-                                    <p style="font-weight: bold;">Telefono:</p>
+                                    <p style="font-weight: bold;">Teléfono:</p>
                                     <p style="color:gray;">{{ $application->student->user->phone }}</p>
                                 </div>
                                 <div class="details">
@@ -189,7 +217,7 @@
                                 <span class="fw-bold text-success">Aceptado</span>
                             @endif
                             @if ($application->status == 'No Aceptado')
-                                <span class="fw-bold text-success">No Aceptado</span>
+                                <span class="fw-bold text-danger">No Aceptado</span>
                             @endif
                             @if($application->status == 'Pendiente')
                                 @if ($acceptedCount >= $joboportunity->number_vacancies)

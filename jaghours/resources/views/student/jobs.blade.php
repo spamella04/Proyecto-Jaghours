@@ -13,7 +13,7 @@
                     @php
                         $percentage = $progress['percentage'] > 100 ? 100 : $progress['percentage'];
                     @endphp
-                    <div class="progress-bar bg-info" role="progressbar" style="width: {{ $percentage }}%;" aria-valuenow="{{ $percentage }}" aria-valuemin="0" aria-valuemax="100">{{ $progress['totalHoursWorked'] }} horas de {{ $progress['requiredHours'] }}</div>
+                    <div class="progress-bar" role="progressbar" style="width: {{ $percentage }}%; background-color: #219EBC;" aria-valuenow="{{ $percentage }}" aria-valuemin="0" aria-valuemax="100">{{ $progress['totalHoursWorked'] }} horas de {{ $progress['requiredHours'] }}</div>
                 </div>
                 <p class="mt-2"><strong>Total acumulado:</strong> {{ $progress['totalHoursWorked'] }} horas</p>
                 <p><strong>Horas requeridas en el semestre:</strong> {{ $progress['requiredHours'] }} horas</p>
@@ -30,14 +30,52 @@
                             </tr>
                         </thead>
                         <tbody>
+                            @php
+                                $totalAcumuladoPorTrabajo = [];
+                                $currentJobTitle = null;
+                                $rowCount = 0;
+                            @endphp
                             @foreach($progress['semester']->hourRecords as $hourRecord)
+                                @php
+                                    $tituloTrabajo = $hourRecord->job->job_opportunity->title;
+                                    $area = $hourRecord->areaManager->areas->name;
+                                    $fechaInicio = $hourRecord->work_date;
+                                    $horasConvalidadas = $hourRecord->hours_worked;
+                                    $rowCount++;
+
+                                    if ($tituloTrabajo !== $currentJobTitle) {
+                                        // Mostrar la fila de total acumulado si hay más de un registro para el trabajo anterior
+                                        if ($currentJobTitle !== null && $rowCount > 1) {
+                                            echo '<tr>';
+                                            echo '<td colspan="3" class="text-start"><strong>Total acumulado por ' . $currentJobTitle . ':</strong></td>';
+                                            echo '<td>' . $totalAcumuladoPorTrabajo[$currentJobTitle] . '</td>';
+                                            echo '</tr>';
+                                        }
+                                        
+                                        // Reiniciar acumulador para el nuevo trabajo
+                                        $currentJobTitle = $tituloTrabajo;
+                                        $totalAcumuladoPorTrabajo[$currentJobTitle] = 0;
+                                        $rowCount = 0;
+                                    }
+
+                                    // Sumar horas convalidadas al total del trabajo actual
+                                    $totalAcumuladoPorTrabajo[$currentJobTitle] += $horasConvalidadas;
+                                @endphp
                                 <tr>
-                                    <td>{{ $hourRecord->job->job_opportunity->title }}</td>
-                                    <td>{{ $hourRecord->areaManager->areas->name }}</td>
-                                    <td>{{ $hourRecord->work_date }}</td>
-                                    <td>{{ $hourRecord->hours_worked }}</td>
+                                    <td>{{ $tituloTrabajo }}</td>
+                                    <td>{{ $area }}</td>
+                                    <td>{{ $fechaInicio }}</td>
+                                    <td>{{ $horasConvalidadas }}</td>
                                 </tr>
                             @endforeach
+
+                            @if ($currentJobTitle !== null && $rowCount > 1)
+                                {{-- Mostrar el total acumulado para el último trabajo si tiene más de un registro --}}
+                                <tr>
+                                    <td colspan="3" class="text-start"><strong>Total acumulado por {{ $currentJobTitle }}:</strong></td>
+                                    <td>{{ $totalAcumuladoPorTrabajo[$currentJobTitle] }}</td>
+                                </tr>
+                            @endif
                         </tbody>
                     </table>
                 </div>

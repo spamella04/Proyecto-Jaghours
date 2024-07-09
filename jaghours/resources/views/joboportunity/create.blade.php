@@ -70,8 +70,10 @@
                             </div>
                             
                         </div>
-
-                        <button type="submit" class="btn btn-primary">Crear Solicitud</button>
+                        <div class = "text-center">
+                        <button type="submit" class="btn btn-primary" style="background-color: #219EBC; border-color: #219EBC;">Crear Solicitud</button>
+                        </div>
+                       
                     </form>
                 </div>
             </div>

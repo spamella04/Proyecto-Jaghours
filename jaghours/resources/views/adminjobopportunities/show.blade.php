@@ -1,6 +1,25 @@
 @extends('layouts.app')
 
 @section('content')
+
+<style>
+    .btn-action {
+        margin-right: 0.5rem;
+    }
+
+
+    .btn-info {
+        background-color: #17A2B8;
+        border-color: #17A2B8;
+        color: #fff;
+    }
+
+    .btn-warning {
+        background-color: #FFC107;
+        border-color: #FFC107;
+        color: #fff;
+    }
+</style>
 <div class="container py-5">
     <div class="row justify-content-center">
         <div class="col-lg-8">
@@ -80,10 +99,10 @@
                         <div class="form-group mt-5">
                             <div class="row">
                                 <div class="col">
-                                    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                                    <button type="submit" class="btn   btn-warning btn-action">Guardar Cambios</button>
                                 </div>
                                 <div class="col">
-                                    <a href="{{ route('adminjobopportunities.publish', $jobOpportunity->id) }}" class="btn btn-primary">Publicar</a>
+                                    <a href="{{ route('adminjobopportunities.publish', $jobOpportunity->id) }}" class="btn btn-info btn-action">Publicar</a>
                                 </div>
                                 <div class="col">
                                     <a href="{{ route('adminjobopportunities.reject', $jobOpportunity->id) }}" class="btn btn-danger">Rechazar</a>

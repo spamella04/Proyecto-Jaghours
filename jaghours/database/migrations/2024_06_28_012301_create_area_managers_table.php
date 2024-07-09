@@ -12,11 +12,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('area_managers', function (Blueprint $table) {
+            
             $table->id();
             $table->unsignedBigInteger('area_manager_id');
-            $table->unsignedBigInteger('area_id');
-            $table->foreign('area_manager_id')->references('id')->on('users');
-            $table->foreign('area_id')->references('id')->on('areas');
+            $table->unsignedBigInteger('area_id')->nullable();
+            $table->foreign('area_manager_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('area_id')->references('id')->on('areas')->onDelete('set null');
             $table->timestamps();
         });
     }

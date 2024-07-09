@@ -29,12 +29,12 @@
 
                         <div class="form-group">
                             <label for="skills"><strong>Habilidades:</strong></label>
-                            <input type="text" id="skills" name="skills" value="{{ $student->skills }}" class="form-control">
+                            <textarea id="skills" name="skills" class="form-control">{{ $student->skills }}</textarea>
                         </div>
 
                         <div><strong>Carrera:</strong> {{ $student->degree->name }}</div>
 
-                        <button type="submit" class="btn btn-primary mt-4">Actualizar</button>
+                        <button type="submit" class="btn btn-primary mt-4" style="background-color: #219EBC; border-color: #219EBC;">Actualizar</button>
                     </form>
                 </div>
             </div>
@@ -61,7 +61,7 @@
         width: 50px;
         height: 50px;
         border-radius: 50%;
-        background-color: #007bff;
+        background-color:#219EBC;
         color: #fff;
         font-size: 24px;
         display: flex;

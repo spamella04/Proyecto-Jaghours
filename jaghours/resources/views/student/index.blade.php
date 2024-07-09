@@ -45,16 +45,43 @@
     .btn-action {
         margin-right: 0.5rem;
     }
+
+    .btn-create {
+        background-color: #219EBC;
+        border-color: #219EBC;
+        color: #fff;
+    }
+
+    .btn-info {
+        background-color: #17A2B8;
+        border-color: #17A2B8;
+        color: #fff;
+    }
+
+    .btn-warning {
+        background-color: #FFC107;
+        border-color: #FFC107;
+        color: #fff;
+    }
+
+    .btn-danger {
+        background-color: #DC3545;
+        border-color: #DC3545;
+        color: #fff;
+    }
+
+    .btn-action:hover {
+        opacity: 0.8;
+    }
 </style>
 
 <div class="container py-5">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2 class="font-weight-bold">Listado de Estudiantes</h2>
-        <a href="{{ route('students.create') }}" class="btn btn-primary btn-lg">Crear nuevo registro de estudiante</a>
+        <a href="{{ route('students.create') }}" class="btn btn-primary btn-lg btn-create">Crear nuevo registro de estudiante</a>
     </div>
 
     <div class="table-container">
-      
         <div class="table-responsive">
             <table class="table table-striped">
                 <thead>
@@ -97,4 +124,3 @@
 </div>
 
 @endsection
-

@@ -30,7 +30,7 @@
                         </div>
 
                         <div class="text-center">
-                            <button type="submit" class="btn btn-dark">{{ __('Crear Carrera') }}</button>
+                            <button type="submit" class="btn btn-dark" style="background-color: #219EBC; border-color: #219EBC;">{{ __('Crear Carrera') }}</button>
                         </div>
                     </form>
                 </div>

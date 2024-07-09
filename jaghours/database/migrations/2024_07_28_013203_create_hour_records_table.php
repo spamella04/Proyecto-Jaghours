@@ -12,15 +12,16 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('hour_records', function (Blueprint $table) {
+            
             $table->id();
             $table->date('work_date');
             $table->unsignedBigInteger('hours_worked');
-            $table->unsignedBigInteger('semester_id');
-            $table->unsignedBigInteger('job_id');
-            $table->unsignedBigInteger('area_manager_id');
-            $table->foreign('semester_id')->references('id')->on('semesters');
-            $table->foreign('job_id')->references('id')->on('jobs');
-            $table->foreign('area_manager_id')->references('id')->on('area_managers');
+            $table->unsignedBigInteger('semester_id')->nullable();
+            $table->unsignedBigInteger('job_id')->nullable();
+            $table->unsignedBigInteger('area_manager_id')->nullable();
+            $table->foreign('semester_id')->references('id')->on('semesters')->onDelete('set null');
+            $table->foreign('job_id')->references('id')->on('jobs')->onDelete('set null');
+            $table->foreign('area_manager_id')->references('id')->on('area_managers')->onDelete('set null');
             $table->timestamps();
 
         });

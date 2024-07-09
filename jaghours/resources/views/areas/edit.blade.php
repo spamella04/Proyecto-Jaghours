@@ -39,7 +39,7 @@
                         </div>
 
                         <div class="text-center">
-                            <button type="submit" class="btn btn-dark">{{ __('Editar Área') }}</button>
+                            <button type="submit" class="btn btn-dark" style="background-color: #219EBC; border-color: #219EBC;">{{ __('Editar Área') }}</button>
                         </div>
                     </form>
                 </div>

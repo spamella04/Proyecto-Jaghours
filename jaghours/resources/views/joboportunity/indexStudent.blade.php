@@ -1,82 +1,100 @@
 @extends('layouts.app')
-@section('content')
 
+@section('content')
 <head>
     <style>
-        .custom-badge {
-            display: inline-block;
-            padding: 0.25em 0.5em;
-            background-color: #219EBC;
-            color: #fff; 
-            border-radius: 0.25rem; /* Bordes redondeados */
-        }
         .job-card {
-            border: 1px solid #e0e0e0;
             border-radius: 10px;
-            padding: 15px;
+            border: 1px solid #ddd;
             margin-bottom: 20px;
+            padding: 20px;
             background-color: #fff;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: box-shadow 0.3s ease;
         }
-        .job-card-header {
-            display: flex;
-            align-items: center;
+
+        .job-card:hover {
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
         }
+
         .job-card-avatar {
+            display: inline-block;
             width: 50px;
             height: 50px;
             border-radius: 50%;
-            margin-right: 15px;
-            background-color: #ddd;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
+            background-color: #219EBC;
             color: #fff;
-            background-color: #219EBC; /* Puedes personalizar este color */
-        }
-        .job-card-title {
+            text-align: center;
+            line-height: 50px;
+            font-size: 24px;
+            margin-right: 15px;
             font-weight: bold;
-            font-size: 1.2em;
         }
-        .job-card-area {
-            color: gray;
-            font-size: 0.9em;
-        }
-        .job-card-description {
-            margin-top: 10px;
+
+        .job-card-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 5px;
             color: #333;
         }
-        .job-card-details {
-            margin-top: 10px;
-            color: gray;
-            font-size: 0.9em;
+
+        .job-card-area {
+            color: #666;
+            font-size: 1rem;
+            margin-bottom: 10px;
         }
-        .job-card-apply {
+
+        .job-card-description {
             margin-top: 15px;
-            text-align: right;
+            color: #555;
+            font-size: 1rem;
+            line-height: 1.5;
         }
-        .job-card-apply button {
+
+        .job-card-details {
+            margin-top: 15px;
+            font-size: 0.9rem;
+            color: #777;
+        }
+
+        .job-card-details span {
+            font-weight: bold;
+            color: #219EBC;
+        }
+
+        .btn-action {
             background-color: #219EBC;
             border: none;
             padding: 10px 20px;
             color: #fff;
             border-radius: 5px;
             cursor: pointer;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.3s ease, transform 0.3s ease;
         }
-        .job-card-apply button:hover {
+
+        .btn-action:hover {
             background-color: #1b82a6;
+            transform: translateY(-2px);
+        }
+
+        .container h1 {
+            margin-bottom: 30px;
+            font-size: 2rem;
+            color: #333;
+            font-weight: bold;
         }
     </style>
 </head>
 <div class="container mt-4">
-    <h1 class="text-center">Publicaciones</h1>
+    <h1 class="">Publicaciones</h1>
 
     @foreach($jobOportunities as $joboportunity)
     <div class="job-card shadow-lg p-3 mb-5 bg-white rounded">
-        <div class="job-card-header">
+        <div class="d-flex align-items-center">
             <div class="job-card-avatar">
-                {{ substr($joboportunity->area_managers->name, 0, 1) }}
+                {{ strtoupper(substr($joboportunity->area_managers->areas->name, 0, 1)) }}
             </div>
             <div>
                 <div class="job-card-title">{{ $joboportunity->title }}</div>
@@ -89,15 +107,17 @@
             {{ $joboportunity->description }}
         </div>
         <div class="job-card-details mt-3">
-            <div><span class="fw-bold" style="color:#219EBC;">Total Horas Convalidadas:</span> {{ $joboportunity->hours_validated }} horas</div>
-            <div><span class="fw-bold" style="color:#219EBC;">Fecha de Inicio:</span> {{ $joboportunity->start_date }}</div>
+            <div><span>Total Horas Convalidadas:</span> {{ $joboportunity->hours_validated }} horas</div>
+            <div><span>Fecha de Inicio:</span> {{ $joboportunity->start_date }}</div>
         </div>
-        <div class="job-card-apply mt-3">
-        <form action="{{ route('applications.store') }}" method="POST">
-                @csrf
-                <input type="hidden" name="job_opportunity_id" value="{{ $joboportunity->id }}">
-                <button type="submit" class="btn btn-primary">Aplicar</button>
-            </form>
+        <div class="d-flex justify-content-end align-items-center mt-3">
+            <div class="job-card-applicants">
+                <form action="{{ route('applications.store') }}" method="POST">
+                    @csrf
+                    <input type="hidden" name="job_opportunity_id" value="{{ $joboportunity->id }}">
+                    <button type="submit" class="btn btn-action">Aplicar</button>
+                </form>
+            </div>
         </div>
     </div>
     @endforeach
