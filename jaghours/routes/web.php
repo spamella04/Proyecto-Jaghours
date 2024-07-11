@@ -34,14 +34,14 @@ Route::middleware('auth')->group(
     function () {
         Route::get('/students', [StudentController::class, 'index'])->name('students.index');
         Route::get('/students/create', [StudentController::class, 'create'])->name('students.create');
-        Route::post('/students', [StudentController::class, 'store'])->name('students.store');
+        Route::post('/students/save', [StudentController::class, 'store'])->name('students.store');
         Route::get('/students/{student}', [StudentController::class, 'show'])->name('students.show');
         Route::get('/students/{student}/edit', [StudentController::class, 'edit'])->name('students.edit');
         Route::put('/students/{student}', [StudentController::class, 'update'])->name('students.update');
         Route::delete('/students/{student}', [StudentController::class, 'destroy'])->name('students.destroy');
         Route::get('/student/jobs', [StudentController::class, 'showJobs'])->name('student.jobs');
         Route::get('/student/profile', [StudentController::class, 'profile'])->name('student.profile');
-        Route::put('/student/profile', [StudentController::class, 'updateProfile'])->name('student.updateProfile');
+        Route::put('/student/profile/update', [StudentController::class, 'updateProfile'])->name('student.updateProfile');
 
 
         
@@ -63,7 +63,7 @@ Route::middleware('auth')->group(
         Route::delete('/areamanagers/{areamanager}', [AreaManagerController::class, 'destroy'])->name('areamanagers.destroy');
 
         Route::get('/joboportunity/manager', [JobOportunityController::class, 'index'])->name('joboportunity.index');
-        Route::get('/joboportunity/student', [JobOportunityController::class, 'indexStudent'])->name('joboportunity.indexStudent');
+        Route::get('/joboportunity/showstudent', [JobOportunityController::class, 'indexStudent'])->name('joboportunity.indexStudent');
         Route::get('/joboportunity/areamanager', [JobOportunityController::class, 'indexAreaManager'])->name('joboportunity.indexAreaManager');
         Route::get('/joboportunity/create', [JobOportunityController::class, 'create'])->name('joboportunity.create');
         Route::post('/joboportunity', [JobOportunityController::class, 'store'])->name('joboportunity.store');
@@ -83,7 +83,7 @@ Route::middleware('auth')->group(
         Route::put('/degrees/{degree}', [DegreeController::class, 'update'])->name('degrees.update');
         Route::delete('/degrees/{degree}', [DegreeController::class, 'destroy'])->name('degrees.destroy');
 
-        Route::get('/semesters', [SemesterController::class, 'index'])->name('semesters.index');
+        Route::get('/semesters/show', [SemesterController::class, 'index'])->name('semesters.index');
         Route::get('/semesters/create', [SemesterController::class, 'create'])->name('semesters.create');
         Route::post('/semesters', [SemesterController::class, 'store'])->name('semesters.store');
         Route::get('/semesters/{semester}', [SemesterController::class, 'show'])->name('semesters.show');
@@ -92,7 +92,7 @@ Route::middleware('auth')->group(
         Route::delete('/semesters/{semester}', [SemesterController::class, 'destroy'])->name('semesters.destroy');
 
         //JobOpportunity - Admin
-        Route::get('/adminjobopportunities', [AdminJobOpportunityController::class, 'index'])->name('adminjobopportunities.index');
+        Route::get('/adminjobopportunities/show', [AdminJobOpportunityController::class, 'index'])->name('adminjobopportunities.index');
         Route::get('/adminjobopportunities/create', [AdminJobOpportunityController::class, 'create'])->name('adminjobopportunities.create');
         Route::post('/adminjobopportunities', [AdminJobOpportunityController::class, 'store'])->name('adminjobopportunities.store');
         Route::get('/adminjobopportunities/{adminjobopportunity}', [AdminJobOpportunityController::class, 'show'])->name('adminjobopportunities.show');
@@ -103,20 +103,20 @@ Route::middleware('auth')->group(
         Route::get('/adminjobopportunities/{adminjobopportunity}/reject', [AdminJobOpportunityController::class, 'reject'])->name('adminjobopportunities.reject');
 
         //Applications
-        Route::get('/applications', [ApplicationController::class, 'index'])->name('applications.index');
+        Route::get('/applications/showstudent', [ApplicationController::class, 'index'])->name('applications.index');
         Route::get('/applications/create', [ApplicationController::class, 'create'])->name('applications.create');
-        Route::post('/applications', [ApplicationController::class, 'store'])->name('applications.store');
+        Route::post('/applications/save', [ApplicationController::class, 'store'])->name('applications.store');
         Route::get('/applications/{application}', [ApplicationController::class, 'show'])->name('applications.show');
         Route::get('/applications/{application}/edit', [ApplicationController::class, 'edit'])->name('applications.edit');
         Route::put('/applications/{application}', [ApplicationController::class, 'update'])->name('applications.update');
         Route::delete('/applications/{application}', [ApplicationController::class, 'destroy'])->name('applications.destroy');
         //Jobs
-        Route::get('/job', [JobController::class, 'index'])->name('job.index');
-        Route::post('/job', [JobController::class, 'store'])->name('job.store');
+        Route::get('/job/show', [JobController::class, 'index'])->name('job.index');
+        Route::post('/job/save', [JobController::class, 'store'])->name('job.store');
         
         //Hour Records
-        Route::get('/hourrecord/create/{job_id}', [HourRecordController::class, 'create'])->name('hourrecords.create');
-        Route::post('/hourrecord/store', [HourRecordController::class, 'store'])->name('hourrecords.store');
+        Route::get('/job/hourrecord/create/{job_id}', [HourRecordController::class, 'create'])->name('hourrecords.create');
+        Route::post('/job/hourrecord/store', [HourRecordController::class, 'store'])->name('hourrecords.store');
 
       
         //Profile

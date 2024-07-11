@@ -28,6 +28,10 @@
             margin-right: 100px;
         }
 
+        .nav-link.active {
+            color: #219EBC !important;
+        }
+
     </style>
 
     <!-- Tailwind CSS -->
@@ -68,21 +72,21 @@
                         @guest
                             @if(Route::has('login'))
                                 <li class="nav-item">
-                                    <a class="nav-link"
+                                    <a class="nav-link {{ request()->is('login') ? 'active' : '' }}"
                                         href="{{ route('login') }}">{{ __('Iniciar Sesion') }}</a>
                                 </li>
                             @endif
 
                             @if(Route::has('register'))
                                 <li class="nav-item">
-                                    <a class="nav-link"
+                                    <a class="nav-link {{ request()->is('register') ? 'active' : '' }}"
                                         href="{{ route('register') }}">{{ __('Crear Cuenta') }}</a>
                                 </li>
                             @endif
                         @else
                             @if(Auth::user()->role === 'admin')
                                 <li class="nav-item dropdown">
-                                    <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
+                                    <a id="navbarDropdown" class="nav-link dropdown-toggle {{ request()->is('students*') || request()->is('areamanagers*') || request()->is('areas*') || request()->is('degrees*') || request()->is('semesters*') ? 'active' : '' }}" href="#" role="button"
                                         data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                         Configuracion
                                     </a>
@@ -105,17 +109,18 @@
                               
 
                                 <li class="nav-item">
-                                    <a class="nav-link"
+                                    <a class="nav-link {{ request()->is('adminjobopportunities/show') ? 'active' : '' }}"
                                         href="{{ route('adminjobopportunities.index') }}">Solicitudes</a>
                                 </li>
 
                                 <li class="nav-item">
-                                    <a class="nav-link"
+                                    <a class="nav-link {{ request()->is('joboportunity/manager') ? 'active' : '' }}"
                                         href="{{ route('joboportunity.index') }}">Publicaciones</a>
                                 </li>
 
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('job.index') }}">Convalidar</a>
+                                    <a class="nav-link {{ request()->is('job/show') ? 'active' : '' }}"
+                                    href="{{ route('job.index') }}">Convalidar</a>
                                 </li>
                                 
                             @endif
@@ -123,15 +128,16 @@
 
                             @if(Auth::user()->role === 'areamanager')
                                 <li class="nav-item">
-                                    <a class="nav-link"
+                                    <a class="nav-link {{ request()->is('joboportunity/manager') ? 'active' : '' }}"
                                         href="{{ route('joboportunity.index') }}">Solicitudes</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link"
+                                    <a class="nav-link {{ request()->is('joboportunity/areamanager') ? 'active' : '' }}"
                                         href="{{ route('joboportunity.indexAreaManager') }}">Publicaciones</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('job.index') }}">Convalidar</a>
+                                    <a class="nav-link {{ request()->is('job/show') ? 'active' : '' }}"
+                                    href="{{ route('job.index') }}">Convalidar</a>
                                 </li>
 
 
@@ -139,21 +145,21 @@
 
                             @if(Auth::user()->role === 'student')
                                 <li class="nav-item">
-                                    <a class="nav-link"
+                                    <a class="nav-link {{ request()->is('joboportunity/showstudent') ? 'active' : '' }}"
                                         href="{{ route('joboportunity.indexStudent') }}">Publicaciones</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link"
+                                    <a class="nav-link {{ request()->is('applications/showstudent') ? 'active' : '' }}"
                                         href="{{ route('applications.index') }}">Postulaciones</a>
                                 </li>
 
                                 <li class="nav-item">
-                                    <a class="nav-link"
+                                    <a class="nav-link {{ request()->is('student/jobs') ? 'active' : '' }}"
                                         href="{{ route('student.jobs') }}">Historial</a>
                                 </li>
 
                                 <li class="nav-item">
-                                    <a class="nav-link"
+                                    <a class="nav-link {{ request()->is('student/profile') ? 'active' : '' }}"
                                         href="{{ route('student.profile') }}">Perfil</a>
                                 </li>
 
