@@ -64,6 +64,7 @@ Route::middleware('auth')->group(
 
         Route::get('/joboportunity/manager', [JobOportunityController::class, 'index'])->name('joboportunity.index');
         Route::get('/joboportunity/student', [JobOportunityController::class, 'indexStudent'])->name('joboportunity.indexStudent');
+        Route::get('/joboportunity/areamanager', [JobOportunityController::class, 'indexAreaManager'])->name('joboportunity.indexAreaManager');
         Route::get('/joboportunity/create', [JobOportunityController::class, 'create'])->name('joboportunity.create');
         Route::post('/joboportunity', [JobOportunityController::class, 'store'])->name('joboportunity.store');
         Route::get('/joboportunity/{joboportunity}', [JobOportunityController::class, 'show'])->name('joboportunity.show');

@@ -13,10 +13,25 @@ class JobController extends Controller
      */
     public function index()
     {
+        if(auth()->user()->role == 'areamanager')
+        {
+
+           $areaManagerId = auth()->user()->area_manager->id;
+
+           $jobs = Job::with(['job_opportunity', 'job_opportunity.area_managers.areas', 'student.user', 'hourRecords'])
+           ->whereHas('job_opportunity', function($query) use ($areaManagerId) {
+               $query->where('area_manager_id', $areaManagerId);
+           })->get();
+
+            return view('hourrecord.index', compact('jobs'));
+        }
+        if(auth()->user()->role == 'admin')
+        {
         $jobs = Job::with(['job_opportunity', 'job_opportunity.area_managers.areas', 'student.user', 'hourRecords'])
                     ->get();
     
         return view('hourrecord.index', compact('jobs'));
+        }
     }
     
     

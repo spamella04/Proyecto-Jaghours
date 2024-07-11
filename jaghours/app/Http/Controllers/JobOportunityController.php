@@ -40,6 +40,21 @@ class JobOportunityController extends Controller
         return redirect()->route('home'); // Redirigir a una página de inicio o de error si el usuario no es un area manager
     }
 
+    public function indexAreaManager()
+    {
+        if (Auth::user()->role == 'areamanager') {
+            $areaManager = Auth::user()->area_manager;
+
+            if ($areaManager) {
+                $jobOportunities = JobOportunity::where('area_manager_id', $areaManager->id)->get();
+                return view('joboportunity.indexAreaManager', compact('jobOportunities'));
+            }
+        }
+
+
+        return redirect()->route('home'); // Redirigir a una página de inicio o de error si el usuario no es un area manager
+    }
+
     public function indexStudent()
     {
       
