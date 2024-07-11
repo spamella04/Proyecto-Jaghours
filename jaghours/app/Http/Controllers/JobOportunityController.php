@@ -102,6 +102,21 @@ class JobOportunityController extends Controller
     {
         //
         
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
+            'start_date' => 'required|date|after_or_equal:today',
+            'hours_validated' => 'required|integer|min:1',
+            'number_applicants' => 'required|integer|min:1',
+            'number_vacancies' => 'required|integer|min:1',
+            'requirements' => 'required|string',
+        ], [
+            'start_date.after_or_equal' => 'La fecha de inicio debe ser hoy o una fecha futura.',
+            'hours_validated.min' => 'Las horas convalidadas deben ser al menos 1.',
+            'number_applicants.min' => 'El número de aplicantes debe ser al menos 1.',
+            'number_vacancies.min' => 'El número de vacantes debe ser al menos 1.',
+        ]);
+
         $area_manager= Auth::user()->area_manager;
 
         $jobOportunity = new JobOportunity();
@@ -115,8 +130,6 @@ class JobOportunityController extends Controller
         $jobOportunity->area_manager_id = $area_manager->id;
         $jobOportunity->save();
         return redirect()->route('joboportunity.index');
-    
-
         
     }
 
@@ -149,6 +162,20 @@ class JobOportunityController extends Controller
     public function update(Request $request, string $id)
     {
         //
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
+            'start_date' => 'required|date|after_or_equal:today',
+            'hours_validated' => 'required|integer|min:1',
+            'number_applicants' => 'required|integer|min:1',
+            'number_vacancies' => 'required|integer|min:1',
+            'requirements' => 'required|string',
+        ], [
+            'start_date.after_or_equal' => 'La fecha de inicio debe ser hoy o una fecha futura.',
+            'hours_validated.min' => 'Las horas convalidadas deben ser al menos 1.',
+            'number_applicants.min' => 'El número de aplicantes debe ser al menos 1.',
+            'number_vacancies.min' => 'El número de vacantes debe ser al menos 1.',
+        ]);
         try{
             $jobOportunity = JobOportunity::findOrFail($id);
             $jobOportunity->title = $request->title;

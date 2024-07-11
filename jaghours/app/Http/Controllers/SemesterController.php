@@ -41,6 +41,13 @@ class SemesterController extends Controller
     public function store(Request $request)
     {
         //
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'start_date' => 'required|date',
+            'end_date' => 'required|date|after:start_date',
+            'hours_required' => 'required|integer|min:1',
+        ]);
+        
         try{
             $semester = new Semester();
             $semester->name = $request->name;
