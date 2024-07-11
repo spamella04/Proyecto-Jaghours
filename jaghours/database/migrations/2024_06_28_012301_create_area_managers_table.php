@@ -15,9 +15,9 @@ return new class extends Migration
             
             $table->id();
             $table->unsignedBigInteger('area_manager_id');
-            $table->unsignedBigInteger('area_id')->nullable();
+            $table->unsignedBigInteger('area_id');
             $table->foreign('area_manager_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('area_id')->references('id')->on('areas')->onDelete('set null');
+            $table->foreign('area_id')->references('id')->on('areas');
             $table->timestamps();
         });
     }

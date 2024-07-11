@@ -149,7 +149,7 @@
 </head>
 
 <div class="container mt-4">
-    @if(Auth::user()->role == 'admin')
+   
         <h1 class="" style="color: #333; font-weight: bold;">Aplicantes</h1>
         <div class="job-card shadow-lg p-3 mb-5 bg-white rounded">
             <div class="d-flex align-items-center">
@@ -235,7 +235,7 @@
                 @endif
             </div>
         </div>
-    @endif
+    
 </div>
 
 @endsection

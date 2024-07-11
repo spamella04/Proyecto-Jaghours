@@ -126,7 +126,10 @@
                                     <a class="nav-link"
                                         href="{{ route('joboportunity.index') }}">Solicitudes</a>
                                 </li>
-
+                                <li class="nav-item">
+                                    <a class="nav-link"
+                                        href="{{ route('joboportunity.indexAreaManager') }}">Publicaciones</a>
+                                </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ route('job.index') }}">Convalidar</a>
                                 </li>

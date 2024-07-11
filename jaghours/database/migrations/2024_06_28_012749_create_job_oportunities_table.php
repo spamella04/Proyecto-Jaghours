@@ -22,8 +22,8 @@ return new class extends Migration
             $table->unsignedInteger('number_applicants');
             $table->unsignedInteger('number_vacancies');
             $table->string('requirements');
-            $table->unsignedBigInteger('area_manager_id')->nulleable();
-            $table->foreign('area_manager_id')->references('id')->on('area_managers')->onDelete('set null');
+            $table->unsignedBigInteger('area_manager_id');
+            $table->foreign('area_manager_id')->references('id')->on('area_managers');
             $table->timestamps();
         });
     }
