@@ -31,31 +31,28 @@
                         </thead>
                         <tbody>
                             @php
-                                $totalAcumuladoPorTrabajo = [];
                                 $currentJobTitle = null;
-                                $rowCount = 0;
+                                $totalAcumuladoPorTrabajo = [];
                             @endphp
-                            @foreach($progress['semester']->hourRecords as $hourRecord)
+                            @foreach($progress['hourRecords'] as $hourRecord)
                                 @php
                                     $tituloTrabajo = $hourRecord->job->job_opportunity->title;
-                                    $area = $hourRecord->areaManager->areas->name;
+                                    $area = $hourRecord->job->job_opportunity->area;
                                     $fechaInicio = $hourRecord->work_date;
                                     $horasConvalidadas = $hourRecord->hours_worked;
-                                    $rowCount++;
 
                                     if ($tituloTrabajo !== $currentJobTitle) {
-                                        // Mostrar la fila de total acumulado si hay más de un registro para el trabajo anterior
-                                        if ($currentJobTitle !== null && $rowCount > 1) {
+                                        // Mostrar el total acumulado por el trabajo anterior si hay más de un registro
+                                        if ($currentJobTitle !== null) {
                                             echo '<tr>';
                                             echo '<td colspan="3" class="text-start"><strong>Total acumulado por ' . $currentJobTitle . ':</strong></td>';
                                             echo '<td>' . $totalAcumuladoPorTrabajo[$currentJobTitle] . '</td>';
                                             echo '</tr>';
                                         }
-                                        
+
                                         // Reiniciar acumulador para el nuevo trabajo
                                         $currentJobTitle = $tituloTrabajo;
                                         $totalAcumuladoPorTrabajo[$currentJobTitle] = 0;
-                                        $rowCount = 0;
                                     }
 
                                     // Sumar horas convalidadas al total del trabajo actual
@@ -69,8 +66,8 @@
                                 </tr>
                             @endforeach
 
-                            @if ($currentJobTitle !== null && $rowCount > 1)
-                                {{-- Mostrar el total acumulado para el último trabajo si tiene más de un registro --}}
+                            <!-- Mostrar el total acumulado por el último trabajo -->
+                            @if ($currentJobTitle !== null)
                                 <tr>
                                     <td colspan="3" class="text-start"><strong>Total acumulado por {{ $currentJobTitle }}:</strong></td>
                                     <td>{{ $totalAcumuladoPorTrabajo[$currentJobTitle] }}</td>
