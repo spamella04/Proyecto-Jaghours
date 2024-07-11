@@ -1,6 +1,6 @@
-@extends ('layouts.app')
+@extends('layouts.app')
 
-@section ('content')
+@section('content')
 
 <div class="container py-5">
     <div class="row justify-content-center">
@@ -8,10 +8,9 @@
             <div class="card border-0 shadow-sm rounded-lg">
                 <div class="card-header bg-dark text-white text-center py-3">
                     <h2 class="mb-0">{{ __('Crear Semestre') }}</h2>
-
                 </div>
                 <div class="card-body p-4">
-                    <form action="{{route('semesters.store')}}" method="POST">
+                    <form id="semesterForm" action="{{ route('semesters.store') }}" method="POST">
                         @csrf
 
                         <div class="mb-3">
@@ -31,8 +30,9 @@
                         </div>
 
                         <div class="mb-3">
-                            <label for="end_date" class="form-label font-weight-bold">{{ __('Fecha de Finalizacion') }}</label>
+                            <label for="end_date" class="form-label font-weight-bold">{{ __('Fecha de Finalización') }}</label>
                             <input id="end_date" name="end_date" type="date" class="form-control @error('end_date') is-invalid @enderror" value="{{ old('end_date') }}" required>
+                            <div class="invalid-feedback" id="end_date_error"></div>
                             @error('end_date')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
@@ -44,19 +44,32 @@
                             @error('hours_required')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
+                        </div>
 
-                        <div class="mb-3; text-center">
+                        <div class="mb-3 text-center">
                             <button type="submit" class="btn btn-dark" style="background-color: #219EBC; border-color: #219EBC;">{{ __('Crear Semestre') }}</button>
                         </div>
                     </form>
-
                 </div>
             </div>
-
         </div>
-
     </div>
-
 </div>
+
+<script>
+document.getElementById('semesterForm').addEventListener('submit', function(event) {
+    const startDate = new Date(document.getElementById('start_date').value);
+    const endDate = new Date(document.getElementById('end_date').value);
+    const endDateError = document.getElementById('end_date_error');
+
+    if (startDate >= endDate) {
+        endDateError.textContent = 'La fecha de finalización debe ser mayor a la fecha de inicio.';
+        endDateError.style.display = 'block';
+        event.preventDefault();
+    } else {
+        endDateError.style.display = 'none';
+    }
+});
+</script>
 
 @endsection
