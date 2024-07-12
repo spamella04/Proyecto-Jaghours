@@ -110,7 +110,22 @@ class AreaController extends Controller
         //
         try{
             $area = Area::find($id);
-            $area->delete();
+            $area->status='inactive';
+            $area->save();
+            return redirect()->route('areas.index');
+        }
+        catch(\Exception $e){
+            return redirect()->route('areas.index');
+        }
+    }
+
+    public function notdestroy(string $id)
+    {
+        //
+        try{
+            $area = Area::find($id);
+            $area->status='active';
+            $area->save();
             return redirect()->route('areas.index');
         }
         catch(\Exception $e){

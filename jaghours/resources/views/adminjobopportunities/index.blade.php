@@ -87,6 +87,7 @@
                     <tr>
                         <th>Título</th>
                         <th>Área</th>
+                        <th>Responsable Area</th>
                         <th>Horas Convalidadas</th>
                         <th>Fecha de Inicio</th>
                         <th>Acciones</th>
@@ -97,6 +98,12 @@
                     <tr>
                         <td>{{ $joboportunity->title }}</td>
                         <td>{{ $joboportunity->area_managers->areas->name }}</td>
+                        @if($joboportunity->area_managers->users->status=='active')
+                            <td>Activo</td>
+                        @endif
+                        @if($joboportunity->area_managers->users->status=='inactive')
+                            <td>Inactivo</td>
+                        @endif
                         <td>{{ $joboportunity->hours_validated }}</td>
                         <td>{{ $joboportunity->start_date }}</td>
                         <td>

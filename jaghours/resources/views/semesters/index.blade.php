@@ -91,25 +91,44 @@
                             <th>Fecha de Inicio</th>
                             <th>Fecha de Finalización</th>
                             <th>Horas Requeridas</th>
+                            <th>Estado</th>
                             <th>Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach($semesters as $semester)
+                        
                         <tr>
                             <td>{{ $semester->name }}</td>
                             <td>{{ $semester->start_date }}</td>
                             <td>{{ $semester->end_date }}</td>
                             <td>{{ $semester->hours_required }}</td>
-                            <td>
+
+                            @if($semester->status=='active')
+                                <td>Activo</td>
+                                <td>
                                 <a href="{{ route('semesters.edit', $semester->id) }}" class="btn btn-warning btn-sm btn-action">Editar</a>
                                 <form action="{{ route('semesters.destroy', $semester->id) }}" method="POST" class="d-inline">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="btn btn-danger btn-sm btn-action">Eliminar</button>
+                                    <button type="submit" class="btn btn-danger btn-sm btn-action">Desactivar</button>
                                 </form>
                             </td>
+                            @endif
+                            @if($semester->status=='inactive')
+                                <td>Inactivo</td>
+                                <td>
+                                <form action="{{ route('semesters.notdestroy', $semester->id) }}" method="POST" class="d-inline">
+                                    @csrf
+                                    @method('PUT')
+                                    <button type="submit" class="btn btn-danger btn-sm btn-action">Activar</button>
+                                </form>
+                            </td>
+                            @endif
+
+                            
                         </tr>
+                      
                         @endforeach
                     </tbody>
                 </table>

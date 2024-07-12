@@ -66,11 +66,12 @@
 <div class="container mt-4">
     <h1 class="">Mis Postulaciones</h1>
 
-    @if($applications->isEmpty())
+    @if($applications->isEmpty() || $activeapplicationcount == 0)
         <p class="text-center">No tienes Postulaciones registradas.</p>
     @else
         <div class="row">
             @foreach($applications as $application)
+            @if($application->job_opportunities->area_managers->users->status=='active')
                 <div class="col-md-6 mb-4">
                     <div class="job-card shadow-lg p-3 mb-5 bg-white rounded">
                         <div class="job-card-header">
@@ -96,6 +97,7 @@
                         </div>
                     </div>
                 </div>
+            @endif 
             @endforeach
         </div>
     @endif

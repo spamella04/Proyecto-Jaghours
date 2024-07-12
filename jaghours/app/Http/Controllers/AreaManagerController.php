@@ -144,10 +144,22 @@ class AreaManagerController extends Controller
         //
         try{
             $user = User::find($id);
-            $user->delete();
+            $user->status='inactive';
+            $user->save();
             return redirect()->route('areamanagers.index');
         }catch(\Exception $e){
             return redirect()->route('areamanagers.index');
         }
+    }
+
+    public function notdestroy(string $id)
+    {
+        //
+        
+            $user = User::find($id);
+            $user->status='active';
+            $user->save();
+            return redirect()->route('areamanagers.index');
+        
     }
 }

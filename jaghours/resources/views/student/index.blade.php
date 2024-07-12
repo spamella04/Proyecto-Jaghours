@@ -89,32 +89,43 @@
                         <th>CIF</th>
                         <th>Nombre</th>
                         <th>Apellido</th>
-                        <th>Correo</th>
-                        <th>Teléfono</th>
                         <th>Curso</th>
+                        <th>Estado</th>
                         <th>Acciones</th>
+                        
                     </tr>
                 </thead>
                 <tbody>
                     @foreach($users as $user)
-                    @if($user->role == 'student')
+                    @if($user->role == 'student' )
                     <tr>
                         <td>{{ $user->cif }}</td>
                         <td>{{ $user->name }}</td>
                         <td>{{ $user->lastname }}</td>
-                        <td>{{ $user->email }}</td>
-                        <td>{{ $user->phone }}</td>
                         <td>{{ $user->student->degree->name }}</td>
+                        @if($user->status=='active')
+                            <td>Activo</td>
                         <td>
                             <a href="{{ route('students.show', $user->id) }}" class="btn btn-info btn-sm btn-action">Ver</a>
                             <a href="{{ route('students.edit', $user->id) }}" class="btn btn-warning btn-sm btn-action">Editar</a>
                             <form action="{{ route('students.destroy', $user->id) }}" method="POST" class="d-inline">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="btn btn-danger btn-sm btn-action">Eliminar</button>
+                                <button type="submit" class="btn btn-danger btn-sm btn-action">Desactivar</button>
                             </form>
                         </td>
-                    </tr>
+                        @endif
+                        @if($user->status=='inactive')
+                            <td>Inactivo</td>
+                            <td>
+                            <form action="{{ route('students.notdestroy', $user->id) }}" method="POST" class="d-inline">
+                                @csrf
+                                @method('PUT')
+                                <button type="submit" class="btn btn-danger btn-sm btn-action">Activar</button>
+                            </form>
+                            </td>
+                        @endif
+                    </tr>   
                     @endif
                     @endforeach
                 </tbody>
