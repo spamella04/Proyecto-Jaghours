@@ -73,12 +73,14 @@
     .btn-action:hover {
         opacity: 0.8;
     }
+
 </style>
 
 <div class="container py-5">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2 class="font-weight-bold">Listado de Carreras</h2>
-        <a href="{{ route('degrees.create') }}" class="btn btn-primary btn-lg btn-create">Crear nueva carrera</a>
+        <a href="{{ route('degrees.create') }}" class="btn btn-primary btn-lg btn-create">Crear nueva
+            carrera</a>
     </div>
 
     <div class="table-container">
@@ -88,24 +90,46 @@
                     <tr>
                         <th>Código</th>
                         <th>Nombre</th>
+                        <th>Estado</th>
                         <th>Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach($degrees as $degree)
-                    <tr>
-                        <td>{{ $degree->code }}</td>
-                        <td>{{ $degree->name }}</td>
-                        <td>
-                            <a href="{{ route('degrees.edit', $degree->id) }}" class="btn btn-warning btn-sm btn-action">Editar</a>
-                            <form action="{{ route('degrees.destroy', $degree->id) }}" method="POST" class="d-inline">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-danger btn-sm btn-action">Eliminar</button>
-                            </form>
-                        </td>
-                    </tr>
+
+                        <tr>
+                            <td>{{ $degree->code }}</td>
+                            <td>{{ $degree->name }}</td>
+                            @if($degree->status=='active')
+                                <td>Activo</td>
+                                <td>
+                                    <a href="{{ route('degrees.edit', $degree->id) }}"
+                                        class="btn btn-warning btn-sm btn-action">Editar</a>
+                                    <form action="{{ route('degrees.destroy', $degree->id) }}"
+                                        method="POST" class="d-inline">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit"
+                                            class="btn btn-danger btn-sm btn-action">Desactivar</button>
+                                    </form>
+                                </td>
+                            @endif
+                            @if($degree->status=='inactive')
+                                <td>Inactivo</td>
+                                <td>
+                                    <form
+                                        action="{{ route('degrees.notdestroy', $degree->id) }}" method="POST" class="d-inline">
+                                        @csrf
+                                        @method('PUT')
+                                        <button type="submit" class="btn btn-danger btn-sm btn-action">Desactivar</button>
+                                    </form>
+                                </td>
+                            @endif
+
+                        </tr>
+
                     @endforeach
+
                 </tbody>
             </table>
         </div>

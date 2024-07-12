@@ -9,7 +9,7 @@ class Degree extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['code','name'];
+    protected $fillable = ['code','name', 'status'];
 
 
     //Relacion Estudiantes

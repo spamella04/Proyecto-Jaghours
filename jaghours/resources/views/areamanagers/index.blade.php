@@ -92,6 +92,7 @@
                         <th>Correo</th>
                         <th>Teléfono</th>
                         <th>Área</th>
+                        <th>Estado</th>
                         <th>Acciones</th>
                     </tr>
                 </thead>
@@ -105,14 +106,29 @@
                         <td>{{ $user->email }}</td>
                         <td>{{ $user->phone }}</td>
                         <td>{{ $user->area_manager->areas->name }}</td>
-                        <td>
+                        @if($user->status=='active')
+                            <td>Activo</td>
+                            <td>
                             <a href="{{ route('areamanagers.edit', $user->id) }}" class="btn btn-warning btn-sm btn-action">Editar</a>
                             <form action="{{ route('areamanagers.destroy', $user->id) }}" method="POST" class="d-inline">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="btn btn-danger btn-sm btn-action">Eliminar</button>
+                                <button type="submit" class="btn btn-danger btn-sm btn-action">Desactivar</button>
                             </form>
-                        </td>
+                            </td>
+                        @endif
+                        @if($user->status=='inactive')
+                            <td>Inactivo</td>
+                            <td>
+                            <form action="{{ route('areamanagers.notdestroy', $user->id) }}" method="POST" class="d-inline">
+                                @csrf
+                                @method('PUT')
+                                <button type="submit" class="btn btn-danger btn-sm btn-action">Activar</button>
+                            </form>
+                            </td>
+                        @endif
+                        
+                        
                     </tr>
                     @endif
                     @endforeach

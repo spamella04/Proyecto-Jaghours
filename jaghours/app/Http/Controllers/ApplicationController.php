@@ -23,12 +23,16 @@ class ApplicationController extends Controller
         if($student){
            // Obtiene las aplicaciones del estudiante con estado "pendiente" o "rechazado"
            $applications = Application::where('student_id', $student->id)
-           ->whereIn('status', ['Pendiente', 'No Aceptado'])
-           ->get();
-       return view('applications.index', compact('applications'));
-        }
-    }
+            ->whereIn('status', ['Pendiente', 'No Aceptado'])
+            ->with(['job_opportunities.area_managers.users'])
+            ->get();
 
+            $activeapplicationcount = $applications->filter(function($application) {
+                return $application->job_opportunities->area_managers->users->status == 'active';
+            })->count();
+    return view('applications.index', compact('applications','activeapplicationcount'));
+    }
+    }
     /**
      * Show the form for creating a new resource.
      */

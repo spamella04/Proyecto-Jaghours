@@ -12,13 +12,13 @@
                         {{-- Contenido para admin --}}
                         <h2>Panel de Administrador</h2>
                         <p>Administra estudiantes, áreas, carreras, semestres, y más.</p>
-                        <a href="{{ route('students.index') }}" class="btn btn-primary">Administrar Estudiantes</a>
+                        <a href="{{ route('students.index') }}" class="btn btn-primary" style="background-color: #219EBC; border-color: #219EBC; color: #fff">Administrar Estudiantes</a>
                      
                     @elseif(Auth::user()->role === 'areamanager')
                         {{-- Contenido para responsable de área --}}
                         <h2>Responsable de Área</h2>
                         <p>Consulta y gestiona solicitudes de publicaciones.</p>
-                        <a href="{{ route('joboportunity.index') }}" class="btn btn-primary">Ver Solicitudes</a>
+                        <a href="{{ route('joboportunity.index') }}" class="btn btn-primary" style="background-color: #219EBC; border-color: #219EBC; color: #fff">Ver Solicitudes</a>
                       
                     @elseif(Auth::user()->role === 'student')
                         {{-- Contenido para estudiante --}}

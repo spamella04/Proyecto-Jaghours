@@ -20,7 +20,7 @@ return new class extends Migration
             $table->unsignedBigInteger('student_id');
             $table->unsignedBigInteger('job_opportunity_id');
             $table->enum('status',['Pendiente','Aceptado','No Aceptado'])->default('Pendiente');
-            $table->foreign('student_id')->references('id')->on('students')->onDelete('cascade');
+            $table->foreign('student_id')->references('id')->on('students');
             $table->foreign('job_opportunity_id')->references('id')->on('job_oportunities')->onDelete('cascade');
             $table->timestamps();
         });

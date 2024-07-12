@@ -116,7 +116,21 @@ class SemesterController extends Controller
         //
         try{
             $semester = Semester::find($id);
-            $semester->delete();
+            $semester->status='inactive';
+            $semester->save();
+            return redirect()->route('semesters.index')->with('success', 'Semestre Eliminado Exitosamente');
+        } catch (\Exception $e){
+            return redirect()->route('semesters.index')->with('error', $e->getMessage());
+        }
+    }
+
+    public function notdestroy(string $id)
+    {
+        //
+        try{
+            $semester = Semester::find($id);
+            $semester->status='active';
+            $semester->save();
             return redirect()->route('semesters.index')->with('success', 'Semestre Eliminado Exitosamente');
         } catch (\Exception $e){
             return redirect()->route('semesters.index')->with('error', $e->getMessage());

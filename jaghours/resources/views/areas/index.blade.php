@@ -73,12 +73,14 @@
     .btn-action:hover {
         opacity: 0.8;
     }
+
 </style>
 
 <div class="container py-5">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2 class="font-weight-bold">Listado de Áreas</h2>
-        <a href="{{ route('areas.create') }}" class="btn btn-primary btn-lg btn-create">Crear nueva área</a>
+        <a href="{{ route('areas.create') }}" class="btn btn-primary btn-lg btn-create">Crear nueva
+            área</a>
     </div>
 
     <div class="table-container">
@@ -89,24 +91,46 @@
                         <th>Código</th>
                         <th>Nombre</th>
                         <th>Descripción</th>
+                        <th>Estado</th>
                         <th>Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach($areas as $area)
-                    <tr>
-                        <td>{{ $area->code }}</td>
-                        <td>{{ $area->name }}</td>
-                        <td>{{ $area->description }}</td>
-                        <td>
-                            <a href="{{ route('areas.edit', $area->id) }}" class="btn btn-warning btn-sm btn-action">Editar</a>
-                            <form action="{{ route('areas.destroy', $area->id) }}" method="POST" class="d-inline">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-danger btn-sm btn-action">Eliminar</button>
-                            </form>
-                        </td>
-                    </tr>
+                        
+                            <tr>
+                                <td>{{ $area->code }}</td>
+                                <td>{{ $area->name }}</td>
+                                <td>{{ $area->description }}</td>
+                                @if($area->status=='active')
+                                    <td>Activo</td>
+                                    <td>
+                                        <a href="{{ route('areas.edit', $area->id) }}"
+                                            class="btn btn-warning btn-sm btn-action">Editar</a>
+                                        <form action="{{ route('areas.destroy', $area->id) }}"
+                                            method="POST" class="d-inline">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit"
+                                                class="btn btn-danger btn-sm btn-action">Desactivar</button>
+                                        </form>
+                                    </td>
+                                @endif
+                                @if($area->status=='inactive')
+                                    <td>Inactivo</td>
+                                    <td>
+                                        <form
+                                            action="{{ route('areas.notdestroy', $area->id) }}"
+                                            method="POST" class="d-inline">
+                                            @csrf
+                                            @method('PUT')
+                                            <button type="submit"
+                                                class="btn btn-danger btn-sm btn-action">Activar</button>
+                                        </form>
+                                    </td>
+                                @endif
+
+                       
                     @endforeach
                 </tbody>
             </table>

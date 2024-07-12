@@ -17,6 +17,7 @@ return new class extends Migration
             $table->date('start_date');
             $table->date('end_date');
             $table->unsignedBigInteger('hours_required');
+            $table->string('status')->default('active');
             $table->timestamps();
         });
     } 

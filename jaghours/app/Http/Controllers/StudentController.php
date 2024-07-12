@@ -191,7 +191,22 @@ class StudentController extends Controller
         //
         try{
             $user = User::find($id);
-            $user->delete();
+            $user->status = 'inactive';
+            $user->save();
+            return redirect()->route('students.index');
+        }
+        catch(\Exception $e){
+            return redirect()->route('students.index');
+        }
+    }
+
+    public function notdestroy(string $id)
+    {
+        //
+        try{
+            $user = User::find($id);
+            $user->status = 'active';
+            $user->save();
             return redirect()->route('students.index');
         }
         catch(\Exception $e){

@@ -10,7 +10,7 @@ class Area extends Model
 {
     use HasFactory;
 
-        protected $fillable = ['code','name', 'description'];
+        protected $fillable = ['code','name', 'description', 'status'];
 
 
     //Relacion AreaManager

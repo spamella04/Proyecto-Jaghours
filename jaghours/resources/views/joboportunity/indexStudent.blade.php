@@ -91,6 +91,7 @@
     <h1 class="">Publicaciones</h1>
 
     @foreach($jobOportunities as $joboportunity)
+    @if($joboportunity->area_managers->users->status=='active')
     <div class="job-card shadow-lg p-3 mb-5 bg-white rounded">
         <div class="d-flex align-items-center">
             <div class="job-card-avatar">
@@ -120,6 +121,7 @@
             </div>
         </div>
     </div>
+    @endif
     @endforeach
 </div>
 @endsection

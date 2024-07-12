@@ -104,7 +104,21 @@ class DegreeController extends Controller
         //
         try{
             $degree = Degree::find($id);
-            $degree->delete();
+            $degree->status = 'inactive';
+            $degree->save();
+            return redirect()->route('degrees.index')->with('success', 'Carrera Eliminada Exitosamente');
+        } catch (\Exception $e) {
+            return redirect()->route('degrees.index')->with('error', $e->getMessage());
+        }
+    }
+
+    public function notdestroy(string $id)
+    {
+        //
+        try{
+            $degree = Degree::find($id);
+            $degree->status = 'active';
+            $degree->save();
             return redirect()->route('degrees.index')->with('success', 'Carrera Eliminada Exitosamente');
         } catch (\Exception $e) {
             return redirect()->route('degrees.index')->with('error', $e->getMessage());
