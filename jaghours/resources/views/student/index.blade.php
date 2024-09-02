@@ -103,44 +103,14 @@
                         <th>CIF</th>
                         <th>Nombre</th>
                         <th>Apellido</th>
-                        <th>Carrera</th>
+
                         <th>Estado</th>
                         <th>Acciones</th>
+                        
                     </tr>
                 </thead>
                 <tbody>
-                    @forelse($users as $user)
-                        <tr>
-                            <td>{{ $user->cif }}</td>
-                            <td>{{ $user->name }}</td>
-                            <td>{{ $user->lastname }}</td>
-                            <td>{{ $user->student->degree->name }}</td>
-                            @if($user->status == 'active')
-                                <td>Activo</td>
-                                <td>
-                                    <a href="{{ route('students.edit', $user->id) }}" class="btn btn-warning btn-sm btn-action">Editar</a>
-                                    <form action="{{ route('students.destroy', $user->id) }}" method="POST" class="d-inline">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-danger btn-sm btn-action">Desactivar</button>
-                                    </form>
-                                </td>
-                            @else
-                                <td>Inactivo</td>
-                                <td>
-                                    <form action="{{ route('students.notdestroy', $user->id) }}" method="POST" class="d-inline">
-                                        @csrf
-                                        @method('PUT')
-                                        <button type="submit" class="btn btn-danger btn-sm btn-action">Activar</button>
-                                    </form>
-                                </td>
-                            @endif
-                        </tr>
-                    @empty
-                        <tr>
-                            <td colspan="8" class="text-center">No se encontraron resultados</td>
-                        </tr>
-                    @endforelse
+
                 </tbody>
             </table>
         </div>

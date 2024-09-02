@@ -106,39 +106,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @forelse($semesters as $semester)
-                            <tr>
-                                <td>{{ $semester->name }}</td>
-                                <td>{{ $semester->start_date }}</td>
-                                <td>{{ $semester->end_date }}</td>
-                                <td>{{ $semester->hours_required }}</td>
 
-                                @if($semester->status == 'active')
-                                    <td>Activo</td>
-                                    <td>
-                                        <a href="{{ route('semesters.edit', $semester->id) }}" class="btn btn-warning btn-sm btn-action">Editar</a>
-                                        <form action="{{ route('semesters.destroy', $semester->id) }}" method="POST" class="d-inline">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-danger btn-sm btn-action">Desactivar</button>
-                                        </form>
-                                    </td>
-                                @else
-                                    <td>Inactivo</td>
-                                    <td>
-                                        <form action="{{ route('semesters.notdestroy', $semester->id) }}" method="POST" class="d-inline">
-                                            @csrf
-                                            @method('PUT')
-                                            <button type="submit" class="btn btn-danger btn-sm btn-action">Activar</button>
-                                        </form>
-                                    </td>
-                                @endif
-                            </tr>
-                        @empty
-                            <tr>
-                                <td colspan="6" class="text-center">No se encontraron resultados</td>
-                            </tr>
-                        @endforelse
                     </tbody>
                 </table>
             </div>

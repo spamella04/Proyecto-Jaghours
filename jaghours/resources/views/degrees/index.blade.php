@@ -74,15 +74,14 @@
         opacity: 0.8;
     }
 
-    .btn-show-all {
-        margin-left: 0.5rem;
-    }
+
 </style>
 
 <div class="container py-5">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2 class="font-weight-bold">Listado de Carreras</h2>
-        <a href="{{ route('degrees.create') }}" class="btn btn-primary btn-lg btn-create">Crear nueva carrera</a>
+        <a href="{{ route('degrees.create') }}" class="btn btn-primary btn-lg btn-create">Crear nueva
+            carrera</a>
     </div>
 
     <form action="{{ route('degrees.index') }}" method="GET" class="mb-4">
@@ -107,36 +106,43 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @forelse($degrees as $degree)
+
+                    @foreach($degrees as $degree)
+
                         <tr>
                             <td>{{ $degree->code }}</td>
                             <td>{{ $degree->name }}</td>
-                            @if($degree->status == 'active')
+                            @if($degree->status=='active')
                                 <td>Activo</td>
                                 <td>
-                                    <a href="{{ route('degrees.edit', $degree->id) }}" class="btn btn-warning btn-sm btn-action">Editar</a>
-                                    <form action="{{ route('degrees.destroy', $degree->id) }}" method="POST" class="d-inline">
+                                    <a href="{{ route('degrees.edit', $degree->id) }}"
+                                        class="btn btn-warning btn-sm btn-action">Editar</a>
+                                    <form action="{{ route('degrees.destroy', $degree->id) }}"
+                                        method="POST" class="d-inline">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-danger btn-sm btn-action">Desactivar</button>
-                                    </form>
-                                </td>
-                            @else
-                                <td>Inactivo</td>
-                                <td>
-                                    <form action="{{ route('degrees.notdestroy', $degree->id) }}" method="POST" class="d-inline">
-                                        @csrf
-                                        @method('PUT')
-                                        <button type="submit" class="btn btn-info btn-sm btn-action">Activar</button>
+                                        <button type="submit"
+                                            class="btn btn-danger btn-sm btn-action">Desactivar</button>
                                     </form>
                                 </td>
                             @endif
+                            @if($degree->status=='inactive')
+                                <td>Inactivo</td>
+                                <td>
+                                    <form
+                                        action="{{ route('degrees.notdestroy', $degree->id) }}" method="POST" class="d-inline">
+                                        @csrf
+                                        @method('PUT')
+                                        <button type="submit" class="btn btn-danger btn-sm btn-action">Desactivar</button>
+                                    </form>
+                                </td>
+                            @endif
+
                         </tr>
-                    @empty
-                        <tr>
-                            <td colspan="4" class="text-center">No se encontraron resultados</td>
-                        </tr>
-                    @endforelse
+
+                    @endforeach
+
+
                 </tbody>
             </table>
         </div>
