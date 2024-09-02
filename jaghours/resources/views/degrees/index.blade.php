@@ -74,6 +74,7 @@
         opacity: 0.8;
     }
 
+
 </style>
 
 <div class="container py-5">
@@ -82,6 +83,16 @@
         <a href="{{ route('degrees.create') }}" class="btn btn-primary btn-lg btn-create">Crear nueva
             carrera</a>
     </div>
+
+    <form action="{{ route('degrees.index') }}" method="GET" class="mb-4">
+        <div class="input-group">
+            <input type="text" name="query" class="form-control" placeholder="Buscar por código o nombre..." value="{{ request('query') }}">
+            <div class="input-group-append">
+                <button type="submit" class="btn btn-info">Buscar</button>
+                <a href="{{ route('degrees.index') }}" class="btn btn-secondary btn-show-all">Mostrar todos</a>
+            </div>
+        </div>
+    </form>
 
     <div class="table-container">
         <div class="table-responsive">
@@ -95,6 +106,7 @@
                     </tr>
                 </thead>
                 <tbody>
+
                     @foreach($degrees as $degree)
 
                         <tr>
@@ -129,6 +141,7 @@
                         </tr>
 
                     @endforeach
+
 
                 </tbody>
             </table>

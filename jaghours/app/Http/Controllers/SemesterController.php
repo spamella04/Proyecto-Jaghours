@@ -11,14 +11,20 @@ class SemesterController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
-        try{
-            $semesters = Semester::all()->sortBy('start_date');
-            return view('semesters.index', compact('semesters'));
-        } catch (\Exception $e){
-            return redirect()->route(semesters.index)->with('error', $e->getMessage());
+        try {
+            $search = $request->input('search');
+            $query = Semester::query();
+
+            if ($search) {
+                $query->where('name', 'like', '%' . $search . '%');
+            }
+
+            $semesters = $query->get()->sortBy('start_date');
+            return view('semesters.index', compact('semesters', 'search'));
+        } catch (\Exception $e) {
+            return redirect()->route('semesters.index')->with('error', $e->getMessage());
         }
     }
 

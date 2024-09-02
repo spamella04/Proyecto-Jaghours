@@ -121,6 +121,10 @@ Route::middleware('auth')->group(
         //Hour Records
         Route::get('/job/hourrecord/create/{job_id}', [HourRecordController::class, 'create'])->name('hourrecords.create');
         Route::post('/job/hourrecord/store', [HourRecordController::class, 'store'])->name('hourrecords.store');
+        Route::get('/hourrecords/report', [HourRecordController::class, 'report'])->name('hourrecords.report');
+        Route::get('/hourrecords/student/{student}', [HourRecordController::class, 'showStudentHourRecords'])->name('hourrecords.student');
+
+        
 
       
         //Profile
