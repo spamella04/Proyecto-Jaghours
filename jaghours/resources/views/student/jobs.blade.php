@@ -3,20 +3,43 @@
 @section('content')
 
 <div class="container py-5">
+    <!-- Formulario para seleccionar el semestre -->
+    <form method="GET" action="{{ route('student.jobs') }}" class="mb-4">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="semester_id">Seleccionar Semestre</label>
+                    <select id="semester_id" name="semester_id" class="form-control" required>
+                        <option value="">Seleccione un semestre</option>
+                        @foreach($semesters as $semester)
+                            <option value="{{ $semester->id }}" {{ request('semester_id') == $semester->id ? 'selected' : '' }}>
+                                {{ $semester->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-4 d-flex align-items-end">
+                <div class="form-group mb-0">
+                    <button type="submit" class="btn" style="background-color: #219EBC; color: white;">Ver Historial</button>
+                </div>
+            </div>
+        </div>
+    </form>
 
-    <!-- Iterar sobre cada semestre y mostrar detalles -->
-    @foreach($semesterProgress as $progress)
+    @if($semesterProgress)
+        <!-- Detalles del semestre seleccionado -->
         <div class="card shadow-sm rounded-lg mb-4">
             <div class="card-body">
-                <h3 class="font-weight-bold">{{ $progress['semester']->name }}</h3>
+                <h3 class="font-weight-bold">{{ $semesterProgress['semester']->name }}</h3>
                 <div class="progress mt-3">
                     @php
-                        $percentage = $progress['percentage'] > 100 ? 100 : $progress['percentage'];
+                        $percentage = $semesterProgress['percentage'] > 100 ? 100 : $semesterProgress['percentage'];
                     @endphp
-                    <div class="progress-bar" role="progressbar" style="width: {{ $percentage }}%; background-color: #219EBC;" aria-valuenow="{{ $percentage }}" aria-valuemin="0" aria-valuemax="100">{{ $progress['totalHoursWorked'] }} horas de {{ $progress['requiredHours'] }}</div>
+                    <div class="progress-bar" role="progressbar" style="width: {{ $percentage }}%; background-color: #219EBC;" aria-valuenow="{{ $percentage }}" aria-valuemin="0" aria-valuemax="100">{{ $semesterProgress['totalHoursWorked'] }} horas de {{ $semesterProgress['requiredHours'] }}</div>
                 </div>
-                <p class="mt-2"><strong>Total acumulado:</strong> {{ $progress['totalHoursWorked'] }} horas</p>
-                <p><strong>Horas requeridas en el semestre:</strong> {{ $progress['requiredHours'] }} horas</p>
+                <p class="mt-2"><strong>Total acumulado:</strong> {{ $semesterProgress['totalHoursWorked'] }} horas</p>
+                <p><strong>Horas requeridas en el semestre:</strong> {{ $semesterProgress['requiredHours'] }} horas</p>
 
                 <!-- Detalles de los trabajos asociados a este semestre -->
                 <div class="table-responsive mt-4">
@@ -34,10 +57,10 @@
                                 $currentJobTitle = null;
                                 $totalAcumuladoPorTrabajo = [];
                             @endphp
-                            @foreach($progress['hourRecords'] as $hourRecord)
+                            @foreach($semesterProgress['hourRecords'] as $hourRecord)
                                 @php
                                     $tituloTrabajo = $hourRecord->job->job_opportunity->title;
-                                    $area = $hourRecord->job->job_opportunity->area;
+                                    $area = $hourRecord->job->job_opportunity->area_managers->areas->name ?? 'N/A';
                                     $fechaInicio = $hourRecord->work_date;
                                     $horasConvalidadas = $hourRecord->hours_worked;
 
@@ -78,7 +101,7 @@
                 </div>
             </div>
         </div>
-    @endforeach
+    @endif
 
 </div>
 

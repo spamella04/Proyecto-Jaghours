@@ -13,17 +13,34 @@ class AreaManagerController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
         try {
-            $users=User::with('area_manager')->get();
-            $areamanagers = AreaManager::with('areas')->get();
-            return view('areamanagers.index', compact('users'));
-        }   catch(\Exception $e) {
+            // Obtener el término de búsqueda
+            $search = $request->input('search');
+    
+            // Consultar los usuarios con el rol 'areamanager' y aplicar el filtro de búsqueda si existe
+            $users = User::where('role', 'areamanager')
+                ->when($search, function ($query, $search) {
+                    return $query->where(function ($query) use ($search) {
+                        $query->where('cif', '=', $search)
+                              ->orWhere('name', 'like', "%{$search}%")
+                              ->orWhere('lastname', 'like', "%{$search}%")
+                              ->orWhereHas('area_manager.areas', function ($query) use ($search) {
+                                  $query->where('name', 'like', "%{$search}%");
+                              });
+                    });
+                })
+                ->with('area_manager.areas')
+                ->get();
+    
+            return view('areamanagers.index', compact('users', 'search'));
+        } catch (\Exception $e) {
             return redirect()->route('home');
         }
     }
+    
+    
 
     /**
      * Show the form for creating a new resource.
