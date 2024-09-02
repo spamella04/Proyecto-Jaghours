@@ -11,10 +11,22 @@ class DegreeController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        try{
-            $degrees = Degree::all()->sortBy('code');
+        try {
+            $query = $request->input('query');
+
+            if ($query) {
+                // Filtrar las carreras por código o nombre si se proporcionó una consulta de búsqueda
+                $degrees = Degree::where('code', 'like', "%{$query}%")
+                    ->orWhere('name', 'like', "%{$query}%")
+                    ->orderBy('code')
+                    ->get();
+            } else {
+                // Obtener todas las carreras si no hay consulta de búsqueda
+                $degrees = Degree::all()->sortBy('code');
+            }
+
             return view('degrees.index', compact('degrees'));
         } catch (\Exception $e) {
             return redirect()->route('degrees.index')->with('error', $e->getMessage());
@@ -104,7 +116,21 @@ class DegreeController extends Controller
         //
         try{
             $degree = Degree::find($id);
-            $degree->delete();
+            $degree->status = 'inactive';
+            $degree->save();
+            return redirect()->route('degrees.index')->with('success', 'Carrera Eliminada Exitosamente');
+        } catch (\Exception $e) {
+            return redirect()->route('degrees.index')->with('error', $e->getMessage());
+        }
+    }
+
+    public function notdestroy(string $id)
+    {
+        //
+        try{
+            $degree = Degree::find($id);
+            $degree->status = 'active';
+            $degree->save();
             return redirect()->route('degrees.index')->with('success', 'Carrera Eliminada Exitosamente');
         } catch (\Exception $e) {
             return redirect()->route('degrees.index')->with('error', $e->getMessage());

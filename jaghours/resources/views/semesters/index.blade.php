@@ -81,6 +81,16 @@
         <a href="{{ route('semesters.create') }}" class="btn btn-primary btn-lg btn-create">Crear nuevo semestre</a>
     </div>
 
+    <form action="{{ route('semesters.index') }}" method="GET" class="mb-4">
+        <div class="input-group">
+            <input type="text" name="search" class="form-control" placeholder="Buscar por nombre..." value="{{ $search }}">
+            <div class="input-group-append">
+                <button type="submit" class="btn btn-info">Buscar</button>
+                <a href="{{ route('semesters.index') }}" class="btn btn-secondary btn-show-all">Mostrar todos</a>
+            </div>
+        </div>
+    </form>
+
     <div class="card shadow-sm rounded-lg">
         <div class="card-body">
             <div class="table-responsive">
@@ -91,26 +101,44 @@
                             <th>Fecha de Inicio</th>
                             <th>Fecha de Finalización</th>
                             <th>Horas Requeridas</th>
+                            <th>Estado</th>
                             <th>Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($semesters as $semester)
-                        <tr>
-                            <td>{{ $semester->name }}</td>
-                            <td>{{ $semester->start_date }}</td>
-                            <td>{{ $semester->end_date }}</td>
-                            <td>{{ $semester->hours_required }}</td>
-                            <td>
-                                <a href="{{ route('semesters.edit', $semester->id) }}" class="btn btn-warning btn-sm btn-action">Editar</a>
-                                <form action="{{ route('semesters.destroy', $semester->id) }}" method="POST" class="d-inline">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-danger btn-sm btn-action">Eliminar</button>
-                                </form>
-                            </td>
-                        </tr>
-                        @endforeach
+                        @forelse($semesters as $semester)
+                            <tr>
+                                <td>{{ $semester->name }}</td>
+                                <td>{{ $semester->start_date }}</td>
+                                <td>{{ $semester->end_date }}</td>
+                                <td>{{ $semester->hours_required }}</td>
+
+                                @if($semester->status == 'active')
+                                    <td>Activo</td>
+                                    <td>
+                                        <a href="{{ route('semesters.edit', $semester->id) }}" class="btn btn-warning btn-sm btn-action">Editar</a>
+                                        <form action="{{ route('semesters.destroy', $semester->id) }}" method="POST" class="d-inline">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-danger btn-sm btn-action">Desactivar</button>
+                                        </form>
+                                    </td>
+                                @else
+                                    <td>Inactivo</td>
+                                    <td>
+                                        <form action="{{ route('semesters.notdestroy', $semester->id) }}" method="POST" class="d-inline">
+                                            @csrf
+                                            @method('PUT')
+                                            <button type="submit" class="btn btn-danger btn-sm btn-action">Activar</button>
+                                        </form>
+                                    </td>
+                                @endif
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="6" class="text-center">No se encontraron resultados</td>
+                            </tr>
+                        @endforelse
                     </tbody>
                 </table>
             </div>

@@ -73,6 +73,10 @@
     .btn-action:hover {
         opacity: 0.8;
     }
+
+    .btn-show-all {
+        margin-left: 0.5rem;
+    }
 </style>
 
 <div class="container py-5">
@@ -80,6 +84,16 @@
         <h2 class="font-weight-bold">Listado de Representantes de Área</h2>
         <a href="{{ route('areamanagers.create') }}" class="btn btn-primary btn-lg btn-create">Crear nuevo registro de representante</a>
     </div>
+
+    <form action="{{ route('areamanagers.index') }}" method="GET" class="mb-4">
+        <div class="input-group">
+            <input type="text" name="search" class="form-control" placeholder="Buscar por cif o nombre..." value="{{ $search }}">
+            <div class="input-group-append">
+                <button type="submit" class="btn btn-info">Buscar</button>
+                <a href="{{ route('areamanagers.index') }}" class="btn btn-secondary btn-show-all">Mostrar todos</a>
+            </div>
+        </div>
+    </form>
 
     <div class="table-container">
         <div class="table-responsive">
@@ -92,30 +106,45 @@
                         <th>Correo</th>
                         <th>Teléfono</th>
                         <th>Área</th>
+                        <th>Estado</th>
                         <th>Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($users as $user)
-                    @if($user->role == 'areamanager')
-                    <tr>
-                        <td>{{ $user->cif }}</td>
-                        <td>{{ $user->name }}</td>
-                        <td>{{ $user->lastname }}</td>
-                        <td>{{ $user->email }}</td>
-                        <td>{{ $user->phone }}</td>
-                        <td>{{ $user->area_manager->areas->name }}</td>
-                        <td>
-                            <a href="{{ route('areamanagers.edit', $user->id) }}" class="btn btn-warning btn-sm btn-action">Editar</a>
-                            <form action="{{ route('areamanagers.destroy', $user->id) }}" method="POST" class="d-inline">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-danger btn-sm btn-action">Eliminar</button>
-                            </form>
-                        </td>
-                    </tr>
-                    @endif
-                    @endforeach
+                    @forelse($users as $user)
+                        <tr>
+                            <td>{{ $user->cif }}</td>
+                            <td>{{ $user->name }}</td>
+                            <td>{{ $user->lastname }}</td>
+                            <td>{{ $user->email }}</td>
+                            <td>{{ $user->phone }}</td>
+                            <td>{{ $user->area_manager->areas->name ?? 'No asignado' }}</td>
+                            @if($user->status == 'active')
+                                <td>Activo</td>
+                                <td>
+                                    <a href="{{ route('areamanagers.edit', $user->id) }}" class="btn btn-warning btn-sm btn-action">Editar</a>
+                                    <form action="{{ route('areamanagers.destroy', $user->id) }}" method="POST" class="d-inline">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger btn-sm btn-action">Desactivar</button>
+                                    </form>
+                                </td>
+                            @else
+                                <td>Inactivo</td>
+                                <td>
+                                    <form action="{{ route('areamanagers.notdestroy', $user->id) }}" method="POST" class="d-inline">
+                                        @csrf
+                                        @method('PUT')
+                                        <button type="submit" class="btn btn-danger btn-sm btn-action">Activar</button>
+                                    </form>
+                                </td>
+                            @endif
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="8" class="text-center">No se encontraron resultados</td>
+                        </tr>
+                    @endforelse
                 </tbody>
             </table>
         </div>
@@ -123,4 +152,3 @@
 </div>
 
 @endsection
-
