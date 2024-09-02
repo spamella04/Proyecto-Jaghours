@@ -18,30 +18,15 @@ class StudentController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function index()
     {
-        $query = User::where('role', 'student');
-        
-        // Aplicar búsqueda si existe
-        if ($request->filled('search')) {
-            $search = $request->get('search');
-            $query->where(function($query) use ($search) {
-                $query->where('cif', '=', $search)
-                      ->orWhere('name', 'like', "%{$search}%")
-                      ->orWhere('lastname', 'like', "%{$search}%");
-            });
-        }
-    
-        // Mostrar todos los estudiantes si el parámetro 'show_all' está presente
-        if (!$request->filled('show_all')) {
-            $query->where('status', 'active');
-        }
-        
-        $users = $query->get();
-        
+        //
+        $users=User::with('student')->get();
+        $students = Student::with('degree')->get();
         return view('student.index', compact('users'));
+        
     }
-   
+
     /**
      * Show the form for creating a new resource.
      */
@@ -105,10 +90,12 @@ class StudentController extends Controller
     }
 
 
-    public function showJobs(Request $request)
+    public function showJobs()
     {
-        $student = Auth::user()->student;
+  
     
+        $student = Auth::user()->student;
+
         if (!$student) {
             return redirect()->route('home')->with('error', 'No tienes un perfil de estudiante asociado.');
         }
@@ -116,41 +103,38 @@ class StudentController extends Controller
         // Obtener todos los semestres
         $semesters = Semester::all();
     
-        // Inicializar variables
-        $semesterProgress = null;
+        // Preparar un array para almacenar el progreso de cada semestre
+        $semesterProgress = [];
     
-        if ($request->filled('semester_id')) {
-            $semester_id = $request->input('semester_id');
-            $semester = Semester::find($semester_id);
+        foreach ($semesters as $semester) {
+            // Obtener todos los registros de horas del estudiante para este semestre
+            $hourRecords = HourRecord::where('semester_id', $semester->id)
+                ->whereHas('job', function ($query) use ($student) {
+                    $query->where('student_id', $student->id);
+                })
+                ->get();
     
-            if ($semester) {
-                // Obtener todos los registros de horas del estudiante para este semestre
-                $hourRecords = HourRecord::where('semester_id', $semester->id)
-                    ->whereHas('job', function ($query) use ($student) {
-                        $query->where('student_id', $student->id);
-                    })
-                    ->get();
+            // Calcular las horas totales trabajadas en este semestre
+            $totalHoursWorked = $hourRecords->sum('hours_worked');
     
-                // Calcular las horas totales trabajadas en este semestre
-                $totalHoursWorked = $hourRecords->sum('hours_worked');
+            // Calcular el porcentaje de progreso
+            $requiredHours = $semester->hours_required;
+            $percentage = $totalHoursWorked > 0 ? ($totalHoursWorked / $requiredHours) * 100 : 0;
     
-                // Calcular el porcentaje de progreso
-                $requiredHours = $semester->hours_required;
-                $percentage = $requiredHours > 0 ? ($totalHoursWorked / $requiredHours) * 100 : 0;
-    
-                // Almacenar el progreso del semestre
-                $semesterProgress = [
-                    'semester' => $semester,
-                    'totalHoursWorked' => $totalHoursWorked,
-                    'requiredHours' => $requiredHours,
-                    'percentage' => $percentage,
-                    'hourRecords' => $hourRecords,
-                ];
-            }
+            // Almacenar el progreso del semestre
+            $semesterProgress[] = [
+                'semester' => $semester,
+                'totalHoursWorked' => $totalHoursWorked,
+                'requiredHours' => $requiredHours,
+                'percentage' => $percentage,
+                'hourRecords' => $hourRecords,
+            ];
         }
     
-        return view('student.jobs', compact('semesters', 'semesterProgress'));
+        return view('student.jobs', compact('semesterProgress'));
+
     }
+
     /**
      * Show the form for editing the specified resource.
      */

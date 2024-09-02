@@ -10,25 +10,18 @@ class AreaController extends Controller
     /**
      * Display a listing of the resource.
      */
-   public function index(Request $request)
+    public function index()
     {
+        //
         try {
-            $search = $request->input('search');
-
-            if ($search) {
-                $areas = Area::where('code', '=', $search)
-                    ->orWhere('name', 'like', "%{$search}%")
-                    ->get();
-            } else {
-                $areas = Area::all();
-            }
-
+            $areas = Area::all();
             return view('areas.index', compact('areas'));
-        } catch (\Exception $e) {
+        }catch(\Exception $e)
+
+        {
             return redirect()->route('home');
         }
     }
-
 
     /**
      * Show the form for creating a new resource.

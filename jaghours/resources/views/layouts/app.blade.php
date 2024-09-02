@@ -84,40 +84,46 @@
                                 </li>
                             @endif
                         @else
-                        @if(Auth::user()->role === 'admin')
-    <li class="nav-item dropdown">
-        <a id="navbarDropdown" class="nav-link dropdown-toggle {{ request()->is('students*') || request()->is('areamanagers*') || request()->is('areas*') || request()->is('degrees*') || request()->is('semesters*') ? 'active' : '' }}" href="#" role="button"
-            data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-            Configuracion
-        </a>
+                            @if(Auth::user()->role === 'admin')
+                                <li class="nav-item dropdown">
+                                    <a id="navbarDropdown" class="nav-link dropdown-toggle {{ request()->is('students*') || request()->is('areamanagers*') || request()->is('areas*') || request()->is('degrees*') || request()->is('semesters*') ? 'active' : '' }}" href="#" role="button"
+                                        data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                        Configuracion
+                                    </a>
 
-        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-            <a class="dropdown-item" href="{{ route('students.index') }}">Estudiantes</a>
-            <a class="dropdown-item" href="{{ route('areamanagers.index') }}">Responsable Area</a>
-            <a class="dropdown-item" href="{{ route('areas.index') }}">Area</a>
-            <a class="dropdown-item" href="{{ route('degrees.index') }}">Carrera</a>
-            <a class="dropdown-item" href="{{ route('semesters.index') }}">Semestre</a>
-        </div>
-    </li>
+                                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                        
 
-    <li class="nav-item">
-        <a class="nav-link {{ request()->is('adminjobopportunities/show') ? 'active' : '' }}"
-            href="{{ route('adminjobopportunities.index') }}">Solicitudes</a>
-    </li>
+                                        <a class="dropdown-item"
+                                            href="{{ route('students.index') }}">Estudiantes</a>
+                                        <a class="dropdown-item"
+                                            href="{{ route('areamanagers.index') }}">Responsable
+                                            Area</a>
+                                        <a class="dropdown-item" href="{{ route('areas.index') }}">Area</a>
+                                        <a class="dropdown-item" href="{{ route('degrees.index') }}">Carrera</a>
+                                        <a class="dropdown-item" href="{{ route('semesters.index') }}">Semestre</a>
+        
+                    
+                                    </div>
+                                </li>
+                              
 
-    <li class="nav-item dropdown">
-        <a id="hoursDropdown" class="nav-link dropdown-toggle {{ request()->is('job/show') || request()->is('completed-hours-report') ? 'active' : '' }}" href="#" role="button"
-            data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-            Horas Laborales
-        </a>
+                                <li class="nav-item">
+                                    <a class="nav-link {{ request()->is('adminjobopportunities/show') ? 'active' : '' }}"
+                                        href="{{ route('adminjobopportunities.index') }}">Solicitudes</a>
+                                </li>
 
-        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="hoursDropdown">
-            <a class="dropdown-item" href="{{ route('job.index') }}">Convalidar</a>
-            <a class="dropdown-item" href="{{ route('hourrecords.report') }}">Reportes</a>
-        </div>
-    </li>
-@endif
+                                <li class="nav-item">
+                                    <a class="nav-link {{ request()->is('joboportunity/manager') ? 'active' : '' }}"
+                                        href="{{ route('joboportunity.index') }}">Publicaciones</a>
+                                </li>
 
+                                <li class="nav-item">
+                                    <a class="nav-link {{ request()->is('job/show') ? 'active' : '' }}"
+                                    href="{{ route('job.index') }}">Convalidar</a>
+                                </li>
+                                
+                            @endif
 
 
                             @if(Auth::user()->role === 'areamanager')
