@@ -45,7 +45,7 @@ class AreaManager extends Model
     //Relacion Registros de Horas
     public function HoursRecords()
     {
-        return $this->hasMany(HourRecord::Class);
+        return $this->hasMany(HourRecord::class);
     }
 
 }
