@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\Job;
 use App\Models\Application;
 use App\Models\JobOportunity;
+use App\Events\StudentAcceptedForJob;
+
 class JobController extends Controller
 {
     /**
@@ -51,6 +53,11 @@ class JobController extends Controller
      */
     public function store(Request $request)
     {
+        if ($request->isMethod('get')) {
+            // Redirigir o mostrar un mensaje de error
+            return redirect()->route('joboportunity.index')->withErrors('Acceso no permitido');
+        }
+
         // Validar la solicitud
         $request->validate([
             'application_id' => 'required|exists:applications,id',
@@ -61,29 +68,31 @@ class JobController extends Controller
         $application->status = 'Aceptado';
         $application->save();
 
-        // Crear un nuevo trabajo  
+        
+        // Crear un nuevo trabajo
         $job = new Job();
         $job->job_opportunity_id = $application->job_opportunity_id; 
         $job->student_id = $application->student_id;
         $job->save();
-
+    
         // Verificar si se alcanzó el número máximo de vacantes aceptadas
         $joboportunity = JobOportunity::findOrFail($application->job_opportunity_id);
         $acceptedCount = $joboportunity->applications()->where('status', 'Aceptado')->count();
+        
+        // Lanzar el evento para enviar el correo
+        event(new StudentAcceptedForJob($joboportunity, $application->student_id));
+         
 
         if ($acceptedCount >= $joboportunity->number_vacancies) {
             // Actualizar las solicitudes pendientes a rechazadas
             $joboportunity->applications()->where('status', 'Pendiente')->update(['status' => 'No Aceptado']);
         }
-
-
-        // Redirigir o cargar la vista de vuelta con los datos necesarios
+    
+        // Redirigir
         return redirect()->route('joboportunity.showapplicants', ['id' => $job->job_opportunity_id]);
     }
     
-
     
-
     /**
      * Display the specified resource.
      */
