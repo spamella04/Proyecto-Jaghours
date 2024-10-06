@@ -66,8 +66,12 @@ class AdminJobOpportunityController extends Controller
         }
     }
 
+    /**
+     * Update the specified resource in storage.
+     */
     public function update(Request $request, string $id)
     {
+        //
         $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'required|string|max:1000',
@@ -79,13 +83,26 @@ class AdminJobOpportunityController extends Controller
         ]);
 
         try {
+            // Encontrar la oportunidad de trabajo
             $jobOpportunity = JobOportunity::findOrFail($id);
-            $jobOpportunity->update($request->all());
+
+            // Actualizar los campos
+            $jobOpportunity->title = $request->title;
+            $jobOpportunity->description = $request->description;
+            $jobOpportunity->start_date = $request->start_date;
+            $jobOpportunity->hours_validated = $request->hours_validated;
+            $jobOpportunity->number_applicants = $request->number_applicants;
+            $jobOpportunity->number_vacancies = $request->number_vacancies;
+            $jobOpportunity->requirements = $request->requirements;
+
+            // Guardar los cambios
+            $jobOpportunity->save();
 
             return redirect()->route('adminjobopportunities.index')->with('success', 'La solicitud se ha actualizado correctamente.');
         } catch (\Exception $e) {
             return redirect()->route('adminjobopportunities.index')->with('error', 'Hubo un problema al actualizar la solicitud.');
         }
+       
     }
 
     public function publish(string $id)
