@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\JobOportunity;
+use App\Enums\JobOportunityStatus;
 
 class AdminJobOpportunityController extends Controller
 {
@@ -91,7 +92,7 @@ class AdminJobOpportunityController extends Controller
     {
         try {
             $jobOpportunity = JobOportunity::findOrFail($id);
-            $jobOpportunity->status = 'Publicado'; // Cambiar estado a Publicado
+            $jobOpportunity->status = JobOportunityStatus::Published;
             $jobOpportunity->save();
             return redirect()->route('adminjobopportunities.index');
         } catch (\Exception $e) {
@@ -103,7 +104,7 @@ class AdminJobOpportunityController extends Controller
     {
         try {
             $jobOpportunity = JobOportunity::findOrFail($id);
-            $jobOpportunity->status = 'Rechazada'; // Cambiar estado a Rechazada
+            $jobOpportunity->status = JobOportunityStatus::Rejected;
             $jobOpportunity->save();
             return redirect()->route('adminjobopportunities.index');
         } catch (\Exception $e) {

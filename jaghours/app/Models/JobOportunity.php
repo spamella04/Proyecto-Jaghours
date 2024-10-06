@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Enums\JobOportunityStatus;
 
 class JobOportunity extends Model
 {
@@ -22,16 +23,34 @@ class JobOportunity extends Model
     ];
 
     protected $casts = [
-        'status' => 'string', // Estado tratado como un simple atributo
+        'status' => JobOportunityStatus::class,
     ];
 
-    // Relación con Area Manager
+    public function getStatusAttribute($value)
+    {
+        return JobOportunityStatus::fromValue($value);
+    }
+
+    public function setStatusAttribute( $JobOportunityStatus)
+    {
+        $this->attributes['status'] = JobOportunityStatus::fromValue($JobOportunityStatus);
+    }
+
+    //Relacion Area Manager
     public function area_managers()
     {
         return $this->belongsTo(AreaManager::class, 'area_manager_id', 'id');
     }
 
-    // Relación con Postulaciones
+
+    
+    public function getAreaManagers()
+    {
+        return $this->area_managers->user->getUser();
+    }
+
+    //Relacion Postulaciones
+
     public function applications()
     {
         return $this->hasMany(Application::class, 'job_opportunity_id', 'id');
