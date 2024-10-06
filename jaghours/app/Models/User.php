@@ -54,13 +54,13 @@ class User extends Authenticatable
     //Relacion Estudiantes
     public function student()
     {
-        return $this->hasOne(Student::Class,'student_id','id');
+        return $this->hasOne(Student::class,'student_id','id');
     }
 
     //Relacion Area Managers
     public function area_manager()
     {
-        return $this->hasOne(AreaManager::Class,'area_manager_id','id');
+        return $this->hasOne(AreaManager::class,'area_manager_id','id');
     }
 
 

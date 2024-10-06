@@ -82,7 +82,7 @@ class ApplicationController extends Controller
             return redirect()->route('applications.index')->with('success', 'Aplicación enviada con éxito.');
         } catch (\Exception $e) {
             // Registrar el error para depuración
-            \Log::error('Error al guardar la aplicación: ' . $e->getMessage());
+            
 
             // Redirigir de vuelta en caso de error
             return redirect()->back()->with('error', 'Hubo un error al enviar la aplicación.');

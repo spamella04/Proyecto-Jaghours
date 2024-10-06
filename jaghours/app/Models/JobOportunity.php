@@ -22,8 +22,6 @@ class JobOportunity extends Model
         'area_manager_id'
     ];
 
-    //Estado de la oportunidad de trabajo
-
     protected $casts = [
         'status' => JobOportunityStatus::class,
     ];
@@ -58,19 +56,15 @@ class JobOportunity extends Model
         return $this->hasMany(Application::class, 'job_opportunity_id', 'id');
     }
 
-    //Relacion Registro de Horas
-
+    // Relación con Registro de Horas
     public function hourRecords()
     {
         return $this->hasMany(HourRecord::class);
     }
 
-    //Relacion Trabajos
+    // Relación con Trabajos
     public function job()
     {
         return $this->hasMany(Job::class);
     }
-
-    
-    
 }

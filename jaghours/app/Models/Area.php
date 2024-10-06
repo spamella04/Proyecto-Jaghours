@@ -16,6 +16,6 @@ class Area extends Model
     //Relacion AreaManager
     public function area_managers()
     {
-        return $this->hasMany(AreaManager::Class);
+        return $this->hasMany(AreaManager::class);
     }
 }

@@ -15,7 +15,7 @@ class Student extends Model
     //Relacion Usuario
     public function user()
     {
-        return $this->belongsTo(User::Class, 'student_id', 'id');
+        return $this->belongsTo(User::class, 'student_id', 'id');
     }
 
     public function getUser(){
@@ -25,7 +25,7 @@ class Student extends Model
     //Relacion Carrera
     public function degree()
     {
-        return $this->belongsTo(Degree::Class, 'degree_id', 'id');
+        return $this->belongsTo(Degree::class, 'degree_id', 'id');
     }
 
     public function getDegree(){
@@ -35,18 +35,18 @@ class Student extends Model
     //Relacion Postulaciones
     public function applications()
     {
-        return $this->hasMany(Application::Class, 'student_id', 'id');
+        return $this->hasMany(Application::class, 'student_id', 'id');
     }
 
     //Relacion Registros de Horas
     public function hoursrecords()
     {
-        return $this->hasMany(HourRecord::Class , 'student_id', 'id');
+        return $this->hasMany(HourRecord::class , 'student_id', 'id');
     }
 
     public function jobs()
     {
-        return $this->hasMany(Job::Class , 'student_id', 'id');
+        return $this->hasMany(Job::class , 'student_id', 'id');
     }
     
 
