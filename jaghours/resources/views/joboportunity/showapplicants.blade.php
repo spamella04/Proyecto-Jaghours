@@ -185,7 +185,7 @@
                             <div class="applicant-card-header">
                                 <div class="details">
                                     <p style="font-weight: bold;">Nombre:</p>
-                                    <p style="color:gray;">{{ $application->student->user->name }} {{ $application->student->user->lastname }}</p>
+                                    <p style="color:gray;">{{ $application->decoratedStudent->getFullName()}}</p>
                                 </div>
                                 <div class="details">
                                     <p style="font-weight: bold;">CIF:</p>
@@ -198,7 +198,7 @@
                                    
                                 </div>
                                 <div class="details">
-                                    <p style="color:gray;">{{ $application->student->skills }}</p>
+                                    <p style="color:gray;">{{ $application->decoratedStudent->getFormattedSkills() }}</p>
                                 </div>
                                 <div class="details">
                                     <p style="font-weight: bold;">Email:</p>
