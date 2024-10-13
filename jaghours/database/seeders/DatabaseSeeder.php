@@ -152,7 +152,25 @@ class DatabaseSeeder extends Seeder
 
 
 ]);
+/*
+\App\Models\User::factory()->create([
+  'cif' => '012345678K',
+  'name' => 'Armando',
+'lastname' => 'Gomez',
+  'phone' => '87126809',
+'email' => 'armando.lopez@uamv.edu.ni',
+'password' => bcrypt('password'),
+'role' => 'student', 
 
+]);
+
+\App\Models\Student::factory()->create([
+  'student_id' => '5',
+  'degree_id' => '1',
+  'skills' => 'Organización',
+
+]);
+*/
 
 \App\Models\Semester::factory()->create(
   [
