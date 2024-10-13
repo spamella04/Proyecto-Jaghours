@@ -144,13 +144,8 @@ class JobOportunityController extends Controller
 
     public function showApplicants($id)
     {
-        // Obtener la oportunidad de trabajo con las aplicaciones y los estudiantes relacionados
+       
         $joboportunity = JobOportunity::with('applications.student.user')->findOrFail($id);
-    
-        // Decorar cada estudiante en las aplicaciones
-        foreach ($joboportunity->applications as $application) {
-        $application->decoratedStudent = new StudentDecorator($application->student); // Aplica el decorador
-        }
 
         return view('joboportunity.showapplicants', compact('joboportunity'));
     }
