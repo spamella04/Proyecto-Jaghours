@@ -136,7 +136,6 @@
     <script>
         function toggleDetails(element) {
             const details = element.querySelector('.applicant-details');
-            const button = element.querySelector('button');
             if (details.style.display === 'none' || details.style.display === '') {
                 details.style.display = 'block';
                 element.classList.add('expanded');
@@ -145,97 +144,110 @@
                 element.classList.remove('expanded');
             }
         }
+        // Esto es para deshabilitar el botón y mostrar un mensaje de carga
+        function handleButtonClick(form) {
+            const button = form.querySelector('button[type="submit"]');
+            button.disabled = true;
+            button.textContent = 'Procesando...';
+
+            const loadingMessage = form.querySelector('.loading-message');
+            if (loadingMessage) {
+                loadingMessage.style.display = 'block';
+            }
+        }
+        // Y este para vitar que el clic en el botón active el toggle
+        function preventToggleOnButtonClick(event) {
+            event.stopPropagation(); 
+        }
     </script>
 </head>
 
 <div class="container mt-4">
-   
-        <h1 class="" style="color: #333; font-weight: bold;">Aplicantes</h1>
-        <div class="job-card shadow-lg p-3 mb-5 bg-white rounded">
-            <div class="d-flex align-items-center">
-                <div>
-                    <div class="job-card-title">{{ $joboportunity->title }}</div>
-                    <div class="job-card-area mt-1">
-                        <span class="fw-bold" style="color:gray;">{{ $joboportunity->area_managers->areas->name }}</span>
-                    </div>
+    <h1 class="" style="color: #333; font-weight: bold;">Aplicantes</h1>
+    <div class="job-card shadow-lg p-3 mb-5 bg-white rounded">
+        <div class="d-flex align-items-center">
+            <div>
+                <div class="job-card-title">{{ $joboportunity->title }}</div>
+                <div class="job-card-area mt-1">
+                    <span class="fw-bold" style="color:gray;">{{ $joboportunity->area_managers->areas->name }}</span>
                 </div>
             </div>
-            <div class="job-card-description mt-3">
-                {{ $joboportunity->description }}
-            </div>
-            <div class="job-card-details mt-3">
-                <span class="fw-bold" style="color:#219EBC;">Total Horas Convalidadas:</span>
-                <span class="fw-light" style="color:gray;"> {{ $joboportunity->hours_validated }} horas</span>
-                <br>
-                <span class="fw-bold" style="color:#219EBC;">Fecha de Inicio:</span>
-                <span class="fw-light" style="color:gray;">{{ $joboportunity->start_date }}</span>
-            </div>
-
-            <div class="job-card-applicants mt-3">
-                <h5 class="fw-bold" style="color:#219EBC;">Estudiantes que aplicaron:</h5>
-                @if($joboportunity->applications->isEmpty())
-                    <p style="color:gray;">No hay estudiantes que hayan aplicado aún.</p>
-                @else
-                    @php
-                        $acceptedCount = $joboportunity->applications()->where('status', 'Aceptado')->count();
-                    @endphp
-
-                    @foreach($joboportunity->applications as $application)
-                        <div class="applicant-card" onclick="toggleDetails(this)">
-                            <div class="applicant-card-header">
-                                <div class="details">
-                                    <p style="font-weight: bold;">Nombre:</p>
-                                    <p style="color:gray;">{{ $application->student->user->name }} {{ $application->student->user->lastname }}</p>
-                                </div>
-                                <div class="details">
-                                    <p style="font-weight: bold;">CIF:</p>
-                                    <p style="color:gray;">{{ $application->student->user->cif }}</p>
-                                </div>
-                            </div>
-                            <div class="applicant-details">
-                                <div class="details">
-                                    <p style="font-weight: bold;">Habilidades:</p>
-                                   
-                                </div>
-                                <div class="details">
-                                    <p style="color:gray;">{{ $application->student->skills }}</p>
-                                </div>
-                                <div class="details">
-                                    <p style="font-weight: bold;">Email:</p>
-                                    <p style="color:gray;">{{ $application->student->user->email }}</p>
-                                </div>
-                                <div class="details">
-                                    <p style="font-weight: bold;">Teléfono:</p>
-                                    <p style="color:gray;">{{ $application->student->user->phone }}</p>
-                                </div>
-                                <div class="details">
-                                    <p style="font-weight: bold;">Fecha de Aplicación:</p>
-                                    <p style="color:gray;">{{ $application->created_at }}</p>
-                                </div>
-                            </div>
-                            @if ($application->status == 'Aceptado')
-                                <span class="fw-bold text-success">Aceptado</span>
-                            @endif
-                            @if ($application->status == 'No Aceptado')
-                                <span class="fw-bold text-danger">No Aceptado</span>
-                            @endif
-                            @if($application->status == 'Pendiente')
-                                @if ($acceptedCount >= $joboportunity->number_vacancies)
-                                    <button type="button" class="btn btn-info btn-sm btn-action" disabled>Aceptar Aplicantes</button>
-                                @else
-                                    <form method="POST" action="{{ route('job.store') }}">
-                                        @csrf
-                                        <input type="hidden" name="application_id" value="{{ $application->id }}">
-                                        <button type="submit" class="btn btn-info btn-sm btn-action">Aceptar Aplicantes</button>
-                                    </form>
-                                @endif
-                            @endif
-                        </div>
-                    @endforeach
-                @endif
-            </div>
         </div>
-    
+        <div class="job-card-description mt-3">
+            {{ $joboportunity->description }}
+        </div>
+        <div class="job-card-details mt-3">
+            <span class="fw-bold" style="color:#219EBC;">Total Horas Convalidadas:</span>
+            <span class="fw-light" style="color:gray;"> {{ $joboportunity->hours_validated }} horas</span>
+            <br>
+            <span class="fw-bold" style="color:#219EBC;">Fecha de Inicio:</span>
+            <span class="fw-light" style="color:gray;">{{ $joboportunity->start_date }}</span>
+        </div>
+
+        <div class="job-card-applicants mt-3">
+            <h5 class="fw-bold" style="color:#219EBC;">Estudiantes que aplicaron:</h5>
+            @if($joboportunity->applications->isEmpty())
+                <p style="color:gray;">No hay estudiantes que hayan aplicado aún.</p>
+            @else
+                @php
+                    $acceptedCount = $joboportunity->applications()->where('status', 'Aceptado')->count();
+                @endphp
+
+                @foreach($joboportunity->applications as $application)
+                    <div class="applicant-card" onclick="toggleDetails(this)">
+                        <div class="applicant-card-header">
+                            <div class="details">
+                                <p style="font-weight: bold;">Nombre:</p>
+                                <p style="color:gray;">{{ $application->student->user->name }} {{ $application->student->user->lastname }}</p>
+                            </div>
+                            <div class="details">
+                                <p style="font-weight: bold;">CIF:</p>
+                                <p style="color:gray;">{{ $application->student->user->cif }}</p>
+                            </div>
+                        </div>
+                        <div class="applicant-details">
+                            <div class="details">
+                                <p style="font-weight: bold;">Habilidades:</p>
+                            </div>
+                            <div class="details">
+                                <p style="color:gray;">{{ $application->student->skills }}</p>
+                            </div>
+                            <div class="details">
+                                <p style="font-weight: bold;">Email:</p>
+                                <p style="color:gray;">{{ $application->student->user->email }}</p>
+                            </div>
+                            <div class="details">
+                                <p style="font-weight: bold;">Teléfono:</p>
+                                <p style="color:gray;">{{ $application->student->user->phone }}</p>
+                            </div>
+                            <div class="details">
+                                <p style="font-weight: bold;">Fecha de Aplicación:</p>
+                                <p style="color:gray;">{{ $application->created_at }}</p>
+                            </div>
+                        </div>
+                        @if ($application->status == 'Aceptado')
+                            <span class="fw-bold text-success">Aceptado</span>
+                        @endif
+                        @if ($application->status == 'No Aceptado')
+                            <span class="fw-bold text-danger">No Aceptado</span>
+                        @endif
+                        @if($application->status == 'Pendiente')
+                            @if ($acceptedCount >= $joboportunity->number_vacancies)
+                                <button type="button" class="btn btn-info btn-sm btn-action" disabled>Aceptar Aplicantes</button>
+                            @else
+                                <form method="POST" action="{{ route('job.store') }}" onsubmit="handleButtonClick(this)">
+                                    @csrf
+                                    <input type="hidden" name="application_id" value="{{ $application->id }}">
+                                    <button type="submit" class="btn btn-info btn-sm btn-action" onclick="preventToggleOnButtonClick(event)">Aceptar Aplicantes</button>
+                                </form>
+                            @endif
+                        @endif
+                    </div>
+                @endforeach
+            @endif
+        </div>
+    </div>
+
 </div>
 
 @endsection
