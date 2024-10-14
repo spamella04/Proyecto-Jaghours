@@ -6,38 +6,37 @@
     <div class="row justify-content-center">
         <div class="col-lg-8">
             <div class="card border-0 shadow-sm rounded-lg">
-                <div class="card-header bg-dark text-white text-center py-3">
-                    <h3 class="mb-0">Ingrese la información de la Solicitud</h3>
+                <div class="card-header bg-dark text-white text-center py-4">
+                    <h3 class="mb-0">Crear una Nueva Publicación</h3>
                 </div>
                 <div class="card-body p-5">
                     <form action="{{ route('joboportunity.store') }}" method="POST" enctype="multipart/form-data"> <!-- Agregar enctype para permitir la subida de archivos -->
                         @csrf
 
-                        <div class="mb-3">
-                            <label for="title" class="form-label font-weight-bold">Título</label>
+                        <div class="mb-4">
+                            <label for="title" class="form-label font-weight-bold">Título de la Solicitud</label>
                             <input type="text" class="form-control @error('title') is-invalid @enderror" id="title" name="title" value="{{ old('title') }}" required>
                             @error('title')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
 
-                      
-                        <div class="mb-3">
-                        <div class="form-group">
-                        <label for="match" class="form-label font-weight-bold">¿Es un partido?</label>
-                         <input type="checkbox" id="match" name="match" value="1" {{ old('match', $joboportunity->match ?? false) ? 'checked' : '' }}>
-                        </div>
+                        <div class="mb-4">
+                            <div class="form-group">
+                                <label for="match" class="form-label font-weight-bold">¿Es un partido?</label>
+                                <input type="checkbox" id="match" name="match" value="1" {{ old('match', $joboportunity->match ?? false) ? 'checked' : '' }}>
+                            </div>
                         </div>
 
-                        <div class="mb-3">
-                            <label for="description" class="form-label font-weight-bold">Descripción</label>
-                            <textarea class="form-control @error('description') is-invalid @enderror" id="description" name="description" required>{{ old('description') }}</textarea>
+                        <div class="mb-4">
+                            <label for="description" class="form-label font-weight-bold">Descripción de la Solicitud</label>
+                            <textarea class="form-control @error('description') is-invalid @enderror" id="description" name="description" rows="5" required>{{ old('description') }}</textarea>
                             @error('description')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
 
-                        <div class="row mb-3">
+                        <div class="row mb-4">
                             <div class="col-md-6">
                                 <label for="hours_validated" class="form-label font-weight-bold">Horas Convalidadas</label>
                                 <input type="number" class="form-control @error('hours_validated') is-invalid @enderror" id="hours_validated" name="hours_validated" value="{{ old('hours_validated') }}" min="1" required>
@@ -54,7 +53,7 @@
                             </div>
 
                             <div class="col-md-6">
-                                <label for="number_applicants" class="form-label font-weight-bold">Número de aplicantes</label>
+                                <label for="number_applicants" class="form-label font-weight-bold">Número de Aplicantes</label>
                                 <input type="number" class="form-control @error('number_applicants') is-invalid @enderror" id="number_applicants" name="number_applicants" value="{{ old('number_applicants') }}" min="1" required>
                                 @error('number_applicants')
                                     <div class="invalid-feedback">{{ $message }}</div>
@@ -71,15 +70,14 @@
 
                             <div class="col-md-12">
                                 <label for="requirements" class="form-label font-weight-bold">Requerimientos</label>
-                                <textarea class="form-control @error('requirements') is-invalid @enderror" id="requirements" name="requirements" required>{{ old('requirements') }}</textarea>
+                                <textarea class="form-control @error('requirements') is-invalid @enderror" id="requirements" name="requirements" rows="4" required>{{ old('requirements') }}</textarea>
                                 @error('requirements')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
                         </div>
 
-                        <!-- Campo para subir la imagen -->
-                        <div class="mb-3">
+                        <div class="mb-4">
                             <label for="image" class="form-label font-weight-bold">Subir Imagen</label>
                             <input type="file" class="form-control @error('image') is-invalid @enderror" id="image" name="image" accept="image/*">
                             @error('image')
