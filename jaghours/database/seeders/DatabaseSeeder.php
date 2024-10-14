@@ -32,6 +32,14 @@ class DatabaseSeeder extends Seeder
                 
             ]
             );
+
+            \App\Models\Degree::factory()->create(
+              [
+                  'code' => '0008',
+                  'name' => 'Medicina',
+                  
+              ]
+              );
             \App\Models\Degree::factory()->create(
               [
                   'code' => '0002',

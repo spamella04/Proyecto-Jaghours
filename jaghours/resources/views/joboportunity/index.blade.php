@@ -142,16 +142,23 @@
     }
 </style>
 
+@php
+    $count = 0; // Inicializar el contador
+@endphp
+
 <div class="container mt-4">
+  
     @if(Auth::user()->role == 'areamanager')
         <h1 class="">Solicitudes</h1>
         <a href="{{ route('joboportunity.create') }}" class="btn btn-primary mb-3" style="background-color: #219EBC; border-color: #219EBC;">Crear Nueva Solicitud</a>
         
         <div class="row">
+       
             @foreach($jobOportunities as $joboportunity)
+           @if($joboportunity->status != 'Pendiente')
                 <div class="col-md-6">
                     <div class="job-card shadow-lg">
-                        @if($joboportunity->image_path)
+                    @if($joboportunity->image_path)
                             <img src="{{ asset('storage/' . $joboportunity->image_path) }}" alt="Imagen de {{ $joboportunity->title }}" class="job-card-image">
                         @else
                             <div class="job-card-placeholder">
@@ -191,9 +198,19 @@
                 
                 @if (($loop->index + 1) % 2 == 0) 
                     </div><div class="row"> <!-- Cierra y abre una nueva fila cada 2 publicaciones -->
-                @endif
+                @endif 
+                @php
+                $count = 1; 
+                @endphp
+             @endif
             @endforeach
+
+            @if($count == 0)
+                <div class="alert alert-info">No hay solicitudes pendientes</div>
+            @endif
         </div>
+
+
     @endif
 
     @if(Auth::user()->role == 'admin')

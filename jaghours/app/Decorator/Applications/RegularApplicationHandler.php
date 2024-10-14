@@ -20,23 +20,34 @@ class RegularApplicationHandler extends ApplicationHandler
         $output .= '</thead>';
         $output .= '<tbody>';
 
+        // Filtrar aplicaciones con estado "Pendiente"
         foreach ($this->applications as $application) {
+            // Si el estado de la aplicación es diferente de 'Pendiente', omitimos esta iteración
+            if ($application->status != 'Pendiente' && $application->status != 'No Aceptado') {
+                continue;
+            }
+
             $output .= '<tr>';
             $output .= "<td>{$application->student->user->cif}</td>"; // Cif del estudiante
             $output .= "<td>{$application->student->user->name}</td>"; // Nombre del estudiante
             $output .= "<td>{$application->status}</td>"; // Estado de la aplicación
 
             // Solo mostrar el botón de aceptar si el estado es 'Pendiente'
-            $output .= '<td>'; // Columna de acciones
-            if ($application->status == 'Pendiente') {
+            if($application->status == 'Pendiente') {
+                $output .= '<td>'; // Columna de acciones
                 $output .= "<form method='POST' action='" . route('job.store') . "'>";
                 $output .= csrf_field(); // Incluir el token CSRF
                 $output .= "<input type='hidden' name='application_id' value='{$application->id}'>"; // Incluir el ID de la aplicación
-                $output .= "<button type='submit' class='btn btn-success'>Aceptar</button>";
+                $output .= "<button type='submit' class='btn btn-success' style='background-color: #219EBC; color: white;'>Aceptar</button>";
                 $output .= "</form>";
+                $output .= '</td>'; // Cerrar la columna de acciones
+                $output .= '</tr>';
+            } else {
+                $output .= '<td>'; // Columna de acciones
+                $output .= "<button class='btn btn-secondary' disabled>Aceptar</button>"; // Botón deshabilitado
+                $output .= '</td>'; // Cerrar la columna de acciones    
             }
-            $output .= '</td>'; // Cerrar la columna de acciones
-            $output .= '</tr>';
+          
         }
 
         $output .= '</tbody>';
@@ -45,3 +56,4 @@ class RegularApplicationHandler extends ApplicationHandler
         return $output;
     }
 }
+

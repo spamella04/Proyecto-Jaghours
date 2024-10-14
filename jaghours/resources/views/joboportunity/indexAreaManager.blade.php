@@ -7,9 +7,14 @@
         border-radius: 10px;
         border: 1px solid #ddd;
         margin-bottom: 20px;
-        padding: 15px;
+        padding: 20px;
         background-color: #fff;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s;
+    }
+
+    .job-card:hover {
+        transform: translateY(-5px);
     }
 
     .job-card-avatar {
@@ -26,35 +31,68 @@
     }
 
     .job-card-title {
-        font-size: 1.25rem;
+        font-size: 1.75rem; /* Aumentar tamaño de título */
         font-weight: bold;
         margin-bottom: 10px;
+        color: #333;
     }
 
     .job-card-area {
         color: #666;
-        font-size: 0.9rem;
+        font-size: 1rem;
         margin-bottom: 10px;
     }
 
     .job-card-date {
         color: #219EBC;
-        font-size: 0.8rem;
+        font-size: 0.9rem;
         font-weight: bold;
     }
 
     .job-card-description {
+        margin-top: 15px;
+        color: #444;
+        font-size: 1rem; /* Tamaño de texto más grande */
+        line-height: 1.8; /* Mayor interlineado */
+    }
+
+    .job-card-image {
+        width: 100%; /* Asegura que la imagen ocupe el ancho completo */
+        border-radius: 10px;
+        margin-top: 15px;
+    }
+
+    .job-card-placeholder {
+        width: 100%;
+        height: 200px; /* Altura del cuadro de marcador de posición */
+        background-color: #f0f0f0; /* Color de fondo del marcador de posición */
+        border: 1px solid #ccc; /* Borde sólido */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: #aaa;
+        font-size: 1.5rem; /* Tamaño del texto */
+        text-align: center;
         margin-top: 10px;
-        color: #333;
+        border-radius: 10px; /* Bordes redondeados */
+        position: relative;
+    }
+
+    .job-card-placeholder:before {
+        content: "Sin Imagen"; /* Texto en el cuadro */
+        position: absolute;
+        font-size: 1rem; /* Tamaño del texto */
+        color: #666; /* Color del texto */
     }
 
     .job-card-details {
-        margin-top: 10px;
+        margin-top: 15px;
         font-size: 0.9rem;
+        color: #666;
     }
 
     .job-card-status {
-        margin-top: 10px;
+        margin-top: 15px;
     }
 
     .custom-badge {
@@ -63,7 +101,7 @@
         background-color: #E0F2F1; /* Fondo más claro */
         color: #219EBC; /* Letras en color #219EBC */
         border-radius: 0.25rem;
-        font-size: 0.8rem;
+        font-size: 0.9rem;
     }
 
     .btn-action {
@@ -81,7 +119,6 @@
     .btn-action:hover {
         background-color: #0F456E;
     }
-
 </style>
 
 <div class="container mt-4">
@@ -100,16 +137,26 @@
                             <div class="job-card-area">
                                 <span>{{ $joboportunity->area_managers->areas->name }}</span>
                             </div>
+                            <div class="job-card-date">Fecha de publicación: 
+                                <span>{{ $joboportunity->created_at->format('d/m/Y') }}</span>
+                            </div>
                         </div>
                     </div>
+                    @if($joboportunity->image_path)
+                            <img src="{{ asset('storage/' . $joboportunity->image_path) }}" alt="Imagen de {{ $joboportunity->title }}" class="job-card-image">
+                        @else
+                            <div class="job-card-placeholder">
+                                
+                            </div>
+                        @endif
                     <div class="job-card-description mt-3">
                         {{ $joboportunity->description }}
                     </div>
                     <div class="job-card-details mt-3">
-                        <span class="fw-bold" style="font:10px; color:#219EBC; font-weight:500;">Total Horas Convalidadas:</span>
+                        <span class="fw-bold" style="color:#219EBC;">Total Horas Convalidadas:</span>
                         <span class="fw-light" style="color:gray;"> {{ $joboportunity->hours_validated }} horas</span>
                         <br>
-                        <span class="fw-bold" style="font:10px; color:#219EBC; font-weight:500;">Fecha de Inicio:</span>
+                        <span class="fw-bold" style="color:#219EBC;">Fecha de Inicio:</span>
                         <span class="fw-light" style="color:gray;">{{ $joboportunity->start_date }}</span>
                     </div>
                     <div class="d-flex justify-content-between align-items-center mt-3">
@@ -125,6 +172,14 @@
         @endforeach
     @endif
 
+    {{-- Paginación --}}
+    <div class="d-flex justify-content-center">
+        {{ $jobOportunities->links() }} {{-- Esto generará los enlaces de paginación usando Bootstrap --}}
+    </div>
+
 </div>
+
+
+
 
 @endsection

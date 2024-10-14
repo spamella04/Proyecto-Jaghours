@@ -201,6 +201,7 @@ class JobOportunityController extends Controller
             'hours_validated' => 'required|integer|min:1',
             'number_applicants' => 'required|integer|min:1',
             'number_vacancies' => 'required|integer|min:1',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048', // Validación de la imagen
             'requirements' => 'required|string',
         ], [
             'start_date.after_or_equal' => 'La fecha de inicio debe ser hoy o una fecha futura.',
@@ -209,6 +210,13 @@ class JobOportunityController extends Controller
             'number_vacancies.min' => 'El número de vacantes debe ser al menos 1.',
         ]);
         try{
+
+            $imagePath = Null;
+            if ($request->hasFile('image')) {
+                $imagePath = $request->file('image')->store('job_opportunities', 'public'); // Almacena la imagen
+                $validated['image_path'] = $imagePath;
+            }
+
             $jobOportunity = JobOportunity::findOrFail($id);
             $jobOportunity->title = $request->title;
             $jobOportunity->description = $request->description;
@@ -216,6 +224,7 @@ class JobOportunityController extends Controller
             $jobOportunity->hours_validated = $request->hours_validated;
             $jobOportunity->number_applicants = $request->number_applicants;
             $jobOportunity->number_vacancies = $request->number_vacancies;
+            $jobOportunity->image_path = $imagePath;
             $jobOportunity->requirements = $request->requirements;
             $jobOportunity->save();
             return redirect()->route('joboportunity.index');
