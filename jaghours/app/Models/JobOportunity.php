@@ -19,6 +19,8 @@ class JobOportunity extends Model
         'number_applicants',
         'number_vacancies',
         'requirements',
+        'match',
+        'image_path',
         'area_manager_id'
     ];
 

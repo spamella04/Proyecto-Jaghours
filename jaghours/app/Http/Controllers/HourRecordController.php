@@ -13,6 +13,7 @@ use App\Models\User;
 use App\Models\Area;
 use App\Models\Degree;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class HourRecordController extends Controller
 {
@@ -135,47 +136,93 @@ class HourRecordController extends Controller
      */
     public function store(Request $request)
     {
-        //
+       
         $request->validate([
-            'job_id' => 'required|exists:jobs,id',
+            'job_id' => 'exists:jobs,id',
+            'job_opportunity_id' => 'exists:job_oportunities,id',
+            'students' => 'array',
+            'students.*' => 'exists:students,id',
             'hours_worked' => 'required|numeric',
             'description' => 'required',
             'work_date' => [
                 'required',
                 'date',
+
                 // Regla personalizada para validar la fecha dentro del rango del semestre
                 function ($attribute, $value, $fail) use ($request) {
                     // Obtener el semestre seleccionado
                     $semester = Semester::findOrFail($request->semester_id);
-    
+
                     // Validar que la fecha de trabajo esté dentro del rango del semestre
                     if ($value < $semester->start_date || $value > $semester->end_date) {
                         $fail('La fecha de trabajo debe estar dentro del rango del semestre seleccionado.');
                     }
                 },
             ],
+            
         ]);
+        Log::info('Datos del request:', $request->all());
 
-        $hourRecord = new HourRecord();
-        $hourRecord->work_date = $request->work_date;
-        $hourRecord->job_id = $request->job_id;
-        $hourRecord->hours_worked = $request->hours_worked;
-        $hourRecord->semester_id = $request->semester_id;
 
-        $job = Job::findOrFail($request->job_id);
-        $jobOpportunity = $job->job_opportunity;
+        
 
-        if(Auth::user()->role == 'areamanager'){
-            $hourRecord->area_manager_id = auth()->user()->area_manager->id; 
+        //Buscar jobOpporunity
+        $jobOpportunity = JobOpportunity::findOrFail($request->job_opportunity_id);
+
+        if($jobOpportunity->match){
+
+            //enonctrar semestre activo
+            $semester = Semester::where('status', 'active')->first();
+
+           foreach($request->students as $studentId){
+            $job = new Job();
+            $job->job_opportunity_id = $request->job_opportunity_id;
+            $job->student_id = $studentId; // Asignar el ID del estudiante
+            $job->save();
+
+            $hourRecord = new HourRecord();
+            $hourRecord->work_date = $jobOpportunity->start_date;
+            $hourRecord->job_id = $job->id; // Usa el ID del trabajo recién creado
+            $hourRecord->hours_worked = $jobOpportunity->hours_validated;
+            $hourRecord->semester_id = $semester->id;
+
+            if(Auth::user()->role == 'areamanager'){
+                $hourRecord->area_manager_id = auth()->user()->area_manager->id; 
+            }
+            if(Auth::user()->role == 'admin'){
+                $hourRecord->area_manager_id = $jobOpportunity->area_managers->id;        }
+
+            $hourRecord->save();
+            //
         }
-        if(Auth::user()->role == 'admin'){
-            $hourRecord->area_manager_id = $jobOpportunity->area_managers->id;        }
+    }else{
 
-        $hourRecord->save();
-        return redirect()->route('job.index')->with('success', 'Horas registradas correctamente');
+            $hourRecord = new HourRecord();
+            $hourRecord->work_date = $request->work_date;
+            $hourRecord->job_id = $request->job_id;
+            $hourRecord->hours_worked = $request->hours_worked;
+            $hourRecord->semester_id = $request->semester_id;
+
+            $job = Job::findOrFail($request->job_id);
+            $jobOpportunity = $job->job_opportunity;
+
+            if(Auth::user()->role == 'areamanager'){
+                $hourRecord->area_manager_id = auth()->user()->area_manager->id; 
+            }
+            if(Auth::user()->role == 'admin'){
+                $hourRecord->area_manager_id = $jobOpportunity->area_managers->id;        }
+
+            $hourRecord->save();
 
     }
 
+        return redirect()->route('job.index')->with('success', 'Horas registradas correctamente');
+
+    
+}
+    
+
+    
     /**
      * Display the specified resource.
      */

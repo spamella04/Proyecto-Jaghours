@@ -75,7 +75,13 @@ class ApplicationController extends Controller
             $application = new Application();
             $application->student_id = $student->id;
             $application->job_opportunity_id = $jobOpportunity->id;
-            $application->status = 'Pendiente'; // O el estado inicial que prefieras
+            
+            if ($jobOpportunity->match) {
+                $application->status = 'Aceptado';
+            } else {
+                $application->status = 'Pendiente';
+            }
+            
             $application->save();
 
             // Redirigir a la vista de aplicaciones con éxito
