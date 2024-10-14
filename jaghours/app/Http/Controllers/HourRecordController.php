@@ -7,12 +7,13 @@ use App\Models\HourRecord;
 use App\Models\Semester;
 use App\Models\Job;
 use App\Models\Student;
-use App\Models\JobOpportunity;
+use App\Models\JobOportunity;
 use App\Models\AreaManager;
 use App\Models\User;
 use App\Models\Area;
 use App\Models\Degree;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class HourRecordController extends Controller
 {
@@ -176,6 +177,55 @@ class HourRecordController extends Controller
 
     }
 
+
+    public function storeMatch(Request $request)
+{
+    // Validación
+    $request->validate([
+        'job_opportunity_id' => 'required|exists:job_oportunities,id', 
+        'applications' => 'required|array', 
+    ]);
+
+    // Buscar la oportunidad de trabajo
+    $jobOpportunity = JobOportunity::findOrFail($request->job_opportunity_id);
+
+    // Encontrar semestre activo
+    $semester = Semester::where('status', 'active')->first();
+
+    foreach ($request->applications as $applicationJson) {
+        $application = json_decode($applicationJson);
+
+        // Crear el trabajo asociado a la oportunidad
+        $job = new Job();
+        $job->job_opportunity_id = $jobOpportunity->id; 
+        $job->student_id = $application->student->id; 
+        $job->save();
+
+        $hourRecord = new HourRecord();
+        $hourRecord->work_date = $jobOpportunity->start_date; 
+        $hourRecord->job_id = $job->id; 
+        $hourRecord->hours_worked = $jobOpportunity->hours_validated; 
+        $hourRecord->semester_id = $semester->id;
+
+        if (Auth::user()->role == 'areamanager') {
+            $hourRecord->area_manager_id = auth()->user()->area_manager->id; 
+        }
+        if (Auth::user()->role == 'admin') {
+            $hourRecord->area_manager_id = $jobOpportunity->area_managers->id;        
+        }
+
+        $hourRecord->save();
+
+        // Logging para verificar los datos
+        Log::info('Datos del job:', ['job' => $job]);
+        Log::info('Datos del hourRecord:', ['hourRecord' => $hourRecord]);
+    }
+
+    return redirect()->route('joboportunity.showapplicants', $jobOpportunity->id)->with('success', 'Horas registradas correctamente');
+}
+    
+
+    
     /**
      * Display the specified resource.
      */

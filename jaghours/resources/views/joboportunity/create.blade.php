@@ -10,7 +10,7 @@
                     <h3 class="mb-0">Ingrese la información de la Solicitud</h3>
                 </div>
                 <div class="card-body p-5">
-                    <form action="{{ route('joboportunity.store') }}" method="POST">
+                    <form action="{{ route('joboportunity.store') }}" method="POST" enctype="multipart/form-data"> <!-- Agregar enctype para permitir la subida de archivos -->
                         @csrf
 
                         <div class="mb-3">
@@ -19,6 +19,14 @@
                             @error('title')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
+                        </div>
+
+                      
+                        <div class="mb-3">
+                        <div class="form-group">
+                        <label for="match" class="form-label font-weight-bold">¿Es un partido?</label>
+                         <input type="checkbox" id="match" name="match" value="1" {{ old('match', $joboportunity->match ?? false) ? 'checked' : '' }}>
+                        </div>
                         </div>
 
                         <div class="mb-3">
@@ -46,7 +54,7 @@
                             </div>
 
                             <div class="col-md-6">
-                                <label for="number_applicants" class="form-label font-weight-bold">Numero de aplicantes</label>
+                                <label for="number_applicants" class="form-label font-weight-bold">Número de aplicantes</label>
                                 <input type="number" class="form-control @error('number_applicants') is-invalid @enderror" id="number_applicants" name="number_applicants" value="{{ old('number_applicants') }}" min="1" required>
                                 @error('number_applicants')
                                     <div class="invalid-feedback">{{ $message }}</div>
@@ -54,7 +62,7 @@
                             </div>
 
                             <div class="col-md-6">
-                                <label for="number_vacancies" class="form-label font-weight-bold">Numero de Vacantes</label>
+                                <label for="number_vacancies" class="form-label font-weight-bold">Número de Vacantes</label>
                                 <input type="number" class="form-control @error('number_vacancies') is-invalid @enderror" id="number_vacancies" name="number_vacancies" value="{{ old('number_vacancies') }}" min="1" required>
                                 @error('number_vacancies')
                                     <div class="invalid-feedback">{{ $message }}</div>
@@ -63,13 +71,22 @@
 
                             <div class="col-md-12">
                                 <label for="requirements" class="form-label font-weight-bold">Requerimientos</label>
-                                <textarea class="form-control @error('requirements') is-invalid @enderror" id="requirements" name="requirements"  required>{{ old('requirements') }}</textarea>
+                                <textarea class="form-control @error('requirements') is-invalid @enderror" id="requirements" name="requirements" required>{{ old('requirements') }}</textarea>
                                 @error('requirements')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
-                            
                         </div>
+
+                        <!-- Campo para subir la imagen -->
+                        <div class="mb-3">
+                            <label for="image" class="form-label font-weight-bold">Subir Imagen</label>
+                            <input type="file" class="form-control @error('image') is-invalid @enderror" id="image" name="image" accept="image/*">
+                            @error('image')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+
                         <div class="text-center">
                             <button type="submit" class="btn btn-primary" style="background-color: #219EBC; border-color: #219EBC;">Crear Solicitud</button>
                         </div>
