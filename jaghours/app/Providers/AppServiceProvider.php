@@ -5,6 +5,7 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use App\Models\JobOportunity;
 use App\Models\JobOportunityObserver;
+use Illuminate\Pagination\Paginator;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -23,5 +24,6 @@ class AppServiceProvider extends ServiceProvider
     {
         //
         JobOportunity::observe(JobOportunityObserver::class);
+        Paginator::useBootstrapFour();
     }
 }
