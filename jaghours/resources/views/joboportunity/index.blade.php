@@ -213,64 +213,6 @@
 
     @endif
 
-    @if(Auth::user()->role == 'admin')
-        <h1 class="">Publicaciones</h1>
-        
-        <div class="row">
-            @foreach($jobOportunities as $joboportunity)
-                @if($joboportunity->status == 'Publicado')
-                    <div class="col-md-6">
-                        <div class="job-card shadow-lg">
-                            @if($joboportunity->image_path)
-                                <img src="{{ asset('storage/' . $joboportunity->image_path) }}" alt="Imagen de {{ $joboportunity->title }}" class="job-card-image">
-                            @else
-                                <div class="job-card-placeholder">
-                                    Sin Imagen
-                                </div>
-                            @endif
-                            <div class="d-flex align-items-center">
-                                <div class="job-card-avatar">
-                                    {{ strtoupper(substr($joboportunity->area_managers->areas->name, 0, 1)) }}
-                                </div>
-                                <div>
-                                    <div class="job-card-title">{{ $joboportunity->title }}</div>
-                                    <div class="job-card-area">
-                                        <span>{{ $joboportunity->area_managers->areas->name }}</span>
-                                    </div>
-                                    <div class="job-card-date"> Fecha de inicio:
-                                    <span> {{ $joboportunity->created_at->format('d/m/Y') }} </span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="job-card-description mt-3">
-                                {{ $joboportunity->description }}
-                            </div>
-                            <div class="job-card-details mt-3">
-                                <span class="fw-bold" style="font-size: 10px; color:#219EBC;">Total Horas Convalidadas:</span>
-                                <span class="fw-light" style="color:gray;"> {{ $joboportunity->hours_validated }} horas</span>
-                                <br>
-                                <span class="fw-bold" style="font-size: 10px; color:#219EBC;">Fecha de Inicio:</span>
-                                <span class="fw-light" style="color:gray;">{{ $joboportunity->start_date }}</span>
-                            </div>
-                            <div class="d-flex justify-content-between align-items-center mt-3">
-                                <div class="job-card-status">
-                                    <span class="custom-badge">{{ $joboportunity->status }}</span>
-                                </div>
-                                <div class="job-card-applicants">
-                                    <a href="{{ route('joboportunity.showapplicants', $joboportunity->id) }}" class="btn btn-info btn-sm btn-action">Ver Estudiantes</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    @if (($loop->index + 1) % 2 == 0) 
-                        </div><div class="row"> <!-- Cierra y abre una nueva fila cada 2 publicaciones -->
-                    @endif
-                @endif
-            @endforeach
-        </div>
-    @endif
-
     {{-- Paginación --}}
     <div class="d-flex justify-content-center">
         {{ $jobOportunities->links() }} {{-- Esto generará los enlaces de paginación usando Bootstrap --}}

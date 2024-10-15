@@ -30,7 +30,9 @@ class JobOportunityController extends Controller
             $areaManager = Auth::user()->area_manager;
 
             if ($areaManager) {
-                $jobOportunities = JobOportunity::where('area_manager_id', $areaManager->id)->paginate(4);
+                $jobOportunities = JobOportunity::where('area_manager_id', $areaManager->id)
+                ->where('status', 'Solicitud')
+                ->paginate(4);
                 return view('joboportunity.index', compact('jobOportunities'));
             }
         }
@@ -83,7 +85,7 @@ class JobOportunityController extends Controller
                                     ->havingRaw('count(*) >= job_oportunities.number_applicants');
                         });
                     })
-                    ->get();
+                    ->paginate(4);
 
     
                 return view('joboportunity.indexStudent', compact('jobOportunities'));
