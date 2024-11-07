@@ -168,26 +168,6 @@ class DatabaseSeeder extends Seeder
 'lastname' => 'Vigil',
   'phone' => '87126809',
 'email' => 'savigil@uamv.edu.ni',
-'password' => bcrypt('password321'),
-'role' => 'student', 
-
-]);
-
-\App\Models\Student::factory()->create([
-  'student_id' => '5',
-  'degree_id' => '1',
-  'skills' => 'Tecnicas de programacion con gonzalo',
-
-]);
-
-
-/*
-\App\Models\User::factory()->create([
-  'cif' => '012345678K',
-  'name' => 'Armando',
-'lastname' => 'Gomez',
-  'phone' => '87126809',
-'email' => 'armando.lopez@uamv.edu.ni',
 'password' => bcrypt('password'),
 'role' => 'student', 
 
@@ -196,10 +176,30 @@ class DatabaseSeeder extends Seeder
 \App\Models\Student::factory()->create([
   'student_id' => '5',
   'degree_id' => '1',
+  'skills' => 'Tecnicas de programacion ',
+
+]);
+
+
+
+\App\Models\User::factory()->create([
+  'cif' => '012345678K',
+  'name' => 'Armando',
+'lastname' => 'Lopez',
+  'phone' => '87126808',
+'email' => 'armando.lopez@uamv.edu.ni',
+'password' => bcrypt('password'),
+'role' => 'student', 
+
+]);
+
+\App\Models\Student::factory()->create([
+  'student_id' => '6',
+  'degree_id' => '1',
   'skills' => 'Organización',
 
 ]);
-*/
+
 
 \App\Models\Semester::factory()->create(
   [
@@ -220,36 +220,6 @@ class DatabaseSeeder extends Seeder
     ]);
 
 
-    \App\Models\JobOportunity::factory()->create(
-      [
-          'title' => 'Ordenar libros',
-          'description' => 'Se necesita un estudiante para organizar libros por facultad',
-          'status' => 'Publicado',
-          'start_date' => '2024-07-13',
-          'hours_validated'=> '2',
-          'number_applicants' => '2',
-          'number_vacancies' => '1',
-          'requirements' => 'Organización',
-          'area_manager_id' => '1',
-          
-    
-      ]);
-
-      \App\Models\JobOportunity::factory()->create(
-        [
-            'title' => 'Gestion de documentos',
-            'description' => 'Se necesita un estudiante para gestionar documentos de admision',
-            'status' => 'Publicado',
-            'start_date' => '2024-07-13',
-            'hours_validated'=> '4',
-            'number_applicants' => '3',
-            'number_vacancies' => '2',
-            'requirements' => 'Manejo de Excel Intermedio',
-            'area_manager_id' => '2',
-            
-      
-        ]);
-
         \App\Models\JobOportunity::factory()->create(
           [
               'title' => 'Etiquetado de viveres',
@@ -262,5 +232,54 @@ class DatabaseSeeder extends Seeder
               'requirements' => 'Responsabilidad',
               'area_manager_id' => '3',
           ]);
+
+          \App\Models\JobOportunity::factory()->create(
+            [
+                'title' => 'Jaguares vs. Pumas',
+                'description' => 'Ocurrira en el estadio nacional',
+                'status' => 'Publicado',
+                'start_date' => '2024-08-13',
+                'hours_validated'=> '5',
+                'number_applicants' => '100',
+                'number_vacancies' => '100',
+                'requirements' => 'Emocion y apoyo',
+                'area_manager_id' => '3',
+                'match' => '1',
+                
+                
+          
+            ]);
+
+            \App\Models\JobOportunity::factory()->create(
+              [
+                  'title' => 'Ordenar libros',
+                  'description' => 'Se necesita un estudiante para organizar libros por facultad',
+                  'status' => 'Publicado',
+                  'start_date' => '2024-07-13',
+                  'hours_validated'=> '2',
+                  'number_applicants' => '2',
+                  'number_vacancies' => '1',
+                  'requirements' => 'Organización',
+                  'area_manager_id' => '1',
+                  
+                  
+            
+              ]);
+        
+            
+              \App\Models\JobOportunity::factory()->create(
+                [
+                    'title' => 'Gestion de documentos',
+                    'description' => 'Se necesita un estudiante para gestionar documentos de admision',
+                    'status' => 'Publicado',
+                    'start_date' => '2024-07-13',
+                    'hours_validated'=> '4',
+                    'number_applicants' => '3',
+                    'number_vacancies' => '2',
+                    'requirements' => 'Manejo de Excel Intermedio',
+                    'area_manager_id' => '2',
+                    
+              
+                ]);
 }
 }

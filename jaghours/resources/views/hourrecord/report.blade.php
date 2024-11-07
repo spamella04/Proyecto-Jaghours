@@ -53,11 +53,25 @@
                 </div>
             </div>
 
-            <div class="col-md-3 d-flex align-items-end" style="margin-top: 20px;">
+          
+            <div class="col-md-3 d-flex align-items-end" style="margin-top: 30px;">
                 <div class="form-group mb-0">
                     <button type="submit" class="btn" style="background-color: #219EBC; color: white;">Filtrar</button>
                 </div>
             </div>
+        </div>
+    </form>
+
+    
+    <form action="{{ route('report.export') }}" method="GET" class="d-flex justify-content-between">
+   
+        <input type="hidden" name="semester_id" value="{{ request()->input('semester_id') }}">
+        <input type="hidden" name="degree_id" value="{{ request()->input('degree_id') }}">
+        <input type="hidden" name="cif_search" value="{{ request()->input('cif_search') }}">
+        <input type="hidden" name="status_filter" value="{{ request()->input('status_filter') }}">
+
+        <div class="form-group mb-0">
+            <button type="submit" class="btn" style="background-color: #219EBC; color: white;">Exportar a Excel</button>
         </div>
     </form>
 
@@ -103,4 +117,3 @@
     @endif
 </div>
 @endsection
-
