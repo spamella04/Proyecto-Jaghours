@@ -14,25 +14,46 @@ class ApplicationController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
-        if(Auth::user()->role == 'student'){
+        // Asegúrate de que el usuario sea un estudiante
+        if(Auth::user()->role == 'student') {
             $student = Auth::user()->student;
+    
+            if($student) {
+                // Obtener el filtro de estado del request, con un valor por defecto vacío (puede ser un array vacío)
+                $status_filter = $request->input('status_filter', []);
+    
+                // Si se seleccionó "Todos", no aplicamos ningún filtro de estado
+                if (in_array('Todos', $status_filter)) {
+                    $applications = Application::where('student_id', $student->id)
+                        ->with(['job_opportunities.area_managers.users'])
+                        ->paginate(9);
+                } else {
+                    // Filtrar las aplicaciones por el estudiante y estado, si se seleccionó uno
+                    $applications = Application::where('student_id', $student->id)
+                        ->whereIn('status', ['Pendiente', 'No Aceptado', 'Aceptado']) // Filtrar solo estos estados
+                        ->when(count($status_filter) > 0, function ($query) use ($status_filter) {
+                            return $query->whereIn('status', $status_filter); // Filtrar por los estados seleccionados
+                        })
+                        ->with(['job_opportunities.area_managers.users'])
+                        ->paginate(9);
+                }
+    
+                // Contar solo las aplicaciones con estado activo en el área del gerente
+                $activeapplicationcount = $applications->filter(function($application) {
+                    return $application->job_opportunities->area_managers->users->status == 'active';
+                })->count();
+    
+                // Retornar la vista con las variables necesarias
+                return view('applications.index', compact('applications', 'activeapplicationcount', 'status_filter'));
+            }
         }
-        if($student){
-           // Obtiene las aplicaciones del estudiante con estado "pendiente" o "rechazado"
-           $applications = Application::where('student_id', $student->id)
-            ->whereIn('status', ['Pendiente', 'No Aceptado'])
-            ->with(['job_opportunities.area_managers.users'])
-            ->get();
+    
+        return redirect()->route('home'); // Redirige si no es un estudiante o no tiene aplicaciones
+    }
+    
 
-            $activeapplicationcount = $applications->filter(function($application) {
-                return $application->job_opportunities->area_managers->users->status == 'active';
-            })->count();
-    return view('applications.index', compact('applications','activeapplicationcount'));
-    }
-    }
     /**
      * Show the form for creating a new resource.
      */

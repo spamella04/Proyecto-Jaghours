@@ -52,26 +52,25 @@
                     <input type="text" id="cif_search" name="cif_search" class="form-control" value="{{ request('cif_search') }}" placeholder="Ingrese CIF">
                 </div>
             </div>
-
-          
-            <div class="col-md-3 d-flex align-items-end" style="margin-top: 30px;">
-                <div class="form-group mb-0">
-                    <button type="submit" class="btn" style="background-color: #219EBC; color: white;">Filtrar</button>
-                </div>
-            </div>
         </div>
-    </form>
 
-    
-    <form action="{{ route('report.export') }}" method="GET" class="d-flex justify-content-between">
-   
-        <input type="hidden" name="semester_id" value="{{ request()->input('semester_id') }}">
-        <input type="hidden" name="degree_id" value="{{ request()->input('degree_id') }}">
-        <input type="hidden" name="cif_search" value="{{ request()->input('cif_search') }}">
-        <input type="hidden" name="status_filter" value="{{ request()->input('status_filter') }}">
+        <div class="row">
+            <div class="col-md-6 d-flex align-items-end mt-3">
+                <!-- Botón Filtrar -->
+                <form method="GET" action="{{ route('hourrecords.report') }}" class="d-flex align-items-center">
+                    <button type="submit" class="btn" style="background-color: #219EBC; color: white;">Filtrar</button>
+                </form>
 
-        <div class="form-group mb-0">
-            <button type="submit" class="btn" style="background-color: #219EBC; color: white;">Exportar a Excel</button>
+                <!-- Botón Exportar a Excel con margen izquierdo -->
+                <form action="{{ route('report.export') }}" method="GET" class="ml-2">
+                    <input type="hidden" name="semester_id" value="{{ request()->input('semester_id') }}">
+                    <input type="hidden" name="degree_id" value="{{ request()->input('degree_id') }}">
+                    <input type="hidden" name="cif_search" value="{{ request()->input('cif_search') }}">
+                    <input type="hidden" name="status_filter" value="{{ request()->input('status_filter') }}">
+
+                    <button type="submit" id="exportButton" class="btn ml-2" style="background-color: #219EBC; color: white; margin-left: 10px;" disabled>Exportar a Excel</button>
+                </form>
+            </div>
         </div>
     </form>
 
@@ -116,4 +115,28 @@
         </table>
     @endif
 </div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const exportButton = document.getElementById("exportButton");
+        const semesterFilter = document.getElementById("semester_id");
+        const otherFilters = ["degree_id", "status_filter", "cif_search"];
+
+        // Función para habilitar/deshabilitar el botón basándose en el filtro "Semestre"
+        function checkFilters() {
+            const isSemesterSelected = semesterFilter.value !== "";
+            const isAnyOtherFilterApplied = otherFilters.some(filter => document.getElementById(filter).value);
+
+            // El botón solo se habilita si hay un semestre seleccionado
+            exportButton.disabled = !isSemesterSelected;
+        }
+
+        // Ejecutar la función al cargar la página y cada vez que se cambie un filtro
+        checkFilters();
+        
+        // Añadir evento para el cambio de "semestre" y otros filtros
+        semesterFilter.addEventListener("change", checkFilters);
+        otherFilters.forEach(filter => document.getElementById(filter).addEventListener("change", checkFilters));
+    });
+</script>
 @endsection

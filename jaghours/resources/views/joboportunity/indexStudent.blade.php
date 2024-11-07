@@ -148,60 +148,110 @@
         .row {
             margin-bottom: 20px;
         }
+
+             /* Estilos para el formulario de filtros */
+             .filter-container {
+            margin-bottom: 20px;
+            padding: 15px;
+            background-color: #f7f7f7;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .filter-container select {
+            padding: 8px 15px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            margin-right: 10px;
+            font-size: 1rem;
+        }
+
+        .filter-container button {
+            padding: 10px 20px;
+            background-color: #219EBC;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s;
+        }
+
+        .filter-container button:hover {
+            background-color: #1b82a6;
+        }
     </style>
 </head>
 
 <div class="container mt-4">
     <h1>Publicaciones</h1>
 
-    @foreach($jobOportunities as $joboportunity)
-    @if($joboportunity->area_managers->users->status == 'active')
-    <div class="job-card shadow-lg">
-        <!-- Área con el círculo de la inicial -->
-        <div class="job-card-area">
-            <div class="job-card-avatar">
-                {{ strtoupper(substr($joboportunity->area_managers->areas->name, 0, 1)) }}
-            </div>
-            {{ $joboportunity->area_managers->areas->name }}
-        </div>
-
-        <!-- Título -->
-        <div class="job-card-title">{{ $joboportunity->title }}</div>
-
-        <!-- Imagen destacada -->
-        @if($joboportunity->image_path)
-        <img src="{{ asset('storage/' . $joboportunity->image_path) }}" alt="Imagen de {{ $joboportunity->title }}" class="job-card-image">
-        @else
-        <div class="job-card-placeholder" style="background-color: #E0F2F1; padding: 50px; text-align: center; border-radius: 10px; color: #666;">
-            Sin Imagen
-        </div>
-        @endif
-
-        <!-- Descripción -->
-        <div class="job-card-description">
-            {{ $joboportunity->description }}
-        </div>
-
-        <!-- Detalles adicionales -->
-        <div class="job-card-details">
-            <div><span>Total Horas:</span> {{ $joboportunity->hours_validated }} horas</div>
-            <div><span>Fecha de Inicio:</span> {{ $joboportunity->start_date }}</div>
-        </div>
-
-        <!-- Botón para aplicar -->
-        <form action="{{ route('applications.store') }}" method="POST">
-            @csrf
-            <input type="hidden" name="job_opportunity_id" value="{{ $joboportunity->id }}">
-            <button type="submit" class="btn btn-action">Aplicar</button>
+    <!-- Filtro por área -->
+    <div class="filter-container">
+        <form action="{{ route('joboportunity.indexStudent') }}" method="GET">
+            <select name="area" id="area">
+                <option value="">Seleccionar área</option>
+                @foreach($areas as $area)
+                    <option value="{{ $area->name }}" {{ request('area') == $area->name ? 'selected' : '' }}>
+                        {{ $area->name }}
+                    </option>
+                @endforeach
+            </select>
+            <button type="submit">Filtrar</button>
         </form>
     </div>
-    @endif
-    @endforeach
-</div>
 
-{{-- Paginación fuera del contenedor de publicaciones --}}
-<div class="d-flex justify-content-center mt-4">
-    {{ $jobOportunities->links() }} {{-- Esto generará los enlaces de paginación --}}
+    <!-- Tarjetas de las oportunidades -->
+    <div class="container">
+        @foreach($jobOportunities as $joboportunity)
+            @if($joboportunity->area_managers->users->status == 'active')
+            <div class="job-card shadow-lg">
+                <!-- Área con el círculo de la inicial -->
+                <div class="job-card-area">
+                    <div class="job-card-avatar">
+                        {{ strtoupper(substr($joboportunity->area_managers->areas->name, 0, 1)) }}
+                    </div>
+                    {{ $joboportunity->area_managers->areas->name }}
+                </div>
+
+                <!-- Título -->
+                <div class="job-card-title">{{ $joboportunity->title }}</div>
+
+                <!-- Imagen destacada -->
+                @if($joboportunity->image_path)
+                <img src="{{ asset('storage/' . $joboportunity->image_path) }}" alt="Imagen de {{ $joboportunity->title }}" class="job-card-image">
+                @else
+                <div class="job-card-placeholder" style="background-color: #E0F2F1; padding: 50px; text-align: center; border-radius: 10px; color: #666;">
+                    Sin Imagen
+                </div>
+                @endif
+
+                <!-- Descripción -->
+                <div class="job-card-description">
+                    {{ $joboportunity->description }}
+                </div>
+
+                <!-- Detalles adicionales -->
+                <div class="job-card-details">
+                    <div><span>Total Horas:</span> {{ $joboportunity->hours_validated }} horas</div>
+                    <div><span>Fecha de Inicio:</span> {{ $joboportunity->start_date }}</div>
+                </div>
+
+                <!-- Botón para aplicar -->
+                <form action="{{ route('applications.store') }}" method="POST">
+                    @csrf
+                    <input type="hidden" name="job_opportunity_id" value="{{ $joboportunity->id }}">
+                    <button type="submit" class="btn btn-action">Aplicar</button>
+                </form>
+            </div>
+            @endif
+        @endforeach
+    </div>
+
+    {{-- Paginación fuera del contenedor de publicaciones --}}
+    <div class="d-flex justify-content-center mt-4">
+        {{ $jobOportunities->links() }} {{-- Esto generará los enlaces de paginación --}}
+    </div>
 </div>
 @endsection
 
