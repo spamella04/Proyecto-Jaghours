@@ -11,6 +11,7 @@ use App\Http\Controllers\AdminJobOpportunityController;
 use App\Http\Controllers\ApplicationController;
 use App\Http\Controllers\JobController;
 use App\Http\Controllers\HourRecordController;
+use App\Http\Controllers\ExportController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -123,6 +124,7 @@ Route::middleware('auth')->group(
         Route::post('/job/hourrecord/store', [HourRecordController::class, 'store'])->name('hourrecords.store');
         Route::post('/job/hourrecord/storeMatch', [HourRecordController::class, 'storeMatch'])->name('hourrecords.storeMatch');
         Route::get('/hourrecords/report', [HourRecordController::class, 'report'])->name('hourrecords.report');
+        Route::get('/hourrecords/report/export', [ExportController::class, 'export'])->name('report.export');
         Route::get('/hourrecords/student/{student}', [HourRecordController::class, 'showStudentHourRecords'])->name('hourrecords.student');
 
         
