@@ -51,10 +51,23 @@ class HourRecordController extends Controller
     
         $semester_id = $request->input('semester_id');
         $semester = Semester::find($semester_id);
-        $required_hours = $semester ? $semester->hours_required : 0;
+    
+        // Si el semestre no existe, establece un mensaje de error y regresa la vista
+        if (!$semester) {
+            $error = "El semestre seleccionado no existe.";
+            $students = collect();
+            $semesters = Semester::all();
+            $degrees = Degree::all();
+    
+            return view('hourrecord.report', compact('students', 'semesters', 'degrees', 'error'));
+        }
+    
+        $required_hours = $semester->hours_required;
+        $semester_start_date = $semester->start_date;
     
         // Realiza la consulta solo si se ha seleccionado un semestre
         $query = Student::query()
+            ->where('fecha_de_ingreso', '<=', $semester_start_date) // Filtrar estudiantes con ingreso antes del inicio del semestre
             ->when($request->input('cif_search'), function($query, $cif) {
                 return $query->whereHas('user', function($query) use ($cif) {
                     $query->where('cif', '=', $cif);
@@ -96,14 +109,11 @@ class HourRecordController extends Controller
         $degrees = Degree::all();
     
         // Si no se encontraron resultados, establecer un mensaje de error
-        if ($students->isEmpty()) {
-            $error = "No se encontraron resultados para los criterios de búsqueda proporcionados.";
-        } else {
-            $error = null;
-        }
+        $error = $students->isEmpty() ? "No se encontraron resultados para los criterios de búsqueda proporcionados." : null;
     
         return view('hourrecord.report', compact('students', 'semesters', 'degrees', 'error'));
     }
+    
     
 
    

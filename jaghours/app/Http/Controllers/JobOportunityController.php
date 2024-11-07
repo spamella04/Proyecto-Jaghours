@@ -64,36 +64,42 @@ class JobOportunityController extends Controller
         return redirect()->route('home'); // Redirigir a una página de inicio o de error si el usuario no es un area manager
     }
 
-    public function indexStudent()
+    public function indexStudent(Request $request)
     {
-      
         if (Auth::user()->role == 'student') {
             $student = Auth::user()->student;
             if ($student) {
                 // Obtener los IDs de las oportunidades a las cuales el estudiante ha aplicado
                 $appliedOpportunityIds = $student->applications()->pluck('job_opportunity_id')->toArray();
+    
+                // Obtener el área seleccionada desde el request
+                $areaFilter = $request->input('area');
+    
                 // Obtener las oportunidades publicadas que el estudiante no ha aplicado aún
                 $jobOportunities = JobOportunity::where('status', 'Publicado')
                     ->whereNotIn('id', $appliedOpportunityIds)
-                    ->where(function ($query) {
-                        // Subconsulta para contar el número de aplicaciones por oportunidad
-                        $query->whereNotExists(function ($subquery) {
-                            $subquery->select(DB::raw(1))
-                                    ->from('applications')
-                                    ->whereColumn('applications.job_opportunity_id', 'job_oportunities.id')
-                                    ->groupBy('applications.job_opportunity_id')
-                                    ->havingRaw('count(*) >= job_oportunities.number_applicants');
-                        });
+                    ->where(function ($query) use ($areaFilter) {
+                        if ($areaFilter) {
+                            // Filtrar por área si se ha seleccionado un área
+                            $query->whereHas('area_managers', function ($subQuery) use ($areaFilter) {
+                                $subQuery->whereHas('areas', function ($subSubQuery) use ($areaFilter) {
+                                    $subSubQuery->where('name', $areaFilter);
+                                });
+                            });
+                        }
                     })
                     ->paginate(4);
-
     
-                return view('joboportunity.indexStudent', compact('jobOportunities'));
+                // Obtener todas las áreas para el filtro dropdown
+                $areas = Area::all();
+    
+                return view('joboportunity.indexStudent', compact('jobOportunities', 'areas'));
             }
         }
     
         return redirect()->route('home'); // Redirigir si el usuario no es un estudiante o no tiene aplicaciones
     }
+    
 
     /**
      * Show the form for creating a new resource.
