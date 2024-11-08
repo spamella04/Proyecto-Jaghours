@@ -11,6 +11,9 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Job;
 use App\Models\HourRecord;
 use App\Models\Semester;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Imports\StudentsImport;
+
 
 class StudentController extends Controller
 
@@ -258,6 +261,27 @@ class StudentController extends Controller
         return redirect()->route('student.profile')->with('success', 'Profile updated successfully!');
     }
     
+    public function import(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:xlsx,csv',
+        ]);
+
+        $import= new StudentsImport;
+        Excel::import($import, $request->file('file'));
+
+   
+
+        // Obtener el número de estudiantes ignorados
+        $ignoredCount = $import->getIgnoredCount();
+
+        // Retornar el mensaje con el número de estudiantes importados e ignorados
+        if ($ignoredCount > 0) {
+            return back()->with('success', "Students imported successfully! {$ignoredCount} students were skipped because they already exist.");
+        }
+
+        return back()->with('success', 'Students imported successfully!');
+    }
 
     
 }

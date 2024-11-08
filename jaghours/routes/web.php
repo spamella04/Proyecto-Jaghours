@@ -44,6 +44,8 @@ Route::middleware('auth')->group(
         Route::get('/student/profile', [StudentController::class, 'profile'])->name('student.profile');
         Route::put('/student/profile/update', [StudentController::class, 'updateProfile'])->name('student.updateProfile');
         Route::put('/students/{student}', [StudentController::class, 'notdestroy'])->name('students.notdestroy');
+        Route::post('/students/import', [StudentController::class, 'import'])->name('students.import');
+
 
         
 
