@@ -150,7 +150,7 @@
     @if(Auth::user()->role == 'areamanager')
         <h1 class="">Publicaciones</h1>
         @foreach($jobOportunities as $joboportunity)
-            @if($joboportunity->status == 'Publicado')
+            @if($joboportunity->status == 'Publicado' && $joboportunity->match == 0)
                 <div class="job-card shadow-lg p-3 mb-5 bg-white rounded">
                     <div class="d-flex align-items-center">
                         <div class="job-card-avatar">
@@ -167,7 +167,7 @@
                         </div>
                     </div>
                     @if($joboportunity->image_path)
-                            <img src="{{ asset('storage/' . $joboportunity->image_path) }}" alt="Imagen de {{ $joboportunity->title }}" class="job-card-image">
+                    <img src="{{ asset($joboportunity->image_path) }}" alt="Imagen de {{ $joboportunity->title }}" class="job-card-image">
                         @else
                             <div class="job-card-placeholder">
                                 
@@ -188,7 +188,7 @@
                             <span class="custom-badge">{{ $joboportunity->status }}</span>
                         </div>
                         <div class="job-card-applicants">
-                            <a href="{{ route('joboportunity.showapplicants', $joboportunity->id) }}" class="btn btn-info btn-sm btn-action">Ver Estudiantes</a>
+                            <a href="{{ route('joboportunity.showapplicants', $joboportunity->id) }}" class="btn btn-info btn-sm btn-action">Ver Aplicantes</a>
                         </div>
                     </div>
                 </div>
@@ -206,7 +206,7 @@
                     <div class="col-md-6">
                         <div class="job-card shadow-lg">
                             @if($joboportunity->image_path)
-                                <img src="{{ asset('storage/' . $joboportunity->image_path) }}" alt="Imagen de {{ $joboportunity->title }}" class="job-card-image">
+                            <img src="{{ asset($joboportunity->image_path) }}" alt="Imagen de {{ $joboportunity->title }}" class="job-card-image">
                             @else
                                 <div class="job-card-placeholder">
                                     Sin Imagen
@@ -241,7 +241,7 @@
                                     <span class="custom-badge">{{ $joboportunity->status }}</span>
                                 </div>
                                 <div class="job-card-applicants">
-                                    <a href="{{ route('joboportunity.showapplicants', $joboportunity->id) }}" class="btn btn-info btn-sm btn-action">Ver Estudiantes</a>
+                                    <a href="{{ route('joboportunity.showapplicants', $joboportunity->id) }}" class="btn btn-info btn-sm btn-action">Ver Aplicantes</a>
                                 </div>
                             </div>
                         </div>

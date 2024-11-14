@@ -25,6 +25,7 @@ class ExportController extends Controller
     
     // Construir la consulta con los filtros
     $query = Student::query()
+        ->where('created_at', '<=', $semester->end_date)
         ->when($cif_search, function($query, $cif) {
             return $query->whereHas('user', function($query) use ($cif) {
                 $query->where('cif', '=', $cif);

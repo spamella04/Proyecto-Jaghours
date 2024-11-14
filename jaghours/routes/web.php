@@ -120,6 +120,7 @@ Route::middleware('auth')->group(
         //Jobs
         Route::get('/job/show', [JobController::class, 'index'])->name('job.index');
         Route::post('/job/save', [JobController::class, 'store'])->name('job.store');
+        Route::get('/job-opportunities/{jobOpportunityId}/students', [JobController::class, 'showStudents'])->name('jobs.students');
         
         //Hour Records
         Route::get('/job/hourrecord/create/{job_id}', [HourRecordController::class, 'create'])->name('hourrecords.create');
@@ -128,10 +129,8 @@ Route::middleware('auth')->group(
         Route::get('/hourrecords/report', [HourRecordController::class, 'report'])->name('hourrecords.report');
         Route::get('/hourrecords/report/export', [ExportController::class, 'export'])->name('report.export');
         Route::get('/hourrecords/student/{student}', [HourRecordController::class, 'showStudentHourRecords'])->name('hourrecords.student');
-
-        
-
-      
+       
+    
         //Profile
         
         
