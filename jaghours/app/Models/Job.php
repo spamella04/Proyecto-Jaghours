@@ -10,7 +10,7 @@ class Job extends Model
     use HasFactory;
 
     protected $fillable = [
-        'job_oportunity_id','student_id'
+        'job_opportunity_id','student_id'
     ];
 
     //Relacion Oportunidad de Trabajo

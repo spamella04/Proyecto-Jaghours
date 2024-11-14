@@ -219,7 +219,7 @@
 
                 <!-- Imagen destacada -->
                 @if($joboportunity->image_path)
-                <img src="{{ asset('storage/' . $joboportunity->image_path) }}" alt="Imagen de {{ $joboportunity->title }}" class="job-card-image">
+                <img src="{{ asset($joboportunity->image_path) }}" alt="Imagen de {{ $joboportunity->title }}" class="job-card-image">
                 @else
                 <div class="job-card-placeholder" style="background-color: #E0F2F1; padding: 50px; text-align: center; border-radius: 10px; color: #666;">
                     Sin Imagen

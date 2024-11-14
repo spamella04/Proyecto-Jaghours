@@ -63,11 +63,10 @@ class HourRecordController extends Controller
         }
     
         $required_hours = $semester->hours_required;
-        $semester_start_date = $semester->start_date;
-    
+        $semester_end_date = $semester->end_date;
         // Realiza la consulta solo si se ha seleccionado un semestre
         $query = Student::query()
-            ->where('fecha_de_ingreso', '<=', $semester_start_date) // Filtrar estudiantes con ingreso antes del inicio del semestre
+            ->where('created_at', '<=', $semester_end_date) // Filtrar estudiantes con ingreso menor del final del semestre
             ->when($request->input('cif_search'), function($query, $cif) {
                 return $query->whereHas('user', function($query) use ($cif) {
                     $query->where('cif', '=', $cif);

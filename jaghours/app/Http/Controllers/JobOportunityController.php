@@ -55,7 +55,9 @@ class JobOportunityController extends Controller
             $areaManager = Auth::user()->area_manager;
 
             if ($areaManager) {
-                $jobOportunities = JobOportunity::where('area_manager_id', $areaManager->id)->paginate(4);
+                $jobOportunities = JobOportunity::where('area_manager_id', $areaManager->id)
+                ->where('match', 0)
+                ->paginate(4);
                 return view('joboportunity.indexAreaManager', compact('jobOportunities'));
             }
         }
@@ -136,11 +138,16 @@ class JobOportunityController extends Controller
             'number_vacancies.min' => 'El número de vacantes debe ser al menos 1.',
         ]);
         //Validar si se ha subido una imagen
-        $imagePath = Null;
+        $imagePath = null;
         if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('job_opportunities', 'public'); // Almacena la imagen
-            $validated['image_path'] = $imagePath;
+            // Cambiamos la ruta de almacenamiento a 'assets/images'
+            $image = $request->file('image');
+            $imageName = time() . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path('assets/images'), $imageName);
+            $imagePath = 'assets/images/' . $imageName; // Guarda la ruta completa
+            $validated['image_path'] = $imagePath; // Asigna la ruta a validated['image_path']
         }
+        
         
         $area_manager= Auth::user()->area_manager;
 
@@ -219,12 +226,16 @@ class JobOportunityController extends Controller
         ]);
         try{
 
-            $imagePath = Null;
+            $imagePath = null;
             if ($request->hasFile('image')) {
-                $imagePath = $request->file('image')->store('job_opportunities', 'public'); // Almacena la imagen
-                $validated['image_path'] = $imagePath;
+                // Cambiamos la ruta de almacenamiento a 'assets/images'
+                $image = $request->file('image');
+                $imageName = time() . '.' . $image->getClientOriginalExtension();
+                $image->move(public_path('assets/images'), $imageName);
+                $imagePath = 'assets/images/' . $imageName; // Guarda la ruta completa
+                $validated['image_path'] = $imagePath; // Asigna la ruta a validated['image_path']
             }
-
+            
             $jobOportunity = JobOportunity::findOrFail($id);
             $jobOportunity->title = $request->title;
             $jobOportunity->description = $request->description;

@@ -13,30 +13,95 @@ class JobController extends Controller
     /**
      * Display a listing of the resource.
      */
+
+      /**
     public function index()
     {
-        if(auth()->user()->role == 'areamanager')
-        {
-
-           $areaManagerId = auth()->user()->area_manager->id;
-
-           $jobs = Job::with(['job_opportunity', 'job_opportunity.area_managers.areas', 'student.user', 'hourRecords'])
-           ->whereHas('job_opportunity', function($query) use ($areaManagerId) {
-               $query->where('area_manager_id', $areaManagerId);
-           })->get();
-
-            return view('hourrecord.index', compact('jobs'));
+        if (auth()->user()->role == 'areamanager') {
+            $areaManagerId = auth()->user()->area_manager->id;
+        
+            // Filtrar solo las job_opportunities que tienen al menos un job asociado y al menos un estudiante
+            $jobOpportunities = JobOportunity::with(['area_managers.areas'])
+                ->whereHas('job', function($query) {
+                    $query->whereHas('student'); // Filtrar solo los jobs con estudiantes asociados
+                })
+                ->where('area_manager_id', $areaManagerId)  // Filtrar por el área del manager
+                ->get();
+        
+            return view('hourrecord.index', compact('jobOpportunities'));
         }
-        if(auth()->user()->role == 'admin')
-        {
-        $jobs = Job::with(['job_opportunity', 'job_opportunity.area_managers.areas', 'student.user', 'hourRecords'])
-                    ->get();
     
-        return view('hourrecord.index', compact('jobs'));
+        if (auth()->user()->role == 'admin') {
+            // Filtrar solo las job_opportunities con al menos un job asociado y con al menos un estudiante
+            $jobOpportunities = JobOportunity::with(['area_managers.areas'])
+                ->whereHas('job', function($query) {
+                    $query->whereHas('student');  // Filtrar solo los jobs con estudiantes asociados
+                })
+                ->get();
+        
+            return view('hourrecord.index', compact('jobOpportunities'));
         }
+    } 
+        */
+
+        public function index(Request $request)
+        {
+            // Obtener el año y mes actuales si no se proporcionan valores
+            $year = $request->has('year') ? $request->year : now()->year;
+            $month = $request->has('month') ? $request->month : now()->month;
+        
+            // Iniciar la consulta con las relaciones necesarias
+            $query = JobOportunity::with(['area_managers.areas'])
+                ->whereHas('job', function($query) {
+                    // Filtrar solo los jobs con estudiantes asociados
+                    $query->whereHas('student');
+                });
+        
+            // Filtrar por el área del manager si el usuario es un "area manager"
+            if (auth()->user()->role == 'areamanager') {
+                // Verificar que el "area_manager" esté presente en el usuario autenticado
+                if(auth()->user()->area_manager) {
+                    $areaManagerId = auth()->user()->area_manager->id;
+                    $query->where('area_manager_id', $areaManagerId); // Filtrar por el área del manager
+                }
+            }
+        
+            // Filtrar por año y mes
+            $query->whereYear('created_at', $year)
+                  ->whereMonth('created_at', $month);
+        
+            // Ejecutar la consulta y obtener los resultados
+            $jobOpportunities = $query->get();
+        
+            // Pasar las oportunidades de trabajo a la vista, junto con el año y mes seleccionados
+            return view('hourrecord.index', compact('jobOpportunities', 'year', 'month'));
+        }
+        
+        
+
+
+    public function showStudents($jobOpportunityId)
+{
+    // Obtener la JobOpportunity con las relaciones de Jobs y HourRecords
+    $jobOpportunity = JobOportunity::with('job.hourRecords')->find($jobOpportunityId);
+
+    // Verificar si la JobOpportunity existe
+    if (!$jobOpportunity) {
+        return redirect()->route('jobs.index')->with('error', 'Oportunidad de trabajo no encontrada.');
     }
+
+    // Retornar la vista con la JobOpportunity y los Jobs asociados
+    return view('jobs.students', [
+        'jobOpportunity' => $jobOpportunity,
+        'jobs' => $jobOpportunity->job, // Traemos todos los Jobs asociados
+    ]);
+}
+
     
+
     
+
+        
 
     /**
      * Show the form for creating a new resource.
