@@ -7,6 +7,7 @@ use App\Models\Job;
 use App\Models\Application;
 use App\Models\JobOportunity;
 use App\Events\StudentAcceptedForJob;
+use App\Models\Student;
 
 class JobController extends Controller
 {
@@ -15,33 +16,6 @@ class JobController extends Controller
      */
 
       /**
-    public function index()
-    {
-        if (auth()->user()->role == 'areamanager') {
-            $areaManagerId = auth()->user()->area_manager->id;
-        
-            // Filtrar solo las job_opportunities que tienen al menos un job asociado y al menos un estudiante
-            $jobOpportunities = JobOportunity::with(['area_managers.areas'])
-                ->whereHas('job', function($query) {
-                    $query->whereHas('student'); // Filtrar solo los jobs con estudiantes asociados
-                })
-                ->where('area_manager_id', $areaManagerId)  // Filtrar por el área del manager
-                ->get();
-        
-            return view('hourrecord.index', compact('jobOpportunities'));
-        }
-    
-        if (auth()->user()->role == 'admin') {
-            // Filtrar solo las job_opportunities con al menos un job asociado y con al menos un estudiante
-            $jobOpportunities = JobOportunity::with(['area_managers.areas'])
-                ->whereHas('job', function($query) {
-                    $query->whereHas('student');  // Filtrar solo los jobs con estudiantes asociados
-                })
-                ->get();
-        
-            return view('hourrecord.index', compact('jobOpportunities'));
-        }
-    } 
         */
 
         public function index(Request $request)
@@ -51,11 +25,11 @@ class JobController extends Controller
             $month = $request->has('month') ? $request->month : now()->month;
         
             // Iniciar la consulta con las relaciones necesarias
-            $query = JobOportunity::with(['area_managers.areas'])
-                ->whereHas('job', function($query) {
+            $query = JobOportunity::with(['area_managers.areas']);
+                //->whereHas('job', function($query) {
                     // Filtrar solo los jobs con estudiantes asociados
-                    $query->whereHas('student');
-                });
+                   // $query->whereHas('student');
+               // });
         
             // Filtrar por el área del manager si el usuario es un "area manager"
             if (auth()->user()->role == 'areamanager') {
@@ -80,22 +54,45 @@ class JobController extends Controller
         
 
 
-    public function showStudents($jobOpportunityId)
-{
-    // Obtener la JobOpportunity con las relaciones de Jobs y HourRecords
-    $jobOpportunity = JobOportunity::with('job.hourRecords')->find($jobOpportunityId);
-
-    // Verificar si la JobOpportunity existe
-    if (!$jobOpportunity) {
-        return redirect()->route('jobs.index')->with('error', 'Oportunidad de trabajo no encontrada.');
-    }
-
-    // Retornar la vista con la JobOpportunity y los Jobs asociados
-    return view('jobs.students', [
-        'jobOpportunity' => $jobOpportunity,
-        'jobs' => $jobOpportunity->job, // Traemos todos los Jobs asociados
-    ]);
-}
+        public function showStudents(Request $request, $jobOpportunityId)
+        {
+            // Obtener la oportunidad de trabajo con los trabajos asociados
+            $jobOpportunity = JobOportunity::with('job.hourRecords')->find($jobOpportunityId);
+        
+            // Verificar si la oportunidad existe
+            if (!$jobOpportunity) {
+                return redirect()->route('jobs.index')->with('error', 'Oportunidad de trabajo no encontrada.');
+            }
+        
+            // Crear la consulta para obtener los trabajos asociados con la oportunidad
+            $query = Job::query()->where('job_opportunity_id', $jobOpportunityId);
+        
+            // Si hay un término de búsqueda, filtrar por los campos del estudiante (a través de User)
+            if ($request->filled('search')) {
+                $search = $request->input('search');
+                $query->whereHas('student.user', function ($query) use ($search) {
+                    $query->where('cif', 'like', "%{$search}%")
+                          ->orWhere('name', 'like', "%{$search}%")
+                          ->orWhere('lastname', 'like', "%{$search}%");
+                });
+            }
+        
+            // Obtener los trabajos con los estudiantes filtrados
+            $jobs = $query->with('student.user')->get();
+        
+            // Extraer los estudiantes de los trabajos
+            $students = $jobs->map(function ($job) {
+                return $job->student; // Esto te dará los estudiantes asociados a los trabajos
+            });
+        
+            // Retornar la vista con la oportunidad de trabajo, trabajos y estudiantes
+            return view('jobs.students', [
+                'jobOpportunity' => $jobOpportunity,
+                'jobs' => $jobs,
+                'students' => $students,
+            ]);
+        }
+        
 
     
 
