@@ -132,7 +132,7 @@
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link {{ request()->is('job/show') ? 'active' : '' }}"
-                                    href="{{ route('job.index') }}">Convalidar</a>
+                                    href="{{ route('job.index', ['year' => now()->year, 'month' => now()->month]) }}">Convalidar</a>
                                 </li>
 
 
