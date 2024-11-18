@@ -3,8 +3,13 @@
 
 @section('content')
 <div class="container">
-    <h1>Registros de Horas para {{ $student->user->name }} {{ $student->user->lastname }}</h1>
-
+    <h1>Registros de horas para {{ $student->user->name }} {{ $student->user->lastname }} </h1>
+    <h2>{{$semester->name}}</h2>
+    <a href="{{ route('hourrecords.sendPDF', ['student' => $student->id, 'semester' => $semester->id]) }}" 
+   class="btn btn-primary"
+   onclick="return confirm('¿Estás seguro de enviar este PDF al administrador?');">
+    Enviar PDF por Correo
+    </a>
     <table class="table table-striped">
         <thead>
             <tr>

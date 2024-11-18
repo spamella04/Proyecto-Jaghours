@@ -129,7 +129,8 @@ Route::middleware('auth')->group(
         Route::get('/hourrecords/report', [HourRecordController::class, 'report'])->name('hourrecords.report');
         Route::get('/hourrecords/report/export', [ExportController::class, 'export'])->name('report.export');
         Route::get('/hourrecords/student/{student}', [HourRecordController::class, 'showStudentHourRecords'])->name('hourrecords.student');
-       
+        Route::get('/hourrecords/{student}/send-pdf/{semester}', [HourRecordController::class, 'sendPDF'])->name('hourrecords.sendPDF');
+
     
         //Profile
         
