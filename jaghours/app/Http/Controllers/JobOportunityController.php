@@ -175,12 +175,24 @@ class JobOportunityController extends Controller
         //
     }
 
-    public function showApplicants($id)
+    public function showApplicants(Request $request,$id)
     {
 
         $joboportunity = JobOportunity::with('applications.student.user')->findOrFail($id);
-        $applications = Application::where('job_opportunity_id', $joboportunity->id)->get();
+        $query = Application::query()->where('job_opportunity_id', $joboportunity->id);
+        
+        if ($request->filled('search')) {
+            $search = $request->input('search');
+            $query->whereHas('student.user', function ($query) use ($search) {
+                $query->where('cif', 'like', "%{$search}%")
+                      ->orWhere('name', 'like', "%{$search}%")
+                      ->orWhere('lastname', 'like', "%{$search}%");
+            });
+        }
     
+        // Obtener las aplicaciones (filtradas si aplica)
+        $applications = $query->get();
+
         // Usar el decorador correspondiente basado en el valor de match
         if ($joboportunity->match) {
 

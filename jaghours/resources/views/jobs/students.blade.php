@@ -1,11 +1,41 @@
 @extends('layouts.app')
 
 @section('content')
+
+<head>
+    <style>
+        .btn-info {
+        background-color: #17A2B8;
+        border-color: #17A2B8;
+        color: #fff;
+    }
+        .progress-bar{
+        background-color: #17A2B8;
+        }
+        .btn-primary{
+        background-color: #17A2B8;
+        border-color: #17A2B8;
+        }
+    </style>
+</head>
+
 <div class="container mt-4">
     <h1>Estudiantes Aplicantes</h1>
+
+    <form action="{{ route('jobs.students', ['jobOpportunityId' => $jobOpportunity->id]) }}" method="GET" class="mb-4">
+        <div class="input-group">
+            <input type="text" name="search" class="form-control" placeholder="Buscar por cif, nombre o apellido..." value="{{ request()->get('search') }}">
+            <div class="input-group-append">
+                <button type="submit" class="btn btn-info">Buscar</button>
+                <a href="{{ route('jobs.students', ['jobOpportunityId' => $jobOpportunity->id]) }}" class="btn btn-secondary btn-show-all">Mostrar todos</a>
+            </div>
+        </div>
+    </form>
+
     <table class="table">
         <thead>
             <tr>
+                <th>Cif</th>
                 <th>Nombre</th>
                 <th>Email</th>
                 <th>Progreso</th>
@@ -22,7 +52,8 @@
                     $isCompleted = $hoursLogged >= $totalHoursRequired; // Verificar si el progreso está completo
                 @endphp
                 <tr>
-                    <td>{{ $job->student->user->name }}</td>
+                    <td>{{ $job->student->user->cif }}</td>
+                    <td>{{ $job->student->user->name }} {{ $job->student->user->lastname }}</td>
                     <td>{{ $job->student->user->email }}</td>
                     <td>
                         <div class="progress" style="height: 20px;">

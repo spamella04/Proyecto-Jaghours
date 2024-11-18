@@ -132,6 +132,12 @@
         .job-card-applicants a.btn:hover {
             background-color: #17699E;
         }
+
+        .btn-info {
+        background-color: #17A2B8;
+        border-color: #17A2B8;
+        color: #fff;
+    }
     </style>
     <script>
         function toggleDetails(element) {
@@ -157,6 +163,17 @@
 
 <div class="container mt-4">
     <h1>Estudiantes que aplicaron a {{ $joboportunity->title }}</h1>
+
+    <form action="{{ route('joboportunity.showapplicants', $joboportunity->id) }}" method="GET" class="mb-4">
+        <div class="input-group">
+            <input type="text" name="search" class="form-control" placeholder="Buscar por cif, nombre o apellido..." value="{{ request()->get('search') }}">
+            <div class="input-group-append">
+                <button type="submit" class="btn btn-info">Buscar</button>
+                <a href="{{ route('joboportunity.showapplicants', $joboportunity->id) }}" class="btn btn-secondary btn-show-all">Mostrar todos</a>
+            </div>
+        </div>
+    </form>
+
     {{-- Renderizar la tabla de aplicaciones usando el decorador --}}
     {!! $applicationsTable !!} {{-- Contenido generado por el decorador correspondiente --}}
 </div>
