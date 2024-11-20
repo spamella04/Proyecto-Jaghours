@@ -68,7 +68,7 @@
                     <input type="hidden" name="cif_search" value="{{ request()->input('cif_search') }}">
                     <input type="hidden" name="status_filter" value="{{ request()->input('status_filter') }}">
 
-                    <button type="submit" id="exportButton" class="btn ml-2" style="background-color: #219EBC; color: white; margin-left: 10px;" disabled>Exportar a Excel</button>
+                    <button type="submit" id="exportButton" class="btn ml-2" style="background-color: #219EBC; color: white; margin-left: 10px;"data-students-empty="{{ $students->isEmpty() ? 'true' : 'false' }}" disabled>Exportar a Excel</button>
                 </form>
             </div>
         </div>
@@ -114,29 +114,28 @@
             </tbody>
         </table>
     @endif
-</div>
-
-<script>
+    <script>
     document.addEventListener("DOMContentLoaded", function() {
         const exportButton = document.getElementById("exportButton");
         const semesterFilter = document.getElementById("semester_id");
-        const otherFilters = ["degree_id", "status_filter", "cif_search"];
 
-        // Función para habilitar/deshabilitar el botón basándose en el filtro "Semestre"
+        // Función para verificar si el botón debe habilitarse
         function checkFilters() {
             const isSemesterSelected = semesterFilter.value !== "";
-            const isAnyOtherFilterApplied = otherFilters.some(filter => document.getElementById(filter).value);
+            const isStudentsEmpty = exportButton.getAttribute("data-students-empty") === "true";
 
-            // El botón solo se habilita si hay un semestre seleccionado
-            exportButton.disabled = !isSemesterSelected;
+            // El botón se habilita solo si hay un semestre seleccionado y existen estudiantes
+            exportButton.disabled = !isSemesterSelected || isStudentsEmpty;
         }
 
-        // Ejecutar la función al cargar la página y cada vez que se cambie un filtro
+        // Ejecutar la función al cargar la página
         checkFilters();
-        
-        // Añadir evento para el cambio de "semestre" y otros filtros
+
+        // Añadir evento al cambio del filtro de semestre
         semesterFilter.addEventListener("change", checkFilters);
-        otherFilters.forEach(filter => document.getElementById(filter).addEventListener("change", checkFilters));
     });
 </script>
+</div>
+
+
 @endsection

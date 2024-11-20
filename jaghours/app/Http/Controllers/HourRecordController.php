@@ -229,7 +229,9 @@ class HourRecordController extends Controller
         $jobOpportunity = JobOportunity::findOrFail($request->job_opportunity_id);
 
         // Encontrar semestre activo
-        $semester = Semester::where('status', 'active')->first();
+        $semester = Semester::where('status', 'active')
+        ->orderBy('end_date', 'desc') // Ordenar por la fecha más reciente
+        ->first();
 
         foreach ($request->applications as $applicationJson) {
             $application = json_decode($applicationJson);
