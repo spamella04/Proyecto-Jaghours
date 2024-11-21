@@ -113,7 +113,7 @@
         </a>
 
         <div class="dropdown-menu dropdown-menu-end" aria-labelledby="hoursDropdown">
-            <a class="dropdown-item" href="{{ route('job.index') }}">Convalidar</a>
+            <a class="dropdown-item" href="{{ route('job.index', ['year' => now()->year, 'month' => now()->month]) }}">Convalidar</a>
             <a class="dropdown-item" href="{{ route('hourrecords.report') }}">Reportes</a>
         </div>
     </li>
@@ -132,7 +132,7 @@
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link {{ request()->is('job/show') ? 'active' : '' }}"
-                                    href="{{ route('job.index') }}">Convalidar</a>
+                                    href="{{ route('job.index', ['year' => now()->year, 'month' => now()->month]) }}">Convalidar</a>
                                 </li>
 
 

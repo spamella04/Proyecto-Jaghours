@@ -15,6 +15,16 @@
         .btn-primary{
         background-color: #17A2B8;
         border-color: #17A2B8;
+        color: #fff;
+        }
+
+        .btn-info:hover {
+            background-color: #41c4d9;
+        }
+
+        .btn-primary:hover {
+            background-color: #41c4d9;
+            border-color: #17A2B8;
         }
     </style>
 </head>

@@ -1,32 +1,27 @@
-
-@extends('layouts.app')
-
-@section('content')
+<!DOCTYPE html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registros de Horas</title>
     <style>
-    .btn-primary{
-        background-color: #17A2B8;
-        border-color: #17A2B8;
-        color: #fff;
-    }
+        body { font-family: Arial, sans-serif; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f4f4f4; }
     </style>
 </head>
-
-<div class="container">
-    <h1>Registros de horas para {{ $student->user->name }} {{ $student->user->lastname }} </h1>
-    <div class="row">
-    <div class="col-md-6">
-    <h2>{{$semester->name}}</h2>
-    </div>
-    <div class="col-md-6 d-flex justify-content-end align-items-center">
-    <a href="{{ route('hourrecords.sendPDF', ['student' => $student->id, 'semester' => $semester->id]) }}" 
-   class="btn btn-primary"
-   onclick="return confirm('¿Estás seguro de enviar este PDF al administrador?');">
-    Enviar PDF por correo
-    </a>
-    </div>
-    </div>
-    <table class="table table-striped">
+<body>
+    <h1>Reporte de horas para {{ $student->user->name }} {{ $student->user->lastname }}</h1>
+    <h2>{{ $semester->name }}</h2>
+    <h3> </h3>
+    <h3>Cif: {{$student->user->cif}}</h3>
+    <h3>Carrera: {{$student->degree->name}}</h3>
+    <h3>Email: {{$student->user->email}}</h3>
+    <h3>Telefono: {{$student->user->phone}}</h3>
+    <h3></h3>
+    <h3>Detalle de horas registradas</h3>
+    <table>
         <thead>
             <tr>
                 <th>Título del Trabajo</th>
@@ -50,7 +45,5 @@
             @endforelse
         </tbody>
     </table>
-
-    <a href="{{ route('hourrecords.report') }}" class="btn btn-secondary">Regresar</a>
-</div>
-@endsection
+</body>
+</html>
