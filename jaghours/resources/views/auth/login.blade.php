@@ -25,7 +25,7 @@
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
-
+                
                 <div class="mb-3 form-check">
                     <input type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}
                         class="form-check-input">
