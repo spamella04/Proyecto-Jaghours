@@ -3,6 +3,7 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="icon" type="image/png" href="{{ asset('assets/images/LogoJaghoursSinFondo.png') }}">
 
 <head>
     <meta charset="utf-8">
@@ -48,10 +49,16 @@
         <nav class="navbar navbar-expand-md shadow-sm">
             <div class="container">
                 <div class="logo-nav pl-2">
-                    <img src="{{ asset('assets/images/LogoJagHours.png') }}" alt="Logo Jaghours"
+                    <img src="{{ asset('assets/images/LogoJagHours.png') }}" alt="Logo Jaghours" 
                         class="nav-image">
-                    <a href="{{ url('/') }}" class="navbar-brand h1">JagHours</a>
-
+                    @auth
+                     @if(Auth::user()->role === 'student')
+                     <a href="{{ url('/home') }}" class="navbar-brand h1">
+                     <img src="{{ asset('assets/images/TituloJaghours.png') }}" alt="Logo Jaghours" 
+                     class="nav-image">
+                     </a>
+                     @endif
+                    @endauth
                 </div>
 
                 </a>
@@ -64,7 +71,7 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav me-auto">
-
+                    
                     </ul>
 
                     <!-- Right Side Of Navbar -->
@@ -74,14 +81,14 @@
                             @if(Route::has('login'))
                                 <li class="nav-item">
                                     <a class="nav-link {{ request()->is('login') ? 'active' : '' }}"
-                                        href="{{ route('login') }}">{{ __('Iniciar Sesion') }}</a>
+                                        href="{{ route('login') }}">{{ __('Iniciar sesion') }}</a>
                                 </li>
                             @endif
 
                             @if(Route::has('register'))
                                 <li class="nav-item">
                                     <a class="nav-link {{ request()->is('register') ? 'active' : '' }}"
-                                        href="{{ route('register') }}">{{ __('Crear Cuenta') }}</a>
+                                        href="{{ route('register') }}">{{ __('Crear cuenta') }}</a>
                                 </li>
                             @endif
                         @else
@@ -94,7 +101,7 @@
 
         <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
             <a class="dropdown-item" href="{{ route('students.index') }}">Estudiantes</a>
-            <a class="dropdown-item" href="{{ route('areamanagers.index') }}">Responsable Area</a>
+            <a class="dropdown-item" href="{{ route('areamanagers.index') }}">Responsable área</a>
             <a class="dropdown-item" href="{{ route('areas.index') }}">Area</a>
             <a class="dropdown-item" href="{{ route('degrees.index') }}">Carrera</a>
             <a class="dropdown-item" href="{{ route('semesters.index') }}">Semestre</a>
@@ -139,6 +146,7 @@
                             @endif
 
                             @if(Auth::user()->role === 'student')
+                            
                                 <li class="nav-item">
                                     <a class="nav-link {{ request()->is('joboportunity/showstudent') ? 'active' : '' }}"
                                         href="{{ route('joboportunity.indexStudent') }}">Publicaciones</a>
@@ -176,7 +184,7 @@
                                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                                     <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
-                                        {{ __('Cerrar Sesion') }}
+                                        {{ __('Cerrar sesion') }}
                                     </a>
 
                                     <form id="logout-form" action="{{ route('logout') }}"

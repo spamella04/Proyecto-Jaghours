@@ -3,32 +3,30 @@
 @section('content')
 <head>
     <style>
-        /* Contenedor principal */
         .container {
             display: flex;
-            flex-wrap: wrap; /* Permite que las publicaciones se envuelvan en varias filas */
-            justify-content: space-between; /* Espaciado entre publicaciones */
+            flex-wrap: wrap; 
+            justify-content: space-between; 
             margin-top: 20px;
-            padding: 0 15px; /* Aumenta el espaciado lateral */
+            padding: 0 15px; 
         }
 
-        /* Contenedor de la publicación */
         .job-card {
-            flex: 0 0 48%; /* Ancho del 48% para que quepan dos por fila */
+            flex: 0 0 48%; 
             border-radius: 10px;
             border: 1px solid #ddd;
             padding: 20px;
             background-color: #fff;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             transition: box-shadow 0.3s ease;
-            margin-bottom: 30px; /* Separación inferior */
+            margin-bottom: 30px; 
         }
 
         .job-card:hover {
             box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
         }
 
-        /* Estilo del área y el círculo */
+      
         .job-card-area {
             display: flex;
             align-items: center;
@@ -52,7 +50,7 @@
             font-weight: bold;
         }
 
-        /* Estilo del título */
+      
         .job-card-title {
             font-size: 1.5rem;
             font-weight: bold;
@@ -60,16 +58,15 @@
             margin-bottom: 10px;
         }
 
-        /* Estilo de la imagen */
+  
         .job-card-image {
             width: 100%;
-            height: 200px; /* Ajuste de la altura */
+            height: 200px; 
             border-radius: 10px;
             object-fit: cover;
             margin-bottom: 15px;
         }
 
-        /* Descripción */
         .job-card-description {
             margin-top: 10px;
             color: #555;
@@ -77,7 +74,7 @@
             line-height: 1.5;
         }
 
-        /* Detalles del trabajo */
+    
         .job-card-details {
             margin-top: 15px;
             font-size: 0.9rem;
@@ -89,7 +86,7 @@
             color: #219EBC;
         }
 
-        /* Botón de aplicar */
+        
         .btn-action {
             background-color: #219EBC;
             border: none;
@@ -102,7 +99,7 @@
             transition: background-color 0.3s ease, transform 0.3s ease;
             margin-top: 15px;
             display: block;
-            width: 100%; /* Botón al 100% de la tarjeta */
+            width: 100%; 
             text-align: center;
         }
 
@@ -117,13 +114,13 @@
             color: #333;
             font-weight: bold;
             text-align: center;
-            width: 100%; /* Asegura que el título ocupe todo el ancho */
+            width: 100%; 
         }
 
-        /* Estilos para la paginación */
+        
         .pagination {
-            margin-top: 20px; /* Espaciado superior para la paginación */
-            justify-content: center; /* Centrar los enlaces de paginación */
+            margin-top: 20px; 
+            justify-content: center; 
         }
 
         .pagination .page-link {
@@ -149,7 +146,7 @@
             margin-bottom: 20px;
         }
 
-             /* Estilos para el formulario de filtros */
+         
              .filter-container {
             margin-bottom: 20px;
             padding: 15px;
@@ -233,8 +230,8 @@
 
                 <!-- Detalles adicionales -->
                 <div class="job-card-details">
-                    <div><span>Total Horas:</span> {{ $joboportunity->hours_validated }} horas</div>
-                    <div><span>Fecha de Inicio:</span> {{ $joboportunity->start_date }}</div>
+                    <div><span>Total horas convalidadas:</span> {{ $joboportunity->hours_validated }} horas</div>
+                    <div><span>Fecha de inicio:</span> {{ $joboportunity->start_date }}</div>
                 </div>
 
                 <!-- Botón para aplicar -->

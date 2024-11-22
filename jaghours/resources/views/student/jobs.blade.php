@@ -8,7 +8,7 @@
         <div class="row">
             <div class="col-md-4">
                 <div class="form-group">
-                    <label for="semester_id">Seleccionar Semestre</label>
+                    <h1 class="text-nowrap">Mi historial de horas trabajadas</h1>
                     <select id="semester_id" name="semester_id" class="form-control" required>
                         <option value="">Seleccione un semestre</option>
                         @foreach($semesters as $semester)
@@ -21,7 +21,7 @@
             </div>
             <div class="col-md-4 d-flex align-items-end">
                 <div class="form-group mb-0">
-                    <button type="submit" class="btn" style="background-color: #219EBC; color: white;">Ver Historial</button>
+                    <button type="submit" class="btn" style="background-color: #219EBC; color: white;">Ver historial</button>
                 </div>
             </div>
         </div>
@@ -48,8 +48,8 @@
                             <tr>
                                 <th scope="col">Título</th>
                                 <th scope="col">Área</th>
-                                <th scope="col">Fecha de Inicio</th>
-                                <th scope="col">Horas Convalidadas</th>
+                                <th scope="col">Fecha de inicio</th>
+                                <th scope="col">Horas convalidadas</th>
                             </tr>
                         </thead>
                         <tbody>
