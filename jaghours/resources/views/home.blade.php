@@ -1,6 +1,25 @@
 @extends('layouts.app')
 
 @section('content')
+<head>
+    <style>
+        .card-custom {
+    height: 100%; 
+    transition: transform 0.3s, box-shadow 0.3s; 
+}
+
+.card-custom img {
+    object-fit: cover; 
+    height: 200px; 
+}
+
+.card-custom:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2); 
+}
+
+    </style>
+</head>
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
@@ -23,38 +42,39 @@
                     @elseif(Auth::user()->role === 'student')
                         {{-- Contenido para estudiante --}}
                         <div class="row">
-                            <div class="col-md-4 mb-4">
-                                <div class="card shadow-sm rounded-lg">
-                                    <img src="{{ asset('assets/images/imagen1.png') }}" class="card-img-top" alt="Imagen 1">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Descubre las emocionantes y variadas ofertas de trabajo</h5>
-                                        <p class="card-text">Selecciona un área para ver las oportunidades de trabajo que mejor se adapten a tus intereses y habilidades.</p>
-                                    </div>
-                                </div>
-                            </div>
+    <div class="col-md-4 mb-4">
+        <div class="card card-custom shadow-sm rounded-lg">
+            <img src="{{ asset('assets/images/imagen1.png') }}" class="card-img-top img-fluid" alt="Imagen 1">
+            <div class="card-body">
+                <h5 class="card-title">Descubre las emocionantes y variadas ofertas de trabajo</h5>
+                <p class="card-text">Selecciona un área para ver las oportunidades de trabajo que mejor se adapten a tus intereses y habilidades.</p>
+            </div>
+        </div>
+    </div>
 
-                            <div class="col-md-4 mb-4">
-                                <div class="card shadow-sm rounded-lg">
-                                    <img src="{{ asset('assets/images/imagen2.png') }}" class="card-img-top" alt="Imagen 2">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Nuestro listado se actualiza regularmente</h5>
-                                        <p class="card-text">Estamos constantemente actualizando nuestras ofertas para ofrecerte las mejores opciones disponibles.</p>
-                                    </div>
-                                </div>
-                            </div>
+    <div class="col-md-4 mb-4">
+        <div class="card card-custom shadow-sm rounded-lg">
+            <img src="{{ asset('assets/images/imagen2.png') }}" class="card-img-top img-fluid" alt="Imagen 2">
+            <div class="card-body">
+                <h5 class="card-title">Nuestro listado se actualiza regularmente</h5>
+                <p class="card-text">Estamos constantemente actualizando nuestras ofertas para ofrecerte las mejores opciones disponibles.</p>
+            </div>
+        </div>
+    </div>
 
-                            <div class="col-md-4 mb-4">
-                                <div class="card shadow-sm rounded-lg">
-                                    <img src="{{ asset('assets/images/imagen2.png') }}" class="card-img-top" alt="Imagen 3">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Postúlate a las ofertas que más te interesen</h5>
-                                        <p class="card-text">Recuerda que puedes postularte a las ofertas de trabajo que más te interesen y acumular tus horas laborales de manera eficiente.</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+    <div class="col-md-4 mb-4">
+        <div class="card card-custom shadow-sm rounded-lg">
+            <img src="{{ asset('assets/images/imagen3.png') }}" class="card-img-top img-fluid" alt="Imagen 3">
+            <div class="card-body">
+                <h5 class="card-title">Postúlate a las ofertas que más te interesen</h5>
+                <p class="card-text">Recuerda que puedes postularte a las ofertas de trabajo que más te interesen y acumular tus horas laborales de manera eficiente.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
                         
-                        <a href="{{ route('joboportunity.indexStudent') }}" class="btn  mt-4" style="background-color: #219EBC; border-color: #219EBC; color: #fff">Ver Publicaciones</a>
+                        <a href="{{ route('joboportunity.indexStudent') }}" class="btn  mt-4" style="background-color: #219EBC; border-color: #219EBC; color: #fff">Ver publicaciones</a>
                     @endif
                 </div>
             </div>

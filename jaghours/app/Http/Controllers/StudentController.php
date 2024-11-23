@@ -116,8 +116,10 @@ class StudentController extends Controller
             return redirect()->route('home')->with('error', 'No tienes un perfil de estudiante asociado.');
         }
     
-        // Obtener todos los semestres
-        $semesters = Semester::all();
+        $userCreatedDate = Auth::user()->created_at;
+
+    // Filtrar semestres donde el `end_date` sea menor que el `created_at` del usuario
+    $semesters = Semester::where('end_date', '>=', $userCreatedDate)->get();
     
         // Inicializar variables
         $semesterProgress = null;

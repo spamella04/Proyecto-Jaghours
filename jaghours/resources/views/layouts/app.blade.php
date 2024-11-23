@@ -2,7 +2,8 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
+<link rel="icon" type="image/png" href="{{ asset('assets/images/LogoJaghoursSinFondo.png') }}">
 
 <head>
     <meta charset="utf-8">
@@ -33,6 +34,39 @@
             color: #219EBC !important;
         }
 
+        .loading-scr {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .loading-scr-inner {
+            text-align: center;
+        }
+
+        .loading-scr-spinner img {
+
+            width: 100px;
+            animation: spin 3s linear infinite;
+        }
+
+
+        @keyframes spin {
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+        }
     </style>
 
     <!-- Tailwind CSS -->
@@ -45,13 +79,29 @@
 
 <body>
     <div id="app">
+
+        <div id="loading-screen" class="loading-scr">
+            <div class="loading-scr-inner">
+                <img class="loading-scr-logo" src="{{ asset('assets/images/LogoJagHours.png') }}" alt="Cargando...">
+                <div class="loading-scr-spinner">
+                    <img src="{{ asset('assets/images/loadingCircle.gif') }}" alt="Cargando...">
+                </div>
+            </div>
+        </div>
+
         <nav class="navbar navbar-expand-md shadow-sm">
             <div class="container">
                 <div class="logo-nav pl-2">
                     <img src="{{ asset('assets/images/LogoJagHours.png') }}" alt="Logo Jaghours"
                         class="nav-image">
-                    <a href="{{ url('/') }}" class="navbar-brand h1">JagHours</a>
-
+                    @auth
+                    @if(Auth::user()->role === 'student'|| Auth::user()->role === 'admin'|| Auth::user()->role === 'areamanager')
+                    <a href="{{ url('/home') }}" class="navbar-brand h1">
+                        <img src="{{ asset('assets/images/TituloJaghours.png') }}" alt="Logo Jaghours"
+                            class="nav-image">
+                    </a>
+                    @endif
+                    @endauth
                 </div>
 
                 </a>
@@ -71,120 +121,121 @@
                     <ul class="navbar-nav ms-auto">
                         <!-- Authentication Links -->
                         @guest
-                            @if(Route::has('login'))
-                                <li class="nav-item">
-                                    <a class="nav-link {{ request()->is('login') ? 'active' : '' }}"
-                                        href="{{ route('login') }}">{{ __('Iniciar Sesion') }}</a>
-                                </li>
-                            @endif
+                        @if(Route::has('login'))
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->is('login') ? 'active' : '' }}"
+                                href="{{ route('login') }}">{{ __('Iniciar sesion') }}</a>
+                        </li>
+                        @endif
 
-                            @if(Route::has('register'))
-                                <li class="nav-item">
-                                    <a class="nav-link {{ request()->is('register') ? 'active' : '' }}"
-                                        href="{{ route('register') }}">{{ __('Crear Cuenta') }}</a>
-                                </li>
-                            @endif
+                        @if(Route::has('register'))
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->is('register') ? 'active' : '' }}"
+                                href="{{ route('register') }}">{{ __('Crear cuenta') }}</a>
+                        </li>
+                        @endif
                         @else
                         @if(Auth::user()->role === 'admin')
-    <li class="nav-item dropdown">
-        <a id="navbarDropdown" class="nav-link dropdown-toggle {{ request()->is('students*') || request()->is('areamanagers*') || request()->is('areas*') || request()->is('degrees*') || request()->is('semesters*') ? 'active' : '' }}" href="#" role="button"
-            data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-            Configuracion
-        </a>
+                        <li class="nav-item dropdown">
+                            <a id="navbarDropdown" class="nav-link dropdown-toggle {{ request()->is('students*') || request()->is('areamanagers*') || request()->is('areas*') || request()->is('degrees*') || request()->is('semesters*') ? 'active' : '' }}" href="#" role="button"
+                                data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                Configuracion
+                            </a>
 
-        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-            <a class="dropdown-item" href="{{ route('students.index') }}">Estudiantes</a>
-            <a class="dropdown-item" href="{{ route('areamanagers.index') }}">Responsable Area</a>
-            <a class="dropdown-item" href="{{ route('areas.index') }}">Area</a>
-            <a class="dropdown-item" href="{{ route('degrees.index') }}">Carrera</a>
-            <a class="dropdown-item" href="{{ route('semesters.index') }}">Semestre</a>
-        </div>
-    </li>
+                            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="{{ route('students.index') }}">Estudiantes</a>
+                                <a class="dropdown-item" href="{{ route('areamanagers.index') }}">Responsable área</a>
+                                <a class="dropdown-item" href="{{ route('areas.index') }}">Area</a>
+                                <a class="dropdown-item" href="{{ route('degrees.index') }}">Carrera</a>
+                                <a class="dropdown-item" href="{{ route('semesters.index') }}">Semestre</a>
+                            </div>
+                        </li>
 
-    <li class="nav-item">
-        <a class="nav-link {{ request()->is('adminjobopportunities/show') ? 'active' : '' }}"
-            href="{{ route('adminjobopportunities.index') }}">Solicitudes</a>
-    </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->is('adminjobopportunities/show') ? 'active' : '' }}"
+                                href="{{ route('adminjobopportunities.index') }}">Solicitudes</a>
+                        </li>
 
-    <li class="nav-item dropdown">
-        <a id="hoursDropdown" class="nav-link dropdown-toggle {{ request()->is('job/show') || request()->is('completed-hours-report') ? 'active' : '' }}" href="#" role="button"
-            data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-            Horas Laborales
-        </a>
+                        <li class="nav-item dropdown">
+                            <a id="hoursDropdown" class="nav-link dropdown-toggle {{ request()->is('job/show') || request()->is('completed-hours-report') ? 'active' : '' }}" href="#" role="button"
+                                data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                Horas Laborales
+                            </a>
 
-        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="hoursDropdown">
-            <a class="dropdown-item" href="{{ route('job.index', ['year' => now()->year, 'month' => now()->month]) }}">Convalidar</a>
-            <a class="dropdown-item" href="{{ route('hourrecords.report') }}">Reportes</a>
-        </div>
-    </li>
-@endif
-
-
-
-                            @if(Auth::user()->role === 'areamanager')
-                                <li class="nav-item">
-                                    <a class="nav-link {{ request()->is('joboportunity/manager') ? 'active' : '' }}"
-                                        href="{{ route('joboportunity.index') }}">Solicitudes</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link {{ request()->is('joboportunity/areamanager') ? 'active' : '' }}"
-                                        href="{{ route('joboportunity.indexAreaManager') }}">Publicaciones</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link {{ request()->is('job/show') ? 'active' : '' }}"
-                                    href="{{ route('job.index', ['year' => now()->year, 'month' => now()->month]) }}">Convalidar</a>
-                                </li>
-
-
-                            @endif
-
-                            @if(Auth::user()->role === 'student')
-                                <li class="nav-item">
-                                    <a class="nav-link {{ request()->is('joboportunity/showstudent') ? 'active' : '' }}"
-                                        href="{{ route('joboportunity.indexStudent') }}">Publicaciones</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link {{ request()->is('applications/showstudent') ? 'active' : '' }}"
-                                        href="{{ route('applications.index') }}">Postulaciones</a>
-                                </li>
-
-                                <li class="nav-item">
-                                    <a class="nav-link {{ request()->is('student/jobs') ? 'active' : '' }}"
-                                        href="{{ route('student.jobs') }}">Historial</a>
-                                </li>
-
-                                <li class="nav-item">
-                                    <a class="nav-link {{ request()->is('student/profile') ? 'active' : '' }}"
-                                        href="{{ route('student.profile') }}">Perfil</a>
-                                </li>
+                            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="hoursDropdown">
+                                <a class="dropdown-item" href="{{ route('job.index', ['year' => now()->year, 'month' => now()->month]) }}">Convalidar</a>
+                                <a class="dropdown-item" href="{{ route('hourrecords.report') }}">Reportes</a>
+                            </div>
+                        </li>
+                        @endif
 
 
 
-                            @endif
+                        @if(Auth::user()->role === 'areamanager')
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->is('joboportunity/manager') ? 'active' : '' }}"
+                                href="{{ route('joboportunity.index') }}">Solicitudes</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->is('joboportunity/areamanager') ? 'active' : '' }}"
+                                href="{{ route('joboportunity.indexAreaManager') }}">Publicaciones</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->is('job/show') ? 'active' : '' }}"
+                                href="{{ route('job.index', ['year' => now()->year, 'month' => now()->month]) }}">Convalidar</a>
+                        </li>
+
+
+                        @endif
+
+                        @if(Auth::user()->role === 'student')
+
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->is('joboportunity/showstudent') ? 'active' : '' }}"
+                                href="{{ route('joboportunity.indexStudent') }}">Publicaciones</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->is('applications/showstudent') ? 'active' : '' }}"
+                                href="{{ route('applications.index') }}">Postulaciones</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->is('student/jobs') ? 'active' : '' }}"
+                                href="{{ route('student.jobs') }}">Historial</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->is('student/profile') ? 'active' : '' }}"
+                                href="{{ route('student.profile') }}">Perfil</a>
+                        </li>
+
+
+
+                        @endif
 
 
 
 
 
 
-                            <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
-                                    data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    {{ Auth::user()->name }}
+                        <li class="nav-item dropdown">
+                            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
+                                data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                {{ Auth::user()->name }}
+                            </a>
+
+                            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+                                    {{ __('Cerrar sesion') }}
                                 </a>
 
-                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                        {{ __('Cerrar Sesion') }}
-                                    </a>
-
-                                    <form id="logout-form" action="{{ route('logout') }}"
-                                        method="POST" class="d-none">
-                                        @csrf
-                                    </form>
-                                </div>
-                            </li>
+                                <form id="logout-form" action="{{ route('logout') }}"
+                                    method="POST" class="d-none">
+                                    @csrf
+                                </form>
+                            </div>
+                        </li>
                         @endguest
                     </ul>
                 </div>
@@ -265,7 +316,52 @@
                 open: false,
             }));
         });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const loadingScreen = document.getElementById('loading-screen');
+            if (loadingScreen) {
+                setTimeout(() => {
+                    loadingScreen.style.display = 'none';
+                }, 500);
+            }
+        });
 
+        // Muestra la pantalla al hacer clic en links
+        document.addEventListener('click', function(event) {
+            const link = event.target.tagName === 'A' ? event.target : event.target.closest('a');
+            if (link && link.href && link.getAttribute('href') !== '#') {
+                const loadingScreen = document.getElementById('loading-screen');
+                if (loadingScreen) {
+                    showLoadingScreen();
+                }
+            }
+
+        });
+
+        document.addEventListener('submit', function(event) {
+            const form = event.target;
+
+            if (form.tagName === 'FORM') {
+                const submitButton = form.querySelector('button[type="submit"]');
+                if (submitButton ) {
+                    //  event.preventDefault(); // Prevenir el envío inmediato
+                    showLoadingScreen(); // Mostrar la pantalla de carga
+
+                    
+                }
+            }
+        });
+
+
+
+        // Función para mostrar la pantalla
+        function showLoadingScreen() {
+            const loadingScreen = document.getElementById('loading-screen');
+            if (loadingScreen) {
+                loadingScreen.style.display = 'flex';
+            }
+        }
     </script>
 </body>
 

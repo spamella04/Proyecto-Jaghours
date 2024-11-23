@@ -4,7 +4,7 @@
 <div class="min-vh-100 d-flex justify-content-center align-items-center bg-light">
     <div class="card shadow-sm w-100" style="max-width: 28rem;">
         <div class="card-body p-4">
-            <h2 class="text-center mb-4">{{ __('Iniciar Sesión') }}</h2>
+            <h2 class="text-center mb-4">{{ __('Iniciar sesión') }}</h2>
             <form method="POST" action="{{ route('login') }}">
                 @csrf
 
@@ -25,11 +25,11 @@
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
-
+                
                 <div class="mb-3 form-check">
                     <input type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}
                         class="form-check-input">
-                    <label for="remember" class="form-check-label">{{ __('Remember Me') }}</label>
+                    <label for="remember" class="form-check-label">{{ __('Remember me') }}</label>
                 </div>
 
                 <div class="d-grid">
@@ -40,7 +40,7 @@
 
                 @if (Route::has('password.request'))
                     <div class="text-center mt-3">
-                        <a href="{{ route('password.request') }}" class="text-decoration-none" style="color: #219EBC; ">{{ __('Olvidaste tu contraseña?') }}</a>
+                        <a href="{{ route('password.request') }}" class="text-decoration-none" style="color: #219EBC; ">{{ __('¿Olvidaste tu contraseña?') }}</a>
                     </div>
                 @endif
             </form>

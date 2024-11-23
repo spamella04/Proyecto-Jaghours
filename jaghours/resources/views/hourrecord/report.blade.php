@@ -133,6 +133,7 @@
 
         // Añadir evento al cambio del filtro de semestre
         semesterFilter.addEventListener("change", checkFilters);
+       
     });
 </script>
 </div>
