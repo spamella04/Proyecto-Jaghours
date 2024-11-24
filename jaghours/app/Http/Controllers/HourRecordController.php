@@ -16,6 +16,10 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\StudentHourRecordsPDF;
+use App\Models\Application;
+use App\Enums\JobOportunityStatus;
+
+
 
 
 class HourRecordController extends Controller
@@ -264,7 +268,120 @@ class HourRecordController extends Controller
 
         return redirect()->route('joboportunity.showapplicants', $jobOpportunity->id)->with('success', 'Horas registradas correctamente');
     }
+   
+    public function showAllStudents(Request $request)
+    {
+        $search = $request->get('search', '');
+        
+        // Obtener los estudiantes basados en el término de búsqueda
+        $students = Student::whereHas('user', function ($query) use ($search) {
+            $query->where('name', 'like', "%$search%")
+                  ->orWhere('cif', 'like', "%$search%");
+        })->paginate(10);
+        
+        // Intentar obtener la oportunidad de trabajo desde la sesión
+        $jobOpportunity = JobOportunity::find(session('jobOpportunityId'));
+        
+        // Verificar si la oportunidad de trabajo existe
+        if (!$jobOpportunity) {
+            // Si no se encuentra la oportunidad de trabajo, redirigir con un mensaje de error
+            return redirect()->route('job.index')->with('error', 'Oportunidad de trabajo no encontrada.');
+        }
+    
+        // Obtener el ID de la oportunidad de trabajo
+        $jobOpportunityId = $jobOpportunity->id;
+        
+        // Renderizar la vista y pasar los datos necesarios
+        return view('directjobopportunity.addStudents', compact('students', 'search', 'jobOpportunityId'));
+    }
+    
+    
+    public function AddMoreStudents(Request $request, $jobOpportunityId)
+    {
+        // Obtener el término de búsqueda
+        $search = $request->get('search', '');
+    
+        // Obtener los estudiantes basados en el término de búsqueda
+        $students = Student::whereHas('user', function ($query) use ($search) {
+            $query->where('name', 'like', "%$search%")
+                  ->orWhere('cif', 'like', "%$search%");
+        })->paginate(10);
+    
+        // Intentar obtener la oportunidad de trabajo desde el ID
+        $jobOpportunity = JobOportunity::find($jobOpportunityId);
+    
+        // Verificar si la oportunidad de trabajo existe
+        if (!$jobOpportunity) {
+            // Si no se encuentra la oportunidad de trabajo, redirigir con un mensaje de error
+            return redirect()->route('job.index')->with('error', 'Oportunidad de trabajo no encontrada.');
+        }
+    
+        // Renderizar la vista y pasar los datos necesarios
+        return view('directjobopportunity.show', [
+            'students' => $students,
+            'search' => $search,
+            'jobOpportunity' => $jobOpportunity  // Pasa la instancia completa de JobOpportunity
+        ]);
+    }
+    
+    
 
+    public function assignStudentToDirectJobOpportunity(Request $request)
+{
+    try {
+        $request->validate([
+            'student_id' => 'required|exists:students,id',
+            'job_opportunity_id' => 'required|exists:job_oportunities,id',
+            'semester_id' => 'required|exists:semesters,id',
+        ]);
+
+        Log::info('Datos recibidos para asignación:', $request->all());
+
+        $jobOpportunity = JobOportunity::findOrFail($request->job_opportunity_id);
+
+        if ((string) $jobOpportunity->status !== JobOportunityStatus::DirectEntry) {
+            Log::warning('La oportunidad de trabajo no es válida para asignación directa.');
+            return redirect()->back()->withErrors('La oportunidad de trabajo no es válida para asignación directa.');
+        }
+
+        // Crear la aplicación asociada
+        $application = new Application();
+        $application->student_id = $request->student_id;
+        $application->job_opportunity_id = $jobOpportunity->id;
+        $application->status = 'Aceptado';
+        $application->save();
+
+        Log::info('Aplicación creada:', ['application' => $application]);
+
+        // Crear el trabajo asociado
+        $job = new Job();
+        $job->job_opportunity_id = $jobOpportunity->id;
+        $job->student_id = $request->student_id;
+        $job->save();
+
+        Log::info('Trabajo creado:', ['job' => $job]);
+
+        // Crear el registro de horas inicial
+        $hourRecord = new HourRecord();
+        $hourRecord->work_date = now();
+        $hourRecord->hours_worked = $jobOpportunity->hours_validated;
+        $hourRecord->semester_id = $request->semester_id;
+        $hourRecord->job_id = $job->id;
+        $hourRecord->area_manager_id = $jobOpportunity->area_manager_id;
+        $hourRecord->save();
+
+        Log::info('Registro de horas creado:', ['hourRecord' => $hourRecord]);
+
+        return redirect()->route('directjobopportunity.addStudents')
+            ->with('success', 'El estudiante ha sido asignado exitosamente.');
+
+    } catch (\Exception $e) {
+        Log::error('Error asignando al estudiante:', ['error' => $e->getMessage()]);
+        return redirect()->back()->withErrors('Ocurrió un error asignando al estudiante. Revisa los logs.');
+    }
+}
+    
+    
 
 
     /**

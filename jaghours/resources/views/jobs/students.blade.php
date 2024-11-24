@@ -5,17 +5,17 @@
 <head>
     <style>
         .btn-info {
-        background-color: #17A2B8;
-        border-color: #17A2B8;
-        color: #fff;
-    }
-        .progress-bar{
-        background-color: #17A2B8;
+            background-color: #17A2B8;
+            border-color: #17A2B8;
+            color: #fff;
         }
-        .btn-primary{
-        background-color: #17A2B8;
-        border-color: #17A2B8;
-        color: #fff;
+        .progress-bar {
+            background-color: #17A2B8;
+        }
+        .btn-primary {
+            background-color: #17A2B8;
+            border-color: #17A2B8;
+            color: #fff;
         }
 
         .btn-info:hover {
@@ -26,13 +26,73 @@
             background-color: #41c4d9;
             border-color: #17A2B8;
         }
+
+       
+        .btn-primary {
+            margin-top: 20px; 
+        }
+
+       
+        .search-form {
+            margin-top: 30px; 
+        }
+
+      
+        .table td, .table th {
+            vertical-align: middle; 
+            text-align: center; 
+        }
+
+
+        .action-cell {
+        display: flex;
+        justify-content: center;
+        align-items: flex-start; 
+        height: 100px; 
+        padding-top: 10px; 
+        }
+
+      
+        .progress-bar {
+            background-color: #17A2B8;
+        }
+
+    
+        .btn-celeste {
+            background-color: #5baede; 
+            border-color: #5baede; 
+            color: #fff; 
+            font-weight: bold;
+        }
+
+        .btn-celeste:hover {
+            background-color: #4aa3c5; 
+            color: #fff; 
+            border-color: #4aa3c5;
+        }
+
+        .btn-celeste:focus, 
+        .btn-celeste:active {
+            background-color: #4aa3c5; 
+            border-color: #4aa3c5;
+            color: #fff; 
+            box-shadow: none; 
+        }
     </style>
 </head>
 
 <div class="container mt-4">
     <h1>Estudiantes Aplicantes</h1>
 
-    <form action="{{ route('jobs.students', ['jobOpportunityId' => $jobOpportunity->id]) }}" method="GET" class="mb-4">
+    <!-- Verificación del estado -->
+    <div class="container mt-2">
+        @if(trim($jobOpportunity->status) === 'Asignacion Directa')
+            <a href="{{ route('directjobopportunity.show', ['jobOpportunity' => $jobOpportunity->id]) }}" class="btn btn-celeste">Agregar Estudiante</a>
+        @endif
+    </div>
+
+   
+    <form action="{{ route('jobs.students', ['jobOpportunityId' => $jobOpportunity->id]) }}" method="GET" class="mb-4 search-form">
         <div class="input-group">
             <input type="text" name="search" class="form-control" placeholder="Buscar por cif, nombre o apellido..." value="{{ request()->get('search') }}">
             <div class="input-group-append">
@@ -42,6 +102,7 @@
         </div>
     </form>
 
+    
     <table class="table">
         <thead>
             <tr>
@@ -72,7 +133,7 @@
                             </div>
                         </div>
                     </td>
-                    <td>
+                    <td class="action-cell">
                         <!-- Botón deshabilitado si el progreso está completo -->
                         <a href="{{ route('hourrecords.create', $job->id) }}" class="btn btn-primary btn-sm {{ $isCompleted ? 'disabled' : '' }}">
                             Agregar Horas
@@ -83,4 +144,5 @@
         </tbody>
     </table>
 </div>
+
 @endsection

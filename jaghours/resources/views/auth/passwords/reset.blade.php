@@ -31,8 +31,12 @@
                             <label for="password" class="col-md-4 col-form-label text-md-end">{{ __('Contraseña') }}</label>
 
                             <div class="col-md-6">
+                                <div class="input-group">
                                 <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
-
+                                <button type="button" class="btn btn-outline-secondary" id="togglePassword1">
+                                    <i class="fas fa-eye-slash"></i> 
+                                </button>
+                                </div>
                                 @error('password')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -43,9 +47,14 @@
 
                         <div class="row mb-3">
                             <label for="password-confirm" class="col-md-4 col-form-label text-md-end">{{ __('Confirmar Contraseña') }}</label>
-
+                            
                             <div class="col-md-6">
-                                <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
+                                <div class="input-group">
+                                    <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
+                                    <button type="button" class="btn btn-outline-secondary" id="togglePassword2">
+                                        <i class="fas fa-eye-slash"></i> 
+                                    </button>
+                                </div>
                             </div>
                         </div>
 
@@ -62,4 +71,48 @@
         </div>
     </div>
 </div>
+
+<script>
+
+    // Alternar visibilidad de la contraseña para el campo 'password'
+    document.getElementById('togglePassword1').addEventListener('click', function () {
+        const passwordInput = document.getElementById('password');
+        const icon = this.querySelector('i');
+        
+        // Cambiar entre tipo 'password' y 'text'
+        const isPassword = passwordInput.type === 'password';
+        passwordInput.type = isPassword ? 'text' : 'password';
+        
+        // Cambiar ícono
+        if (passwordInput.type === 'password') {
+            icon.classList.remove('fa-eye');
+            icon.classList.add('fa-eye-slash');
+        } else {
+            icon.classList.remove('fa-eye-slash');
+            icon.classList.add('fa-eye');
+        }
+    });
+
+    // Alternar visibilidad de la contraseña para el campo 'password-confirm'
+    document.getElementById('togglePassword2').addEventListener('click', function () {
+        const passwordInput = document.getElementById('password-confirm');
+        const icon = this.querySelector('i');
+        
+        // Cambiar entre tipo 'password' y 'text'
+        const isPassword = passwordInput.type === 'password';
+        passwordInput.type = isPassword ? 'text' : 'password';
+        
+        // Cambiar ícono
+        if (passwordInput.type === 'password') {
+            icon.classList.remove('fa-eye');
+            icon.classList.add('fa-eye-slash');
+        } else {
+            icon.classList.remove('fa-eye-slash');
+            icon.classList.add('fa-eye');
+        }
+    });
+</script>
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+
 @endsection

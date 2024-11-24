@@ -75,15 +75,22 @@
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
-
+                        
                         <div class="mb-3">
                             <label for="password" class="form-label font-weight-bold">Contraseña</label>
-                            <input type="password" class="form-control @error('password') is-invalid @enderror" id="password" name="password">
+                            <div class="input-group">
+                                <input type="password" class="form-control @error('password') is-invalid @enderror" id="password" name="password">
+                                <button type="button" class="btn btn-outline-secondary" id="togglePassword">
+                                    <i class="fas fa-eye-slash"></i> 
+                                </button>
+                            </div>
                             <small class="text-muted">Deje este campo vacío si no desea cambiar la contraseña.</small>
                             @error('password')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
+
+                        
 
                         <div class="text-center">
                             <button type="submit" class="btn btn-primary" style="background-color: #219EBC; border-color: #219EBC;">{{ __('Guardar') }}</button>
@@ -95,4 +102,29 @@
     </div>
 </div>
 
+<script>
+
+    // Alternar visibilidad de la contraseña
+    document.getElementById('togglePassword').addEventListener('click', function () {
+        const passwordInput = document.getElementById('password');
+        const icon = this.querySelector('i');
+        
+        // Cambiar entre tipo 'password' y 'text'
+        const isPassword = passwordInput.type === 'password';
+        passwordInput.type = isPassword ? 'text' : 'password';
+        
+        // Cambiar ícono
+        if (passwordInput.type === 'password') {
+            icon.classList.remove('fa-eye');
+            icon.classList.add('fa-eye-slash');
+        } else {
+            icon.classList.remove('fa-eye-slash');
+            icon.classList.add('fa-eye');
+        }
+    });
+</script>
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+
 @endsection
+

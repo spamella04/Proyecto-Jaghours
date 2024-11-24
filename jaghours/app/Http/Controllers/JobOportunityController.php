@@ -13,10 +13,9 @@ use App\Models\Application;
 use App\Models\Job;
 use App\Decorator\Applications\MatchApplicationHandler;
 use App\Decorator\Applications\RegularApplicationHandler;
-
 use Illuminate\Support\Facades\DB;
 use App\Decorators\StudentDecorator;
-
+use App\Models\Semester;
 
 
 class JobOportunityController extends Controller
@@ -39,7 +38,6 @@ class JobOportunityController extends Controller
 
         if (Auth::user()->role == 'admin') {
             $admin = Auth::user()->role=='admin';
-
             if ($admin) {
                 $jobOportunities = JobOportunity::with('applications.student')->where('status', 'Publicado')->paginate(4);
                 return view('joboportunity.index', compact('jobOportunities'));
@@ -165,6 +163,74 @@ class JobOportunityController extends Controller
         $jobOportunity->save();
         return redirect()->route('joboportunity.index');
         
+    }
+
+    public function directEntry()
+    {
+        
+        return view('directjobopportunity.directEntry');
+    }
+
+    public function storeDirectJobOpportunity(Request $request)
+{
+    $request->validate([
+        'title' => 'required|string|max:255',
+        'description' => 'required|string',
+        'hours_validated' => 'required|integer|min:1',
+        'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048', // Validación de la imagen
+    ]);
+
+    // Validar si se ha subido una imagen
+    $imagePath = null;
+    if ($request->hasFile('image')) {
+        $image = $request->file('image');
+        $imageName = time() . '.' . $image->getClientOriginalExtension();
+        $image->move(public_path('assets/images'), $imageName);
+        $imagePath = 'assets/images/' . $imageName;
+    }
+
+    $jobOportunity = new JobOportunity();
+    $jobOportunity->title = $request->title;
+    $jobOportunity->description = $request->description;
+    $jobOportunity->start_date = now();
+    $jobOportunity->hours_validated = $request->hours_validated;
+    $jobOportunity->number_applicants = 10;
+    $jobOportunity->number_vacancies = 10;
+    $jobOportunity->requirements = "No se requiere";
+    $jobOportunity->status = 'Asignacion Directa';
+    $adminAreaManagerId = 1; // ID del Administrador del Sistema
+    $jobOportunity->area_manager_id = $adminAreaManagerId;
+    $jobOportunity->match = false;
+    $jobOportunity->image_path = $imagePath;
+    $jobOportunity->save();
+
+    return redirect()->route('directjobopportunity.addStudents')->with('jobOpportunityId', $jobOportunity->id);
+}
+
+    public function showDirectJobOpportunity(Request $request, $id )
+
+    {
+         
+       
+
+        try	{
+            $jobOportunity = JobOportunity::findOrFail($id);
+
+            // Obtener semestres
+            $semesters = Semester::all();
+        
+            // Obtener estudiantes según criterio de búsqueda (si existe un filtro)
+            $search = $request->get('search'); // El término de búsqueda viene del frontend
+            $students = Student::when($search, function ($query, $search) {
+                return $query->where('cif', 'LIKE', "%{$search}%") // Filtra por CIF
+                             ->orWhere('name', 'LIKE', "%{$search}%"); // Filtra por nombre (opcional)
+            })->get();
+        
+            return view('directjobopportunity.show', compact('jobOportunity', 'semesters', 'students'));
+        } catch (\Exception $e) {
+            return redirect()->route('job.index');
+        }
+       
     }
 
     /**

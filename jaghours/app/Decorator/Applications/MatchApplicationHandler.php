@@ -22,8 +22,9 @@ class MatchApplicationHandler extends ApplicationHandler
         $output = "<form method='POST' action='" . route('hourrecords.storeMatch') . "'>";
         $output .= csrf_field(); // Token CSRF para seguridad
         $output .= "<input type='hidden' name='job_opportunity_id' value='{$this->jobOpportunity->id}'>"; // Incluimos el ID de la oportunidad de trabajo
-    
-        $output .= '<table class="table">';
+
+        $output .= '<button type="submit" class="btn" style = "background-color: #219EBC; color: white">Convalidar Horas</button>';
+        $output .= '<table class="table mt-4">';
         $output .= '<thead>';
         $output .= '<tr>';
         $output .= '<th>CIF</th>';
@@ -54,7 +55,7 @@ class MatchApplicationHandler extends ApplicationHandler
         }
     
         $output .= '</tbody></table>';
-        $output .= '<button type="submit" class="btn" style = "background-color: #219EBC; color: white">Convalidar Horas</button>';
+       
         $output .= '</form>';
     
         return $output;

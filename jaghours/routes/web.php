@@ -12,6 +12,8 @@ use App\Http\Controllers\ApplicationController;
 use App\Http\Controllers\JobController;
 use App\Http\Controllers\HourRecordController;
 use App\Http\Controllers\ExportController;
+use App\Http\Controllers\HomeController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -29,7 +31,11 @@ Route::get('/', function () {
 
 Auth::routes();
 
+
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+
+
 
 Route::middleware('auth')->group(
     function () {
@@ -45,6 +51,8 @@ Route::middleware('auth')->group(
         Route::put('/student/profile/update', [StudentController::class, 'updateProfile'])->name('student.updateProfile');
         Route::put('/students/{student}', [StudentController::class, 'notdestroy'])->name('students.notdestroy');
         Route::post('/students/import', [StudentController::class, 'import'])->name('students.import');
+        Route::get('/students/search', [StudentController::class, 'searchStudents'])->name('directjobopportunity.searchStudent');
+
 
 
         
@@ -78,7 +86,15 @@ Route::middleware('auth')->group(
         Route::delete('/joboportunity/{joboportunity}', [JobOportunityController::class, 'destroy'])->name('joboportunity.destroy');
         Route::get('/joboportunity/{id}/showapplicants', [JobOportunityController::class, 'showApplicants'])->name('joboportunity.showapplicants');
 
+        Route::get('/direct-job-opportunity/convalidate', [JobOportunityController::class, 'directEntry'])->name('directjobopportunity.directEntry');
+        Route::post('/direct-job-opportunity/store', [JobOportunityController::class, 'storeDirectJobOpportunity'])->name('directjobopportunity.store');
+        Route::post('/assigned/students',[HourRecordController::class, 'assignStudentToDirectJobOpportunity'])->name('directjobopportunity.assignStudent');
+        Route::get('/students/search', [StudentController::class, 'searchStudent'])->name('students.search');
+        Route::get('job-opportunity/{jobOpportunity}/students', [HourRecordController::class, 'AddMoreStudents']) ->name('directjobopportunity.show');
+        
+        Route::get('/job-opportunity/students', [HourRecordController::class, 'showAllStudents'])->name('directjobopportunity.addStudents');
 
+   
         
         Route::get('/degrees', [DegreeController::class, 'index'])->name('degrees.index');
         Route::get('/degrees/create', [DegreeController::class, 'create'])->name('degrees.create');

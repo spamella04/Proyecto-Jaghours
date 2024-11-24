@@ -16,6 +16,7 @@ final class JobOportunityStatus extends Enum
     const Published = 'Publicado';
     const Closed = 'Cerrado';
     const Rejected = 'Rechazada';
+    const DirectEntry = 'Asignacion Directa';
 
     public static function fromValue($value): static
     {
