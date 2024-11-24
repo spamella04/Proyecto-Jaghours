@@ -80,6 +80,7 @@ class AreaManagerController extends Controller
                 $user->lastname = $request->lastname;
                 $user->email = $request->email;
                 $user->phone = $request->phone;
+                $user->email_verified_at = now();
                 $user->password = Hash::make($request->password);
                 $user->role= 'areamanager';
                 $user->save();

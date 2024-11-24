@@ -53,7 +53,7 @@ class JobController extends Controller
          }
      
          // Ejecutar la consulta y obtener los resultados
-         $jobOpportunities = $query->get();
+         $jobOpportunities = $query->paginate(4);
      
          // Pasar las oportunidades de trabajo a la vista, junto con el año y mes seleccionados
          return view('hourrecord.index', compact('jobOpportunities', 'year', 'month'));
@@ -103,12 +103,6 @@ class JobController extends Controller
             'students' => $students,
         ]);
     }
-
-
-
-
-
-
 
 
     /**

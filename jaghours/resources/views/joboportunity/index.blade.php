@@ -211,9 +211,7 @@
             @endif
         </div>
 
-
     @endif
-
     {{-- Paginación --}}
     <div class="d-flex justify-content-center">
         {{ $jobOportunities->links() }} {{-- Esto generará los enlaces de paginación usando Bootstrap --}}

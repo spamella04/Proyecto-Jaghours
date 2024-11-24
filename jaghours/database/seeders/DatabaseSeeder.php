@@ -82,6 +82,15 @@ class DatabaseSeeder extends Seeder
                             
                         ]
                         );
+
+    \App\Models\Area::factory()->create(
+      [
+            'code' => '0000',
+            'name' => 'Administracion',
+            'description' => 'Administracion del Sistema',
+                              
+                          ]
+                          );
     \App\Models\Area::factory()->create(
       [
           'code' => '0001',
@@ -106,6 +115,8 @@ class DatabaseSeeder extends Seeder
               
           ]
           );
+
+
       \App\Models\User::factory()->create([
         'cif' => '012345678B',
         'name' => 'Isabella',
@@ -120,6 +131,13 @@ class DatabaseSeeder extends Seeder
   \App\Models\AreaManager::factory()->create([
     'area_manager_id' => '2',
     'area_id' => '1',
+
+
+]);
+
+\App\Models\AreaManager::factory()->create([
+  'area_manager_id' => '1',
+  'area_id' => '1',
 
 
 ]);

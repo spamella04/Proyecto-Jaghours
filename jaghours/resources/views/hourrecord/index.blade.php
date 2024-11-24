@@ -33,7 +33,6 @@
 
         .job-card-title {
             font-size: 1.75rem;
-            /* Aumentar tamaño de título */
             font-weight: bold;
             margin-bottom: 10px;
             color: #333;
@@ -55,14 +54,11 @@
             margin-top: 15px;
             color: #444;
             font-size: 1rem;
-            /* Tamaño de texto más grande */
             line-height: 1.8;
-            /* Mayor interlineado */
         }
 
         .job-card-image {
             width: 100%;
-            /* Asegura que la imagen ocupe el ancho completo */
             border-radius: 10px;
             margin-top: 15px;
         }
@@ -70,32 +66,24 @@
         .job-card-placeholder {
             width: 100%;
             height: 200px;
-            /* Altura del cuadro de marcador de posición */
             background-color: #E0F2F1;
-            /* Color de fondo del marcador de posición */
             border: 1px solid #ccc;
-            /* Borde sólido */
             display: flex;
             justify-content: center;
             align-items: center;
             color: #aaa;
             font-size: 1.5rem;
-            /* Tamaño del texto */
             text-align: center;
             margin-top: 10px;
             border-radius: 10px;
-            /* Bordes redondeados */
             position: relative;
         }
 
         .job-card-placeholder:before {
             content: "Sin Imagen";
-            /* Texto en el cuadro */
             position: absolute;
             font-size: 1rem;
-            /* Tamaño del texto */
             color: #666;
-            /* Color del texto */
         }
 
         .job-card-details {
@@ -112,9 +100,7 @@
             display: inline-block;
             padding: 0.25em 0.5em;
             background-color: #E0F2F1;
-            /* Fondo más claro */
             color: #219EBC;
-            /* Letras en color #219EBC */
             border-radius: 0.25rem;
             font-size: 0.9rem;
         }
@@ -135,7 +121,7 @@
             background-color: #41c4d9;
         }
 
-        /* Estilos para la paginación */
+    
         .pagination .page-link {
             color: #219EBC;
             background-color: white;
@@ -169,11 +155,33 @@
             background-color: #41c4d9;
             border-color: #17A2B8;
         }
+
+        .btn-celeste {
+            background-color: #5baede; 
+            border-color: #5baede; 
+            color: #fff; 
+            font-weight: bold;
+        }
+
+        .btn-celeste:hover {
+            background-color: #4aa3c5; 
+            color: #fff; 
+            border-color: #4aa3c5;
+        }
+
+        .btn-celeste:focus, 
+        .btn-celeste:active {
+            background-color: #4aa3c5; 
+            border-color: #4aa3c5;
+            color: #fff; 
+            box-shadow: none; 
+        }
+
     </style>
 </head>
 
 <div class="container mt-4">
-    @if(Auth::user()->role == 'admin' || Auth::user()->role == 'areamanager')
+    @if(Auth::user()->role === 'admin' || Auth::user()->role === 'areamanager')
     <h1 class="">Trabajos a Convalidar</h1>
 
     <form action="{{ route('job.index') }}" method="GET" class="mb-4">
@@ -212,7 +220,15 @@
     </div>
 </form>
 
+    @if(Auth::user()->role === 'admin')
 
+    <a href="{{ route('directjobopportunity.directEntry') }}" class="btn btn-celeste">
+      Registrar horas
+    </a>
+
+    @endif
+
+<div class = 'mt-4'>
     @foreach($jobOpportunities as $joboportunity)
     <div class="job-card shadow-lg p-3 mb-5 bg-white rounded">
         <div class="d-flex align-items-center">
@@ -253,17 +269,24 @@
             <div class="job-card-applicants">
                 @if($joboportunity-> match == 1)
                 <a href="{{ route('joboportunity.showapplicants', $joboportunity->id) }}" class="btn btn-info btn-sm btn-action">Convalidar</a>
-
-
                 @else
                 <a href="{{ route('jobs.students', $joboportunity->id) }}" class="btn btn-info btn-sm btn-action">Convalidar</a>
                 @endif
+        
             </div>
         </div>
     </div>
 
     @endforeach
+    </div>
     @endif
+
+    {{-- Paginación --}}
+    <div class="d-flex justify-content-center">
+        {{ $jobOpportunities->links() }} {{-- Esto generará los enlaces de paginación usando Bootstrap --}}
+    </div>
+
+    
 </div>
 
 @endsection

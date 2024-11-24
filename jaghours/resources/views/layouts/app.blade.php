@@ -362,6 +362,18 @@
                 loadingScreen.style.display = 'flex';
             }
         }
+
+        // Manejar el botón de regresar
+        window.addEventListener('pageshow', function (event) {
+            const loadingScreen = document.getElementById('loading-screen');
+
+            if (loadingScreen) {
+                if (event.persisted) {
+                    // La página fue cargada desde el historial del navegador
+                    loadingScreen.style.display = 'none';
+                }
+            }
+        });
     </script>
 </body>
 

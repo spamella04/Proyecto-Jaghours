@@ -44,6 +44,27 @@ class StudentController extends Controller
         
         return view('student.index', compact('users'));
     }
+
+   
+    public function searchStudent(Request $request)
+    {
+        $request->validate([
+            'query' => 'required|string|max:255', // Validar que se envíe un criterio de búsqueda
+        ]);
+    
+        // Obtener el texto ingresado en la barra de búsqueda
+        $query = $request->query;
+    
+        // Buscar estudiantes que coincidan con el CIF o algún otro criterio
+        $students = Student::where('cif', 'LIKE', "%{$query}%")
+            ->orWhere('name', 'LIKE', "%{$query}%")
+            ->limit(10) // Limitar los resultados para optimizar
+            ->get();
+    
+        // Retornar resultados como JSON
+        return response()->json($students);
+    }
+    
    
     /**
      * Show the form for creating a new resource.
