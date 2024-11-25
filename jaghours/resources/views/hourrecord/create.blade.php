@@ -86,10 +86,12 @@
                                 name="semester_id" required>
                                 <option value="">Seleccione semestre</option>
                                 @foreach($semesters as $semester)
-                                    <option value="{{ $semester->id }}"
-                                        {{ old('semester_id') == $semester->id ? 'selected' : '' }}>
-                                        {{ $semester->name }} - {{ $semester->year }}
-                                    </option>
+                                <option value="{{ $semester->id }}" 
+                                    data-start="{{ $semester->start_date }}" 
+                                    data-end="{{ $semester->end_date }}"
+                                    {{ old('semester_id') == $semester->id ? 'selected' : '' }}>
+                                    {{ $semester->name }} - {{ $semester->year }}
+                                </option>
                                 @endforeach
                             </select>
                             @error('semester_id')
@@ -140,5 +142,33 @@
         </div>
     </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Obtener elementos de semestre y fecha
+    const semesterSelect = document.getElementById('semester_id');
+    const workDateInput = document.getElementById('work_date');
+
+    // Función para actualizar las fechas de trabajo disponibles
+    function updateDateRange() {
+        const selectedOption = semesterSelect.selectedOptions[0];
+        const startDate = selectedOption.getAttribute('data-start');
+        const endDate = selectedOption.getAttribute('data-end');
+        
+        // Establecer los valores de 'min' y 'max' para el input de fecha
+        workDateInput.setAttribute('min', startDate);
+        workDateInput.setAttribute('max', endDate);
+    }
+
+    // Llamar a la función al cambiar el semestre
+    semesterSelect.addEventListener('change', updateDateRange);
+
+    // Actualizar el rango de fechas al cargar la página si ya hay un semestre seleccionado
+    if (semesterSelect.value) {
+        updateDateRange();
+    }
+});
+</script>
+
 
 @endsection
