@@ -168,7 +168,7 @@ class HourRecordController extends Controller
     
     
     // Enviar el correo con los registros de horas del semestre específico
-    Mail::to('admin@uam.edu.ni') // Poner correo apropiado
+    Mail::to('mmbougle@uamv.edu.ni') // Poner correo apropiado
     ->send(new StudentHourRecordsPDF($student, $hourRecords, $semester));
 
     return back()->with('success', 'Reporte enviado correctamente.');

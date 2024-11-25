@@ -3,6 +3,8 @@
 namespace App\Providers;
 
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
+use App\Models\HourRecord;
+use App\Observers\HourRecordObserver;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -24,6 +26,8 @@ class EventServiceProvider extends ServiceProvider
     public function boot(): void
     {
         //
+        HourRecord::observe(HourRecordObserver::class);
+       
     }
 
     /**
@@ -33,4 +37,7 @@ class EventServiceProvider extends ServiceProvider
     {
         return false;
     }
-}
+
+
+ }
+
