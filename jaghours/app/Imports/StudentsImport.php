@@ -1,61 +1,84 @@
 <?php
-
 namespace App\Imports;
 
 use App\Models\Student;
 use App\Models\User;
-use Maatwebsite\Excel\Concerns\ToModel;
-use Illuminate\Support\Facades\Hash;
 use App\Models\Degree;
+use Illuminate\Support\Facades\Hash;
+use Maatwebsite\Excel\Concerns\ToModel;
+use Maatwebsite\Excel\Concerns\WithHeadingRow;
+use Maatwebsite\Excel\Concerns\SkipsOnFailure;
+use Maatwebsite\Excel\Concerns\SkipsFailures;
+use Illuminate\Validation\ValidationException;
 
-
-class StudentsImport implements ToModel
+class StudentsImport implements ToModel, WithHeadingRow, SkipsOnFailure
 {
-    /**
-     * @param array $row
-     *
-     * @return \Illuminate\Database\Eloquent\Model|null
-     */
+    use SkipsFailures;
 
-     public $ignoredCount = 0;
+    public $ignoredCount = 0;
+    public $headersMissing = false;
+
+    // Verifica si los encabezados necesarios están presentes
+    public function __construct()
+    {
+        $this->requiredHeaders = ['cif', 'name', 'lastname', 'email', 'phone', 'password', 'degree_id', 'skills'];
+    }
+
     public function model(array $row)
     {
+       
+        if ($this->headersMissing) {
+            return null; // No procesar si faltan los encabezados
+        }
 
-        // Verificar si el usuario ya existe por el CIF o correo
-        $existingUser = User::where('cif', $row[0])->orWhere('email', $row[3])->first();
+        
+        foreach ($this->requiredHeaders as $header) {
+            if (!array_key_exists($header, $row)) {
+                $this->headersMissing = true;
+                break;
+            }
+        }
 
-        if ($existingUser) {
-            
-            $this->ignoredCount++;
-            
-            // Devolver null para que no se inserte el registro
+        // Si falta algún encabezado, no procesar el archivo
+        if ($this->headersMissing) {
             return null;
         }
-        
+
+        // Validar si el estudiante ya existe
+        $existingUser = User::where('cif', $row['cif'])->orWhere('email', $row['email'])->first();
+        if ($existingUser) {
+            $this->ignoredCount++;
+            return null; // Ignorar el registro duplicado
+        }
+
+        // Crear el usuario
         $user = User::create([
-            'cif' => $row[0],  
-            'name' => $row[1],  
-            'lastname' => $row[2],  
-            'email' => $row[3],  
-            'phone' => $row[4],  
-            'password' => Hash::make($row[5]),  
-            'role' => 'student',  // Asignamos el rol de estudiante
-            'status' => 'active',  // Estado activo
+            'cif' => $row['cif'],
+            'name' => $row['name'],
+            'lastname' => $row['lastname'],
+            'email' => $row['email'],
+            'phone' => $row['phone'],
+            'password' => Hash::make($row['password']),
+            'role' => 'student',
+            'status' => 'active',
         ]);
 
-       
-        $degreeId = $row[6];
-        
-        // Crear el estudiante y asociarlo con el usuario creado
+        // Crear el estudiante asociado
         return new Student([
-            'student_id' => $user->id,  // Relacionamos con el ID del usuario
-            'degree_id' => $degreeId,  // Relacionamos con el ID de la carrera
-            'skills' => $row[7],  // Habilidades
+            'student_id' => $user->id,
+            'degree_id' => $row['degree_id'],
+            'skills' => $row['skills'],
         ]);
     }
 
     public function getIgnoredCount()
     {
         return $this->ignoredCount;
+    }
+
+    
+    public function headersMissing()
+    {
+        return $this->headersMissing;
     }
 }

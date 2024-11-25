@@ -84,12 +84,34 @@
         <h2 class="font-weight-bold">Listado de Estudiantes</h2>
         <div>
             <a href="{{ route('students.create') }}" class="btn btn-primary btn-lg btn-create">Crear nuevo registro de estudiante</a>
+             
             <form action="{{ route('students.import') }}" method="POST" enctype="multipart/form-data" class="d-inline">
                 @csrf
                 <input type="file" name="file" class="form-control-file d-inline" required>
                 <button type="submit" class="btn btn-success btn-md">Importar Estudiantes</button>
             </form>
         </div>
+    </div>
+
+     <!-- Mensajes de éxito o error en la parte superior -->
+     <div class="alert-container mb-4">
+        @if(session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+        @elseif(session('error'))
+            <div class="alert alert-danger">
+                {{ session('error') }}
+            </div>
+        @elseif ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
     </div>
 
     <form action="{{ route('students.index') }}" method="GET" class="mb-4">
