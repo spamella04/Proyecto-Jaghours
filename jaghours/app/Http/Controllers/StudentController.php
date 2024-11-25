@@ -288,23 +288,41 @@ class StudentController extends Controller
     {
         $request->validate([
             'file' => 'required|mimes:xlsx,csv',
+        ], [
+            'file.mimes' => 'El archivo debe ser de tipo Excel (.xlsx) o CSV (.csv).', // Mensaje de error para tipo de archivo
         ]);
 
-        $import= new StudentsImport;
+    try {
+        
+        $import = new StudentsImport;
+
+        
         Excel::import($import, $request->file('file'));
 
-   
-
-        // Obtener el número de estudiantes ignorados
+        // Obtener la cantidad de estudiantes ignorados (duplicados)
         $ignoredCount = $import->getIgnoredCount();
 
-        // Retornar el mensaje con el número de estudiantes importados e ignorados
-        if ($ignoredCount > 0) {
-            return back()->with('success', "Students imported successfully! {$ignoredCount} students were skipped because they already exist.");
+        // Verificar si faltan encabezados o son incorrectos en el archivo
+        $headersMissing = $import->headersMissing();
+
+        // Mensajes de éxito o error
+        if ($headersMissing) {
+            return back()->with('error', '¡El archivo no contiene la fila de encabezados requerida!');
         }
 
-        return back()->with('success', 'Students imported successfully!');
+        
+        if ($ignoredCount > 0) {
+            return back()->with('success', "{$ignoredCount} estudiantes fueron ignorados porque ya existen.");
+        }
+
+        
+        return back()->with('success', '¡Estudiantes importados exitosamente!');
+
+    } catch (\Exception $e) {
+        
+        return back()->with('error', '¡Error! El tipo de archivo no es correcto. Por favor, suba un archivo Excel o CSV.');
+    }
     }
 
-    
+
 }
