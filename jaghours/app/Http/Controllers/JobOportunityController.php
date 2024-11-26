@@ -204,7 +204,8 @@ class JobOportunityController extends Controller
     $jobOportunity->image_path = $imagePath;
     $jobOportunity->save();
 
-    return redirect()->route('directjobopportunity.addStudents')->with('jobOpportunityId', $jobOportunity->id);
+    return redirect()->route('directjobopportunity.addStudents', ['jobOpportunityId' => $jobOportunity->id]);
+
 }
 
     public function showDirectJobOpportunity(Request $request, $id )

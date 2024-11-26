@@ -269,32 +269,31 @@ class HourRecordController extends Controller
         return redirect()->route('joboportunity.showapplicants', $jobOpportunity->id)->with('success', 'Horas registradas correctamente');
     }
    
-    public function showAllStudents(Request $request)
-    {
-        $search = $request->get('search', '');
-        
-        // Obtener los estudiantes basados en el término de búsqueda
-        $students = Student::whereHas('user', function ($query) use ($search) {
-            $query->where('name', 'like', "%$search%")
-                  ->orWhere('cif', 'like', "%$search%");
-        })->paginate(10);
-        
-        // Intentar obtener la oportunidad de trabajo desde la sesión
-        $jobOpportunity = JobOportunity::find(session('jobOpportunityId'));
-        
-        // Verificar si la oportunidad de trabajo existe
-        if (!$jobOpportunity) {
-            // Si no se encuentra la oportunidad de trabajo, redirigir con un mensaje de error
-            return redirect()->route('job.index')->with('error', 'Oportunidad de trabajo no encontrada.');
-        }
-    
-        // Obtener el ID de la oportunidad de trabajo
-        $jobOpportunityId = $jobOpportunity->id;
-        
-        // Renderizar la vista y pasar los datos necesarios
-        return view('directjobopportunity.addStudents', compact('students', 'search', 'jobOpportunityId'));
+    //cuando se crea por primera vez la oportunidad de trabajo directa
+   public function showAllStudents(Request $request, $jobOpportunityId)
+{
+    $search = $request->get('search', '');
+
+    // Obtener los estudiantes basados en el término de búsqueda
+    $students = Student::whereHas('user', function ($query) use ($search) {
+        $query->where('name', 'like', "%$search%")
+              ->orWhere('cif', 'like', "%$search%");
+    })->paginate(10);
+
+    // Obtener la oportunidad de trabajo directamente del parámetro
+    $jobOpportunity = JobOportunity::find($jobOpportunityId);
+
+    if (!$jobOpportunity) {
+        return redirect()->route('job.index')->with('error', 'Oportunidad de trabajo no encontrada.');
     }
+
+    return view('directjobopportunity.addStudents', compact('students', 'search', 'jobOpportunityId'));
+   
+
+}
+
     
+    //cuando se quiere agregar más estudiantes a la oportunidad de trabajo directa
     
     public function AddMoreStudents(Request $request, $jobOpportunityId)
     {
@@ -303,11 +302,12 @@ class HourRecordController extends Controller
     
         // Obtener los estudiantes basados en el término de búsqueda
         $students = Student::whereHas('user', function ($query) use ($search) {
-            $query->where('name', 'like', "%$search%")
-                  ->orWhere('cif', 'like', "%$search%");
+            $query->where('name', 'like', "%{$search}%")
+                  ->orWhere('cif', 'like', "%{$search}%");
         })->paginate(10);
     
         // Intentar obtener la oportunidad de trabajo desde el ID
+        
         $jobOpportunity = JobOportunity::find($jobOpportunityId);
     
         // Verificar si la oportunidad de trabajo existe
@@ -372,8 +372,9 @@ class HourRecordController extends Controller
 
         Log::info('Registro de horas creado:', ['hourRecord' => $hourRecord]);
 
-        return redirect()->route('directjobopportunity.addStudents')
+        return redirect()->route('job.index')
             ->with('success', 'El estudiante ha sido asignado exitosamente.');
+          
 
     } catch (\Exception $e) {
         Log::error('Error asignando al estudiante:', ['error' => $e->getMessage()]);
@@ -382,8 +383,6 @@ class HourRecordController extends Controller
 }
     
     
-
-
     /**
      * Display the specified resource.
      */

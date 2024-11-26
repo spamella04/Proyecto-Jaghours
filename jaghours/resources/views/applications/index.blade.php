@@ -62,6 +62,25 @@
         border-color: #989898;
     }
 
+    .pagination .page-link {
+            color: #219EBC;
+            background-color: white;
+            border: 1px solid #ddd;
+        }
+
+        .pagination .page-link:hover {
+            background-color: #f1f1f1;
+        }
+
+        .pagination .page-item.active .page-link {
+            background-color: #219EBC;
+            color: white;
+        }
+
+        .pagination .page-item.disabled .page-link {
+            color: #ccc;
+        }
+
 </style>
 
 <div class="container mt-4">
@@ -145,6 +164,11 @@
         </div>
     @endif
 </div>
+
+{{-- Paginación --}}
+    <div class="d-flex justify-content-center">
+    {{ $applications->appends(request()->except('page'))->links() }}
+    </div>
 
 @endsection
 

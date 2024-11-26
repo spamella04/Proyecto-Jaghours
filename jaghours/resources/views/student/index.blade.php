@@ -59,24 +59,60 @@
     }
 
     .btn-warning {
-        background-color: #FFC107;
-        border-color: #FFC107;
+        background-color: #61929b;
+        border-color: #61929b;
         color: #fff;
     }
 
     .btn-danger {
-        background-color: #DC3545;
-        border-color: #DC3545;
+        background-color: #669bbc;
+        border-color: #669bbc;
         color: #fff;
     }
 
+    .btn-editar {
+        background-color: #61929b;
+        border-color: #61929b;
+        color: #fff;
+    }
+
+    .btn-estado-usuario{
+        background-color: #669bbc;
+        border-color: #669bbc;
+        color: #fff;
+    }
     .btn-action:hover {
         opacity: 0.8;
+        background-color: #219EBC;
+        color: #fff;
+       
     }
 
     .btn-show-all {
         margin-left: 0.5rem;
     }
+
+    /* Diseño paginacion*/
+
+    .pagination .page-link {
+            color: #219EBC;
+            background-color: white;
+            border: 1px solid #ddd;
+        }
+
+        .pagination .page-link:hover {
+            background-color: #f1f1f1;
+        }
+
+        .pagination .page-item.active .page-link {
+            background-color: #219EBC;
+            color: white;
+        }
+
+        .pagination .page-item.disabled .page-link {
+            color: #ccc;
+        }
+
 </style>
 
 <div class="container py-5">
@@ -84,13 +120,15 @@
         <h2 class="font-weight-bold">Listado de Estudiantes</h2>
         <div>
             <a href="{{ route('students.create') }}" class="btn btn-primary btn-lg btn-create">Crear nuevo registro de estudiante</a>
-             
-            <form action="{{ route('students.import') }}" method="POST" enctype="multipart/form-data" class="d-inline">
+        </div>
+    </div>
+
+    <div class = "mb-4">
+    <form action="{{ route('students.import') }}" method="POST" enctype="multipart/form-data" class="d-inline">
                 @csrf
                 <input type="file" name="file" class="form-control-file d-inline" required>
-                <button type="submit" class="btn btn-success btn-md">Importar Estudiantes</button>
+                <button type="submit" class="btn btn-primary btn-create btn-md">Importar Estudiantes</button>
             </form>
-        </div>
     </div>
 
      <!-- Mensajes de éxito o error en la parte superior -->
@@ -147,11 +185,11 @@
                             @if($user->status == 'active')
                                 <td>Activo</td>
                                 <td>
-                                    <a href="{{ route('students.edit', $user->id) }}" class="btn btn-warning btn-sm btn-action">Editar</a>
+                                    <a href="{{ route('students.edit', $user->id) }}" class="btn btn-editar btn-sm btn-action">Editar</a>
                                     <form action="{{ route('students.destroy', $user->id) }}" method="POST" class="d-inline">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-danger btn-sm btn-action">Desactivar</button>
+                                        <button type="submit" class="btn btn-estado-usuario  btn-sm btn-action">Desactivar</button>
                                     </form>
                                 </td>
                             @else
@@ -160,7 +198,7 @@
                                     <form action="{{ route('students.notdestroy', $user->id) }}" method="POST" class="d-inline">
                                         @csrf
                                         @method('PUT')
-                                        <button type="submit" class="btn btn-danger btn-sm btn-action">Activar</button>
+                                        <button type="submit" class="btn btn-estado-usuario btn-sm btn-action">Activar</button>
                                     </form>
                                 </td>
                             @endif
@@ -174,6 +212,11 @@
             </table>
         </div>
     </div>
+</div>
+
+<!-- Navegación de paginación -->
+<div class="mt-4 d-flex justify-content-center">
+{{ $users->appends(request()->except('page'))->links() }}
 </div>
 
 @endsection

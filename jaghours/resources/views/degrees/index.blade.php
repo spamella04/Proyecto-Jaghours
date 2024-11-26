@@ -70,13 +70,48 @@
         color: #fff;
     }
 
+    .btn-editar {
+        background-color: #61929b;
+        border-color: #61929b;
+        color: #fff;
+    }
+
+    .btn-estado-usuario{
+        background-color: #669bbc;
+        border-color: #669bbc;
+        color: #fff;
+    }
     .btn-action:hover {
         opacity: 0.8;
+        background-color: #219EBC;
+        color: #fff;
+       
     }
 
     .btn-show-all {
         margin-left: 0.5rem;
     }
+    /* Diseño paginacion*/
+    
+    .pagination .page-link {
+            color: #219EBC;
+            background-color: white;
+            border: 1px solid #ddd;
+        }
+
+        .pagination .page-link:hover {
+            background-color: #f1f1f1;
+        }
+
+        .pagination .page-item.active .page-link {
+            background-color: #219EBC;
+            color: white;
+        }
+
+        .pagination .page-item.disabled .page-link {
+            color: #ccc;
+        }
+
 </style>
 
 <div class="container py-5">
@@ -114,11 +149,11 @@
                             @if($degree->status == 'active')
                                 <td>Activo</td>
                                 <td>
-                                    <a href="{{ route('degrees.edit', $degree->id) }}" class="btn btn-warning btn-sm btn-action">Editar</a>
+                                    <a href="{{ route('degrees.edit', $degree->id) }}" class="btn btn-editar btn-sm btn-action">Editar</a>
                                     <form action="{{ route('degrees.destroy', $degree->id) }}" method="POST" class="d-inline">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-danger btn-sm btn-action">Desactivar</button>
+                                        <button type="submit" class="btn btn-estado-usuario btn-sm btn-action">Desactivar</button>
                                     </form>
                                 </td>
                             @else
@@ -127,7 +162,7 @@
                                     <form action="{{ route('degrees.notdestroy', $degree->id) }}" method="POST" class="d-inline">
                                         @csrf
                                         @method('PUT')
-                                        <button type="submit" class="btn btn-info btn-sm btn-action">Activar</button>
+                                        <button type="submit" class="btn btn-estado-usuario btn-sm btn-action">Activar</button>
                                     </form>
                                 </td>
                             @endif
@@ -141,6 +176,11 @@
             </table>
         </div>
     </div>
+</div>
+
+<!-- Navegación de paginación -->
+<div class="mt-4 d-flex justify-content-center">
+{{ $degrees->appends(request()->except('page'))->links() }}
 </div>
 
 @endsection

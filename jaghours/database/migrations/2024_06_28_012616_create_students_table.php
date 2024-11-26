@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('skills');
             $table->foreign('student_id')->references('id')->on('users');
             $table->foreign('degree_id')->references('id')->on('degrees');
+            $table->date('fecha_de_ingreso');
             $table->timestamps();
         });
     }

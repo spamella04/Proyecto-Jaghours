@@ -21,6 +21,16 @@
                             @enderror
                         </div>
 
+                        <div class = "mb-3">
+                            <label for="fecha_de_ingreso" class="form-label font-weight-bold">Fecha de ingreso a la universidad</label>
+                            <input type="date" class="form-control @error('fecha_de_ingreso') is-invalid @enderror"
+                                id="fecha_de_ingreso" name="fecha_de_ingreso" value="{{ old('fecha_de_ingreso') }}"
+                                required>
+                            @error('fecha_de_ingreso')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+
                         <div class="mb-3">
                             <label for="degree_id" class="form-label font-weight-bold">Carrera Principal</label>
                             <select class="form-select @error('degree_id') is-invalid @enderror" id="degree_id" name="degree_id" required>
@@ -87,9 +97,7 @@
                             @error('password')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
-                        </div>
-
-                        
+                        </div>                        
                         <div class="text-center">
                         <div class="mb-3">
                             <button type="submit" class="btn btn-dark" style="background-color: #219EBC; border-color: #219EBC;">{{ __('Guardar') }}</button>

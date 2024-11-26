@@ -21,10 +21,10 @@ class DegreeController extends Controller
                 $degrees = Degree::where('code', 'like', "%{$query}%")
                     ->orWhere('name', 'like', "%{$query}%")
                     ->orderBy('code')
-                    ->get();
+                    ->paginate(10);
             } else {
                 // Obtener todas las carreras si no hay consulta de búsqueda
-                $degrees = Degree::all()->sortBy('code');
+                $degrees = Degree::orderBy('code')->paginate(10);
             }
 
             return view('degrees.index', compact('degrees'));
