@@ -222,9 +222,29 @@
 
     @if(Auth::user()->role === 'admin')
 
-    <a href="{{ route('directjobopportunity.directEntry') }}" class="btn btn-celeste">
-      Registrar horas
+    <a href="{{ route('directjobopportunity.directEntry') }}" class="btn btn-action">
+     Nuevo registro de horas
     </a>
+     <!-- Mensajes de éxito o error en la parte superior -->
+     <div class="alert-container mb-4">
+        @if(session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+        @elseif(session('error'))
+            <div class="alert alert-danger">
+                {{ session('error') }}
+            </div>
+        @elseif ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+    </div>
 
     @endif
 
@@ -283,8 +303,9 @@
 
     {{-- Paginación --}}
     <div class="d-flex justify-content-center">
-        {{ $jobOpportunities->links() }} {{-- Esto generará los enlaces de paginación usando Bootstrap --}}
+    {{ $jobOpportunities->appends(request()->except('page'))->links() }}
     </div>
+
 
     
 </div>

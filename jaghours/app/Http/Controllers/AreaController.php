@@ -18,9 +18,9 @@ class AreaController extends Controller
             if ($search) {
                 $areas = Area::where('code', '=', $search)
                     ->orWhere('name', 'like', "%{$search}%")
-                    ->get();
+                    ->paginate(10);
             } else {
-                $areas = Area::all();
+                $areas = Area::orderBy('code')->paginate(10);
             }
 
             return view('areas.index', compact('areas'));

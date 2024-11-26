@@ -47,6 +47,16 @@
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
+
+                <div class ="mb-3">
+                    <label for="fecha_de_ingreso" class="form-label font-weight-bold">Fecha de ingreso a la universidad</label>
+                            <input type="date" class="form-control @error('fecha_de_ingreso') is-invalid @enderror"
+                                id="fecha_de_ingreso" name="fecha_de_ingreso" value="{{ old('fecha_de_ingreso') }}"
+                                required>
+                            @error('fecha_de_ingreso')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                </div>
                 
                 <div class="mb-3">
                     <label for="degree_id" class="form-label">{{ __('Carrera') }}</label>
@@ -71,7 +81,12 @@
                 
                 <div class="mb-3">
                     <label for="password" class="form-label">{{ __('Contraseña') }}</label>
+                    <div class="input-group">
                     <input id="password" name="password" type="password" class="form-control @error('password') is-invalid @enderror" required>
+                    <button type="button" class="btn btn-outline-secondary" id="togglePassword1">
+                                    <i class="fas fa-eye-slash"></i> 
+                                </button>
+                    </div>
                     @error('password')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
@@ -79,7 +94,12 @@
                 
                 <div class="mb-3">
                     <label for="password_confirmation" class="form-label">{{ __('Confirmar Contraseña') }}</label>
+                    <div class="input-group">
                     <input id="password_confirmation" name="password_confirmation" type="password" class="form-control" required>
+                    <button type="button" class="btn btn-outline-secondary" id="togglePassword2">
+                                        <i class="fas fa-eye-slash"></i> 
+                                    </button>
+                    </div>
                 </div>
                 
                 <div class="d-grid">
@@ -89,4 +109,48 @@
         </div>
     </div>
 </div>
+
+<script>
+
+    // Alternar visibilidad de la contraseña para el campo 'password'
+    document.getElementById('togglePassword1').addEventListener('click', function () {
+        const passwordInput = document.getElementById('password');
+        const icon = this.querySelector('i');
+        
+        // Cambiar entre tipo 'password' y 'text'
+        const isPassword = passwordInput.type === 'password';
+        passwordInput.type = isPassword ? 'text' : 'password';
+        
+        // Cambiar ícono
+        if (passwordInput.type === 'password') {
+            icon.classList.remove('fa-eye');
+            icon.classList.add('fa-eye-slash');
+        } else {
+            icon.classList.remove('fa-eye-slash');
+            icon.classList.add('fa-eye');
+        }
+    });
+
+    // Alternar visibilidad de la contraseña para el campo 'password-confirm'
+    document.getElementById('togglePassword2').addEventListener('click', function () {
+        const passwordInput = document.getElementById('password_confirmation');
+        const icon = this.querySelector('i');
+        
+        // Cambiar entre tipo 'password' y 'text'
+        const isPassword = passwordInput.type === 'password';
+        passwordInput.type = isPassword ? 'text' : 'password';
+        
+        // Cambiar ícono
+        if (passwordInput.type === 'password') {
+            icon.classList.remove('fa-eye');
+            icon.classList.add('fa-eye-slash');
+        } else {
+            icon.classList.remove('fa-eye-slash');
+            icon.classList.add('fa-eye');
+        }
+    });
+</script>
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+
 @endsection

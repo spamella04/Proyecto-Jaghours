@@ -86,13 +86,15 @@ Route::middleware('auth')->group(
         Route::delete('/joboportunity/{joboportunity}', [JobOportunityController::class, 'destroy'])->name('joboportunity.destroy');
         Route::get('/joboportunity/{id}/showapplicants', [JobOportunityController::class, 'showApplicants'])->name('joboportunity.showapplicants');
 
+        //redirecciona al formulario de cracion de oportunidad de trabajo directa
         Route::get('/direct-job-opportunity/convalidate', [JobOportunityController::class, 'directEntry'])->name('directjobopportunity.directEntry');
+        // guarda la oportunidad de trabajo directa y redirecciona a la vista de asignacion de estudiantes por primera vez
         Route::post('/direct-job-opportunity/store', [JobOportunityController::class, 'storeDirectJobOpportunity'])->name('directjobopportunity.store');
         Route::post('/assigned/students',[HourRecordController::class, 'assignStudentToDirectJobOpportunity'])->name('directjobopportunity.assignStudent');
         Route::get('/students/search', [StudentController::class, 'searchStudent'])->name('students.search');
         Route::get('job-opportunity/{jobOpportunity}/students', [HourRecordController::class, 'AddMoreStudents']) ->name('directjobopportunity.show');
-        
-        Route::get('/job-opportunity/students', [HourRecordController::class, 'showAllStudents'])->name('directjobopportunity.addStudents');
+        Route::get('/job-opportunity/students/{jobOpportunityId}', [HourRecordController::class, 'showAllStudents'])->name('directjobopportunity.addStudents');
+
 
    
         

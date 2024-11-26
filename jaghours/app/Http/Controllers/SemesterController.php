@@ -21,7 +21,7 @@ class SemesterController extends Controller
                 $query->where('name', 'like', '%' . $search . '%');
             }
 
-            $semesters = $query->get()->sortBy('start_date');
+            $semesters = $query->orderBy('start_date')->paginate(10);
             return view('semesters.index', compact('semesters', 'search'));
         } catch (\Exception $e) {
             return redirect()->route('semesters.index')->with('error', $e->getMessage());

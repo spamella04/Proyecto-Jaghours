@@ -7,7 +7,7 @@
         <div class="col-lg-8">
             <div class="card border-0 shadow-sm rounded-lg">
                 <div class="card-header bg-dark text-white text-center py-4">
-                    <h3 class="mb-0">Crear Nueva Oportunidad de Trabajo</h3>
+                    <h3 class="mb-0">Crear nuevo registro de horas</h3>
                 </div>
                 <div class="card-body p-5">
                     <form action="{{ route('directjobopportunity.store') }}" method="POST" enctype="multipart/form-data">

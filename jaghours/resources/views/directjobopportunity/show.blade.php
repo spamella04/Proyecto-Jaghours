@@ -45,6 +45,10 @@
         background-color: #17A2B8;
         border-color: #17A2B8;
     }
+    .btn-show-all {
+        margin-left: 0.5rem;
+    }
+    
 </style>
 </head>
 <div class="container">
@@ -54,9 +58,33 @@
     <form method="GET" action="{{ route('directjobopportunity.show', ['jobOpportunity' => $jobOpportunity->id]) }}" class="mb-4">
         <div class="input-group">
             <input type="text" name="search" class="form-control" placeholder="Buscar por nombre o CIF" value="{{ $search }}">
+            <div class="input-group-append">
             <button type="submit" class="btn" style="background-color: #17A2B8; border-color: #17A2B8;">Buscar</button> 
+            <a href="{{route('directjobopportunity.show', ['jobOpportunity' => $jobOpportunity->id]) }}" class="btn btn-secondary btn-show-all">Mostrar todos</a>
+            </div>
         </div>
     </form>
+
+     <!-- Mensajes de éxito o error en la parte superior -->
+     <div class="alert-container mb-4">
+        @if(session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+        @elseif(session('error'))
+            <div class="alert alert-danger">
+                {{ session('error') }}
+            </div>
+        @elseif ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+    </div>
 
     <!-- Tabla de estudiantes -->
     <div class="table-responsive">
@@ -89,7 +117,7 @@
                                     @endforeach
                                 </select>
 
-                                <button type="submit" class="btn btn-warning btn-sm mt-2">Convalidar</button> <!-- Botón de convalidar con el mismo estilo que "Agregar horas" -->
+                                <button type="submit" class="btn btn-warning btn-sm mt-2">Convalidar</button> 
                             </form>
                         </td>
                     </tr>

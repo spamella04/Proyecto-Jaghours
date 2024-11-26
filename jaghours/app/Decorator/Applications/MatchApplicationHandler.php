@@ -18,7 +18,18 @@ class MatchApplicationHandler extends ApplicationHandler
     }
 
     public function render()
+    
     {
+        $output = '';
+         // Verificar si hay un mensaje de éxito en la sesión
+        if (session('success')) {
+            $output .= '<div class="alert alert-success">' . session('success') . '</div>';
+        }
+
+        // Verificar si hay un mensaje de error en la sesión
+        if (session('error')) {
+            $output .= '<div class="alert alert-danger">' . session('error') . '</div>';
+        }
         $output = "<form method='POST' action='" . route('hourrecords.storeMatch') . "'>";
         $output .= csrf_field(); // Token CSRF para seguridad
         $output .= "<input type='hidden' name='job_opportunity_id' value='{$this->jobOpportunity->id}'>"; // Incluimos el ID de la oportunidad de trabajo

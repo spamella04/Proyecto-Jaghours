@@ -67,6 +67,7 @@ class RegisterController extends Controller
             'phone' => ['required', 'string', 'regex:/^[0-9]{8}$/', 'unique:users'],
             'skills' => ['required', 'string', 'max:255'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'fecha_de_ingreso' => ['required','date'],
         ]);
     }
 
@@ -90,7 +91,8 @@ class RegisterController extends Controller
         $user->student()->create([
             'student_id' => $user->id, 
             'degree_id' => $data['degree_id'],
-            'skills' => $data['skills']
+            'skills' => $data['skills'],
+           'fecha_de_ingreso' => $data['fecha_de_ingreso'],
         ]);
 
         return $user;

@@ -32,7 +32,7 @@ class AreaManagerController extends Controller
                     });
                 })
                 ->with('area_manager.areas')
-                ->get();
+                ->paginate(10);
     
             return view('areamanagers.index', compact('users', 'search'));
         } catch (\Exception $e) {

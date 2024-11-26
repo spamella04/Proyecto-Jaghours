@@ -29,7 +29,7 @@ class StudentController extends Controller
         if ($request->filled('search')) {
             $search = $request->get('search');
             $query->where(function($query) use ($search) {
-                $query->where('cif', '=', $search)
+                $query->where('cif', 'like', "%{$search}%")
                       ->orWhere('name', 'like', "%{$search}%")
                       ->orWhere('lastname', 'like', "%{$search}%");
             });
@@ -40,7 +40,7 @@ class StudentController extends Controller
             $query->where('status', 'active');
         }
         
-        $users = $query->get();
+        $users = $query->paginate(10);
         
         return view('student.index', compact('users'));
     }
@@ -91,6 +91,7 @@ class StudentController extends Controller
             'password' => 'required|string|min:8',
             'degree_id' => 'required|exists:degrees,id',
             'skills' => 'required|string|max:255',
+            'fecha_de_ingreso' => 'required|date',
             ]); 
             
             $user = new User();
@@ -108,7 +109,9 @@ class StudentController extends Controller
             $user->student()->create([
                 'student_id' => $user->id, 
                 'degree_id' => $request->degree_id,
-                'skills' => $request->skills
+                'skills' => $request->skills,
+                'fecha_de_ingreso' => $request->fecha_de_ingreso,
+
             ]);
             
             return redirect()->route('students.index')->with('success', '¡Usuario creado con éxito!');
