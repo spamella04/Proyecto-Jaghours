@@ -72,7 +72,7 @@ class HourRecordController extends Controller
         $semester_end_date = $semester->end_date;
         // Realiza la consulta solo si se ha seleccionado un semestre
         $query = Student::query()
-            ->where('created_at', '<=', $semester_end_date) // Filtrar estudiantes con ingreso menor del final del semestre
+            ->where('fecha_de_ingreso', '<=', $semester_end_date) // Filtrar estudiantes con ingreso menor del final del semestre
             ->when($request->input('cif_search'), function ($query, $cif) {
                 return $query->whereHas('user', function ($query) use ($cif) {
                     $query->where('cif', '=', $cif);
@@ -166,9 +166,9 @@ class HourRecordController extends Controller
                              ->where('semester_id', $semester_id) // Filtrar por semestre
                              ->get();
     
-    
+    $adminEmail = Auth::user()->email ?? 'admin@uam.edu.ni';
     // Enviar el correo con los registros de horas del semestre específico
-    Mail::to('mmbougle@uamv.edu.ni') // Poner correo apropiado
+    Mail::to($adminEmail) // Poner correo apropiado
     ->send(new StudentHourRecordsPDF($student, $hourRecords, $semester));
 
     return back()->with('success', 'Reporte enviado correctamente.');

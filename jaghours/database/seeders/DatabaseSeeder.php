@@ -117,6 +117,13 @@ class DatabaseSeeder extends Seeder
           );
 
 
+          \App\Models\AreaManager::factory()->create([
+            'area_manager_id' => '1',
+            'area_id' => '1',
+          
+          
+          ]);
+          
       \App\Models\User::factory()->create([
         'cif' => '012345678B',
         'name' => 'Isabella',
@@ -130,17 +137,11 @@ class DatabaseSeeder extends Seeder
 
   \App\Models\AreaManager::factory()->create([
     'area_manager_id' => '2',
-    'area_id' => '1',
+    'area_id' => '2',
 
 
 ]);
 
-\App\Models\AreaManager::factory()->create([
-  'area_manager_id' => '1',
-  'area_id' => '1',
-
-
-]);
 
 \App\Models\User::factory()->create([
   'cif' => '012345678C',
@@ -155,7 +156,7 @@ class DatabaseSeeder extends Seeder
 
 \App\Models\AreaManager::factory()->create([
 'area_manager_id' => '3',
-'area_id' => '2',
+'area_id' => '3',
 
 
 ]);
@@ -174,7 +175,7 @@ class DatabaseSeeder extends Seeder
 
 \App\Models\AreaManager::factory()->create([
 'area_manager_id' => '4',
-'area_id' => '3',
+'area_id' => '4',
 
 
 ]);
@@ -195,17 +196,18 @@ class DatabaseSeeder extends Seeder
   'student_id' => '5',
   'degree_id' => '1',
   'skills' => 'Tecnicas de programacion ',
+  'fecha_de_ingreso' => '2024-04-10',
 
 ]);
 
 
 
 \App\Models\User::factory()->create([
-  'cif' => '012345678K',
-  'name' => 'Armando',
-'lastname' => 'Lopez',
+  'cif' => '012345678',
+  'name' => 'Megan',
+'lastname' => 'Bougle',
   'phone' => '87126808',
-'email' => 'armando.lopez@uamv.edu.ni',
+'email' => 'mmbougle@uamv.edu.ni',
 'password' => bcrypt('password'),
 'role' => 'student', 
 
@@ -215,6 +217,7 @@ class DatabaseSeeder extends Seeder
   'student_id' => '6',
   'degree_id' => '1',
   'skills' => 'Organización',
+  'fecha_de_ingreso' => '2024-08-27',
 
 ]);
 
@@ -243,12 +246,12 @@ class DatabaseSeeder extends Seeder
               'title' => 'Etiquetado de viveres',
               'description' => 'Se necesita un estudiante para etiquetar viveres en el almacen',
               'status' => 'Publicado',
-              'start_date' => '2024-09-13',
+              'start_date' => '2024-11-27',
               'hours_validated'=> '4',
               'number_applicants' => '6',
               'number_vacancies' => '3',
               'requirements' => 'Responsabilidad',
-              'area_manager_id' => '3',
+              'area_manager_id' => '4',
           ]);
 
           \App\Models\JobOportunity::factory()->create(
@@ -256,12 +259,12 @@ class DatabaseSeeder extends Seeder
                 'title' => 'Jaguares vs. Pumas',
                 'description' => 'Ocurrira en el estadio nacional',
                 'status' => 'Publicado',
-                'start_date' => '2024-10-13',
+                'start_date' => '2024-11-27',
                 'hours_validated'=> '5',
                 'number_applicants' => '100',
                 'number_vacancies' => '100',
                 'requirements' => 'Emocion y apoyo',
-                'area_manager_id' => '3',
+                'area_manager_id' => '4',
                 'match' => '1',
                 
                 
@@ -273,12 +276,12 @@ class DatabaseSeeder extends Seeder
                   'title' => 'Ordenar libros',
                   'description' => 'Se necesita un estudiante para organizar libros por facultad',
                   'status' => 'Publicado',
-                  'start_date' => '2024-07-13',
+                  'start_date' => '2024-11-27',
                   'hours_validated'=> '2',
                   'number_applicants' => '2',
                   'number_vacancies' => '1',
                   'requirements' => 'Organización',
-                  'area_manager_id' => '1',
+                  'area_manager_id' => '2',
                   
                   
             
@@ -290,12 +293,12 @@ class DatabaseSeeder extends Seeder
                     'title' => 'Gestion de documentos',
                     'description' => 'Se necesita un estudiante para gestionar documentos de admision',
                     'status' => 'Publicado',
-                    'start_date' => '2024-07-13',
+                    'start_date' => '2024-11-28',
                     'hours_validated'=> '4',
                     'number_applicants' => '3',
                     'number_vacancies' => '2',
                     'requirements' => 'Manejo de Excel Intermedio',
-                    'area_manager_id' => '2',
+                    'area_manager_id' => '3',
                     
               
                 ]);
