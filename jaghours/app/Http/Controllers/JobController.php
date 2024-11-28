@@ -67,8 +67,11 @@ class JobController extends Controller
 
     public function showStudents(Request $request, $jobOpportunityId)
     {
+        // Desencriptar el ID de la oportunidad de trabajo
+        $id = decrypt($jobOpportunityId);
+       
         // Obtener la oportunidad de trabajo con los trabajos asociados
-        $jobOpportunity = JobOportunity::with('job.hourRecords')->find($jobOpportunityId);
+        $jobOpportunity = JobOportunity::with('job.hourRecords')->find($id);
 
         // Verificar si la oportunidad existe
         if (!$jobOpportunity) {
@@ -76,7 +79,7 @@ class JobController extends Controller
         }
 
         // Crear la consulta para obtener los trabajos asociados con la oportunidad
-        $query = Job::query()->where('job_opportunity_id', $jobOpportunityId);
+        $query = Job::query()->where('job_opportunity_id',  $id);
 
         // Si hay un término de búsqueda, filtrar por los campos del estudiante (a través de User)
         if ($request->filled('search')) {
