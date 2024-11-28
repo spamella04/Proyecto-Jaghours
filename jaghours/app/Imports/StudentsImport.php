@@ -10,6 +10,7 @@ use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\SkipsOnFailure;
 use Maatwebsite\Excel\Concerns\SkipsFailures;
 use Illuminate\Validation\ValidationException;
+use Carbon\Carbon;
 
 class StudentsImport implements ToModel, WithHeadingRow, SkipsOnFailure
 {
@@ -21,7 +22,7 @@ class StudentsImport implements ToModel, WithHeadingRow, SkipsOnFailure
     // Verifica si los encabezados necesarios están presentes
     public function __construct()
     {
-        $this->requiredHeaders = ['cif', 'name', 'lastname', 'email', 'phone', 'password', 'degree_id', 'skills'];
+        $this->requiredHeaders = ['cif', 'name', 'lastname', 'email', 'phone', 'password', 'degree_id', 'skills', 'fecha_de_ingreso'];
     }
 
     public function model(array $row)
@@ -62,12 +63,14 @@ class StudentsImport implements ToModel, WithHeadingRow, SkipsOnFailure
             'role' => 'student',
             'status' => 'active',
         ]);
+        $fechaIngreso = Carbon::createFromFormat('Y-m-d', gmdate('Y-m-d', ($row['fecha_de_ingreso'] - 25569) * 86400));
 
         // Crear el estudiante asociado
         return new Student([
             'student_id' => $user->id,
             'degree_id' => $row['degree_id'],
             'skills' => $row['skills'],
+            'fecha_de_ingreso' => $fechaIngreso,
         ]);
     }
 

@@ -61,12 +61,39 @@
   
         .job-card-image {
             width: 100%;
-            height: 200px; 
+            height: 220px; 
             border-radius: 10px;
             object-fit: cover;
             margin-bottom: 15px;
+            transition: transform 0.3s ease;
+        }
+        .job-card-image:hover {
+            transform: scale(1.05);
+            cursor: pointer;
         }
 
+        .job-card-placeholder {
+            width: 100%;
+            height: 200px;
+            background-color: #E0F2F1;
+            border: 1px solid #ccc;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #aaa;
+            font-size: 1.5rem;
+            text-align: center;
+            margin-top: 10px;
+            border-radius: 10px;
+            position: relative;
+        }
+
+        .job-card-placeholder:before {
+            content: "Sin Imagen";
+            position: absolute;
+            font-size: 1rem;
+            color: #666;
+        }
         .job-card-description {
             margin-top: 10px;
             color: #555;
@@ -216,7 +243,7 @@
 
                 <!-- Imagen destacada -->
                 @if($joboportunity->image_path)
-                <img src="{{ asset($joboportunity->image_path) }}" alt="Imagen de {{ $joboportunity->title }}" class="job-card-image">
+                <img src="{{ asset($joboportunity->image_path) }}" alt="Imagen de {{ $joboportunity->title }}" class="job-card-image" data-bs-toggle="modal" data-bs-target="#imageModal{{ $joboportunity->id }}">
                 @else
                 <div class="job-card-placeholder" style="background-color: #E0F2F1; padding: 50px; text-align: center; border-radius: 10px; color: #666;">
                     Sin Imagen
@@ -240,6 +267,17 @@
                     <input type="hidden" name="job_opportunity_id" value="{{ $joboportunity->id }}">
                     <button type="submit" class="btn btn-action">Aplicar</button>
                 </form>
+            </div>
+
+            <div class="modal fade" id="imageModal{{ $joboportunity->id }}" tabindex="-1" aria-labelledby="imageModalLabel{{ $joboportunity->id }}" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="imageModalLabel{{ $joboportunity->id }}">{{ $joboportunity->title }}</h5> <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body"> <img src="{{ asset($joboportunity->image_path) }}" alt="Imagen de {{ $joboportunity->title }}" class="img-fluid"> </div>
+                    </div>
+                </div>
             </div>
             @endif
         @endforeach

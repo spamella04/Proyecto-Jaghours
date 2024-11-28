@@ -4,14 +4,27 @@
 
 <head>
     <style>
+        .center-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            width: 100%;
+        }
+
+        .center-cards {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: flex-start;
+            width: 100%;
+        }
+
         .job-card {
-            border-radius: 10px;
-            border: 1px solid #ddd;
+            width: 100%;
             margin-bottom: 20px;
-            padding: 20px;
-            background-color: #fff;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s;
+            box-sizing: border-box;
         }
 
         .job-card:hover {
@@ -59,8 +72,16 @@
 
         .job-card-image {
             width: 100%;
+            max-height: 300px;
+            object-fit: cover;
             border-radius: 10px;
             margin-top: 15px;
+            transition: transform 0.3s ease;
+        }
+
+        .job-card-image:hover {
+            transform: scale(1.05);
+            cursor: pointer;
         }
 
         .job-card-placeholder {
@@ -121,7 +142,7 @@
             background-color: #41c4d9;
         }
 
-    
+
         .pagination .page-link {
             color: #219EBC;
             background-color: white;
@@ -145,10 +166,10 @@
             margin-bottom: 20px;
         }
 
-        .btn-primary{
-        background-color: #17A2B8;
-        border-color: #17A2B8;
-        color: #fff;
+        .btn-primary {
+            background-color: #17A2B8;
+            border-color: #17A2B8;
+            color: #fff;
         }
 
         .btn-primary:hover {
@@ -157,26 +178,25 @@
         }
 
         .btn-celeste {
-            background-color: #5baede; 
-            border-color: #5baede; 
-            color: #fff; 
+            background-color: #5baede;
+            border-color: #5baede;
+            color: #fff;
             font-weight: bold;
         }
 
         .btn-celeste:hover {
-            background-color: #4aa3c5; 
-            color: #fff; 
+            background-color: #4aa3c5;
+            color: #fff;
             border-color: #4aa3c5;
         }
 
-        .btn-celeste:focus, 
+        .btn-celeste:focus,
         .btn-celeste:active {
-            background-color: #4aa3c5; 
+            background-color: #4aa3c5;
             border-color: #4aa3c5;
-            color: #fff; 
-            box-shadow: none; 
+            color: #fff;
+            box-shadow: none;
         }
-
     </style>
 </head>
 
@@ -185,129 +205,141 @@
     <h1 class="">Trabajos a Convalidar</h1>
 
     <form action="{{ route('job.index') }}" method="GET" class="mb-4">
-    <div class="row">
-        <div class="col-md-3">
-            <label for="year" class="form-label">Año</label>
-            <select name="year" id="year" class="form-select">
-                <!-- Opción para mostrar todos los años -->
-                <option value="all" {{ $year === 'all' ? 'selected' : '' }}>Todos</option>
-                @foreach(range(2020, now()->year) as $yearOption)
+        <div class="row">
+            <div class="col-md-3">
+                <label for="year" class="form-label">Año</label>
+                <select name="year" id="year" class="form-select">
+                    <!-- Opción para mostrar todos los años -->
+                    <option value="all" {{ $year === 'all' ? 'selected' : '' }}>Todos</option>
+                    @foreach(range(2020, now()->year) as $yearOption)
                     <option value="{{ $yearOption }}" {{ $year == $yearOption ? 'selected' : '' }}>{{ $yearOption }}</option>
-                @endforeach
-            </select>
-        </div>
+                    @endforeach
+                </select>
+            </div>
 
-        <div class="col-md-3">
-            <label for="month" class="form-label">Mes</label>
-            <select name="month" id="month" class="form-select">
-                <!-- Opción para mostrar todos los meses -->
-                <option value="all" {{ $month === 'all' ? 'selected' : '' }}>Todos</option>
-                @foreach(range(1, 12) as $monthOption)
+            <div class="col-md-3">
+                <label for="month" class="form-label">Mes</label>
+                <select name="month" id="month" class="form-select">
+                    <!-- Opción para mostrar todos los meses -->
+                    <option value="all" {{ $month === 'all' ? 'selected' : '' }}>Todos</option>
+                    @foreach(range(1, 12) as $monthOption)
                     <option value="{{ $monthOption }}" {{ $month == $monthOption ? 'selected' : '' }}>
                         {{ \Carbon\Carbon::createFromDate(null, $monthOption, 1)->format('F') }}
                     </option>
-                @endforeach
-            </select>
-        </div>
+                    @endforeach
+                </select>
+            </div>
 
-        <div class="col-md-2 d-flex align-items-end">
-            <button type="submit" class="btn btn-primary mt-2" style="border: none; width: 100%;">Filtrar</button>
-        </div>
+            <div class="col-md-2 d-flex align-items-end">
+                <button type="submit" class="btn btn-primary mt-2" style="border: none; width: 100%;">Filtrar</button>
+            </div>
 
-        <div class="col-md-2 d-flex align-items-end">
-            <a href="{{ route('job.index') }}" class="btn btn-secondary mt-2" style="width: 100%;">Mostrar todas</a>
+            <div class="col-md-2 d-flex align-items-end">
+                <a href="{{ route('job.index') }}" class="btn btn-secondary mt-2" style="width: 100%;">Mostrar todas</a>
+            </div>
         </div>
-    </div>
-</form>
+    </form>
 
     @if(Auth::user()->role === 'admin')
 
     <a href="{{ route('directjobopportunity.directEntry') }}" class="btn btn-action">
-     Nuevo registro de horas
+        Nuevo registro de horas
     </a>
-     <!-- Mensajes de éxito o error en la parte superior -->
-     <div class="alert-container mb-4">
+    <!-- Mensajes de éxito o error en la parte superior -->
+    <div class="alert-container mb-4">
         @if(session('success'))
-            <div class="alert alert-success">
-                {{ session('success') }}
-            </div>
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
         @elseif(session('error'))
-            <div class="alert alert-danger">
-                {{ session('error') }}
-            </div>
+        <div class="alert alert-danger">
+            {{ session('error') }}
+        </div>
         @elseif ($errors->any())
-            <div class="alert alert-danger">
-                <ul>
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
         @endif
     </div>
 
     @endif
 
-<div class = 'mt-4'>
-    @foreach($jobOpportunities as $joboportunity)
-    <div class="job-card shadow-lg p-3 mb-5 bg-white rounded">
-        <div class="d-flex align-items-center">
-            <div class="job-card-avatar">
-                {{ strtoupper(substr($joboportunity->area_managers->areas->name, 0, 1)) }}
-            </div>
-            <div>
-                <div class="job-card-title">{{ $joboportunity->title }}</div>
-                <div class="job-card-area">
-                    <span>{{ $joboportunity->area_managers->areas->name }}</span>
+    <div class="row mt-4">
+        @foreach($jobOpportunities as $joboportunity)
+        <div class="col-md-6 mb-4"> <!-- Cada tarjeta ocupa el 50% de la fila en pantallas medianas y más grandes -->
+            <div class="job-card shadow-lg p-3 mb-5 bg-white rounded">
+                <div class="d-flex align-items-center">
+                    <div class="job-card-avatar">
+                        {{ strtoupper(substr($joboportunity->area_managers->areas->name, 0, 1)) }}
+                    </div>
+                    <div>
+                        <div class="job-card-title">{{ $joboportunity->title }}</div>
+                        <div class="job-card-area">
+                            <span>{{ $joboportunity->area_managers->areas->name }}</span>
+                        </div>
+                        <div class="job-card-date">Fecha de publicación:
+                            <span>{{ $joboportunity->created_at->format('d/m/Y') }}</span>
+                        </div>
+                    </div>
                 </div>
-                <div class="job-card-date">Fecha de publicación:
-                    <span>{{ $joboportunity->created_at->format('d/m/Y') }}</span>
-                </div>
-            </div>
-        </div>
-        @if($joboportunity->image_path)
-        <img src="{{ asset($joboportunity->image_path) }}" alt="Imagen de {{ $joboportunity->title }}" class="job-card-image">
-        @else
-        <div class="job-card-placeholder">
-
-        </div>
-        @endif
-        <div class="job-card-description mt-3">
-            {{ $joboportunity->description }}
-        </div>
-        <div class="job-card-details mt-3">
-            <span class="fw-bold" style="color:#219EBC;">Total Horas Convalidadas:</span>
-            <span class="fw-light" style="color:gray;"> {{ $joboportunity->hours_validated }} horas</span>
-            <br>
-            <span class="fw-bold" style="color:#219EBC;">Fecha de Inicio:</span>
-            <span class="fw-light" style="color:gray;">{{ $joboportunity->start_date }}</span>
-        </div>
-        <div class="d-flex justify-content-between align-items-center mt-3">
-            <div class="job-card-status">
-                <span class="custom-badge">{{ $joboportunity->status }}</span>
-            </div>
-            <div class="job-card-applicants">
-                @if($joboportunity-> match == 1)
-                <a href="{{ route('joboportunity.showapplicants', encrypt($joboportunity->id)) }}" class="btn btn-info btn-sm btn-action">Convalidar</a>
+                @if($joboportunity->image_path)
+                <img src="{{ asset($joboportunity->image_path) }}" alt="Imagen de {{ $joboportunity->title }}" class="job-card-image" data-bs-toggle="modal" data-bs-target="#imageModal{{ $joboportunity->id }}">
                 @else
-                <a href="{{ route('jobs.students', encrypt($joboportunity->id)) }}" class="btn btn-info btn-sm btn-action">Convalidar</a>
+                <div class="job-card-placeholder">
+                    Sin Imagen
+                </div>
                 @endif
-        
+                <div class="job-card-description mt-3">
+                    {{ $joboportunity->description }}
+                </div>
+                <div class="job-card-details mt-3">
+                    <span class="fw-bold" style="color:#219EBC;">Total Horas Convalidadas:</span>
+                    <span class="fw-light" style="color:gray;"> {{ $joboportunity->hours_validated }} horas</span>
+                    <br>
+                    <span class="fw-bold" style="color:#219EBC;">Fecha de Inicio:</span>
+                    <span class="fw-light" style="color:gray;">{{ $joboportunity->start_date }}</span>
+                </div>
+                <div class="d-flex justify-content-between align-items-center mt-3">
+                    <div class="job-card-status">
+                        <span class="custom-badge">{{ $joboportunity->status }}</span>
+                    </div>
+                    <div class="job-card-applicants">
+                        @if($joboportunity->match == 1)
+                        <a href="{{ route('joboportunity.showapplicants', encrypt($joboportunity->id)) }}" class="btn btn-info btn-sm btn-action">Convalidar</a>
+                        @else
+                        <a href="{{ route('jobs.students', encrypt($joboportunity->id)) }}" class="btn btn-info btn-sm btn-action">Convalidar</a>
+                        @endif
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="imageModal{{ $joboportunity->id }}" tabindex="-1" aria-labelledby="imageModalLabel{{ $joboportunity->id }}" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="imageModalLabel{{ $joboportunity->id }}">{{ $joboportunity->title }}</h5> <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body"> <img src="{{ asset($joboportunity->image_path) }}" alt="Imagen de {{ $joboportunity->title }}" class="img-fluid"> </div>
+                    </div>
+                </div>
             </div>
         </div>
+        @endforeach
     </div>
 
-    @endforeach
-    </div>
     @endif
 
     {{-- Paginación --}}
     <div class="d-flex justify-content-center">
-    {{ $jobOpportunities->appends(request()->except('page'))->links() }}
+        {{ $jobOpportunities->appends(request()->except('page'))->links() }}
     </div>
 
 
-    
+
 </div>
 
 @endsection
