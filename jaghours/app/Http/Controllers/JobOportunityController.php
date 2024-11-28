@@ -244,8 +244,9 @@ class JobOportunityController extends Controller
 
     public function showApplicants(Request $request,$id)
     {
-
-        $joboportunity = JobOportunity::with('applications.student.user')->findOrFail($id);
+        $decryptedId = decrypt($id);
+       
+        $joboportunity = JobOportunity::with('applications.student.user')->findOrFail($decryptedId);
         $query = Application::query()->where('job_opportunity_id', $joboportunity->id);
         
         if ($request->filled('search')) {
@@ -263,7 +264,7 @@ class JobOportunityController extends Controller
         // Usar el decorador correspondiente basado en el valor de match
         if ($joboportunity->match) {
 
-            $joboportunityId = JobOportunity::findOrFail($id);
+            $joboportunityId = JobOportunity::findOrFail($decryptedId);
             $handler = new MatchApplicationHandler($applications, $joboportunityId);
         } else {
             $handler = new RegularApplicationHandler($applications);
