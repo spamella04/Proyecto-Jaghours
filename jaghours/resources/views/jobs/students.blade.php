@@ -92,16 +92,16 @@
     </div>
 
    
-    <form action="{{ route('jobs.students', ['jobOpportunityId' => $jobOpportunity->id]) }}" method="GET" class="mb-4 search-form">
+    <form action="{{ route('jobs.students', ['jobOpportunityId' => encrypt($jobOpportunity->id)]) }}" method="GET" class="mb-4 search-form">
         <div class="input-group">
             <input type="text" name="search" class="form-control" placeholder="Buscar por cif, nombre o apellido..." value="{{ request()->get('search') }}">
             <div class="input-group-append">
                 <button type="submit" class="btn btn-info">Buscar</button>
-                <a href="{{ route('jobs.students', ['jobOpportunityId' => $jobOpportunity->id]) }}" class="btn btn-secondary btn-show-all">Mostrar todos</a>
+                <a href="{{ route('jobs.students', ['jobOpportunityId' => encrypt($jobOpportunity->id)]) }}" class="btn btn-secondary btn-show-all">Mostrar todos</a>
             </div>
         </div>
     </form>
-
+   
     
     <table class="table">
         <thead>
