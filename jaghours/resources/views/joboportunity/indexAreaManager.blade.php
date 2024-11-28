@@ -4,14 +4,17 @@
 
 <style>
     .job-card {
-        border-radius: 10px;
-        border: 1px solid #ddd;
-        margin-bottom: 20px;
-        padding: 20px;
-        background-color: #fff;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        transition: transform 0.3s;
-    }
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    margin-bottom: 20px;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s;
+    max-width: 800px; /* Limita el ancho máximo de la tarjeta */
+    margin-left: auto;
+    margin-right: auto; /* Centra las tarjetas */
+}
 
     .job-card:hover {
         transform: translateY(-5px);
@@ -57,10 +60,12 @@
     }
 
     .job-card-image {
-        width: 100%; /* Asegura que la imagen ocupe el ancho completo */
-        border-radius: 10px;
-        margin-top: 15px;
-    }
+    width: 100%;
+    max-height: 300px; /* Limita la altura máxima de la imagen */
+    object-fit: cover; /* Recorta la imagen si es necesario, manteniendo proporción */
+    border-radius: 10px;
+    margin-top: 15px;
+}
 
     .job-card-placeholder {
         width: 100%;

@@ -19,7 +19,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'Admin',
           'lastname' => 'Admin',
             'phone' => '123456789',
-          'email' => 'admin@uam.edu.ni',
+          'email' => 'jaghoursuam@gmail.com',
          'password' => bcrypt('password'),
          'role' => 'admin', 
 
@@ -216,7 +216,7 @@ class DatabaseSeeder extends Seeder
 \App\Models\Student::factory()->create([
   'student_id' => '6',
   'degree_id' => '1',
-  'skills' => 'Organización',
+  'skills' => 'Organizaci贸n',
   'fecha_de_ingreso' => '2024-08-27',
 
 ]);
@@ -252,6 +252,7 @@ class DatabaseSeeder extends Seeder
               'number_vacancies' => '3',
               'requirements' => 'Responsabilidad',
               'area_manager_id' => '4',
+              'image_path' => 'assets/images/viveres.png',
           ]);
 
           \App\Models\JobOportunity::factory()->create(
@@ -266,6 +267,7 @@ class DatabaseSeeder extends Seeder
                 'requirements' => 'Emocion y apoyo',
                 'area_manager_id' => '4',
                 'match' => '1',
+                'image_path' => 'assets/images/partido.png',
                 
                 
           
@@ -280,8 +282,9 @@ class DatabaseSeeder extends Seeder
                   'hours_validated'=> '2',
                   'number_applicants' => '2',
                   'number_vacancies' => '1',
-                  'requirements' => 'Organización',
+                  'requirements' => 'Organizacion',
                   'area_manager_id' => '2',
+                  'image_path' => 'assets/images/ordenarlibros.jpg',
                   
                   
             
@@ -299,6 +302,7 @@ class DatabaseSeeder extends Seeder
                     'number_vacancies' => '2',
                     'requirements' => 'Manejo de Excel Intermedio',
                     'area_manager_id' => '3',
+                    'image_path' => 'assets/images/gestion de documentos.jpeg',
                     
               
                 ]);
