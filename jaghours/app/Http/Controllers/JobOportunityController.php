@@ -16,6 +16,7 @@ use App\Decorator\Applications\RegularApplicationHandler;
 use Illuminate\Support\Facades\DB;
 use App\Decorators\StudentDecorator;
 use App\Models\Semester;
+use Illuminate\Contracts\Encryption\DecryptException;
 
 
 class JobOportunityController extends Controller
@@ -244,10 +245,11 @@ class JobOportunityController extends Controller
 
     public function showApplicants(Request $request,$id)
     {
-        $decryptedId = decrypt($id);
+        
+      
        
-        $joboportunity = JobOportunity::with('applications.student.user')->findOrFail($decryptedId);
-        $query = Application::query()->where('job_opportunity_id', $joboportunity->id);
+        $joboportunity = JobOportunity::with('applications.student.user')->findOrFail($id);
+        $query = Application::query()->where('job_opportunity_id', $id);
         
         if ($request->filled('search')) {
             $search = $request->input('search');
@@ -264,7 +266,7 @@ class JobOportunityController extends Controller
         // Usar el decorador correspondiente basado en el valor de match
         if ($joboportunity->match) {
 
-            $joboportunityId = JobOportunity::findOrFail($decryptedId);
+            $joboportunityId = JobOportunity::findOrFail($$id);
             $handler = new MatchApplicationHandler($applications, $joboportunityId);
         } else {
             $handler = new RegularApplicationHandler($applications);

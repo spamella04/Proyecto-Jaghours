@@ -9,7 +9,7 @@ use Laravel\Sanctum\HasApiTokens;
 use App\Models\Student;
 use App\Models\AreaManager;
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
     use HasApiTokens, HasFactory, Notifiable;
 
