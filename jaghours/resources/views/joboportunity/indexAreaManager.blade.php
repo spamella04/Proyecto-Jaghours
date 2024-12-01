@@ -211,6 +211,7 @@
                             <span class="custom-badge">{{ $joboportunity->status }}</span>
                         </div>
                         <div class="job-card-applicants">
+                            
                             <a href="{{ route('joboportunity.showapplicants', $joboportunity->id) }}" class="btn btn-info btn-sm btn-action">Ver Aplicantes</a>
                         </div>
                     </div>

@@ -228,6 +228,7 @@ class DatabaseSeeder extends Seeder
       'start_date' => '2024-03-15',
       'end_date' => '2024-07-15',
       'hours_required' => '25',
+      'status' => 'inactive',
 
   ]);
 
@@ -235,7 +236,7 @@ class DatabaseSeeder extends Seeder
     [
         'name' => 'II Semestre 2024',
         'start_date' => '2024-08-19',
-        'end_date' => '2024-12-9',
+        'end_date' => '2024-12-15',
         'hours_required' => '25',
   
     ]);

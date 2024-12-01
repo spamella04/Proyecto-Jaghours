@@ -13,6 +13,9 @@ use App\Http\Controllers\JobController;
 use App\Http\Controllers\HourRecordController;
 use App\Http\Controllers\ExportController;
 use App\Http\Controllers\HomeController;
+use Illuminate\Http\Request;
+use Illuminate\Auth\Events\EmailVerificationRequest;
+use App\Http\Controllers\Auth\VerificationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,16 +32,23 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Auth::routes();
-
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Auth::routes(['verify' => true]);
 
 
 
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->middleware('auth')->name('home');
 
-Route::middleware('auth')->group(
+
+
+Route::middleware('auth','verified')->group(
     function () {
+
+
+    
+
+
+        
+
         Route::get('/students', [StudentController::class, 'index'])->name('students.index');
         Route::get('/students/create', [StudentController::class, 'create'])->name('students.create');
         Route::post('/students/save', [StudentController::class, 'store'])->name('students.store');
@@ -149,10 +159,8 @@ Route::middleware('auth')->group(
         Route::get('/hourrecords/student/{student}', [HourRecordController::class, 'showStudentHourRecords'])->name('hourrecords.student');
         Route::get('/hourrecords/{student}/send-pdf/{semester}', [HourRecordController::class, 'sendPDF'])->name('hourrecords.sendPDF');
 
-    
-        //Profile
         
         
-
+        
     }
 );

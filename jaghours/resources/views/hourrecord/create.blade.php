@@ -48,7 +48,7 @@
         <div class="col-lg-8">
             <div class="card border-0 shadow-sm rounded-lg">
                 <div class="card-header bg-dark text-white text-center py-3">
-                    <h3 class="mb-0">Registrar Horas de Trabajo</h3>
+                    <h3 class="mb-0">Registrar horas de trabajo</h3>
                 </div>
                 <div class="card-body p-5">
                     <form action="{{ route('hourrecords.store') }}" method="POST">
@@ -56,13 +56,13 @@
                         <input type="hidden" name="job_id" value="{{ $job->id }}">
 
                         <div class="mb-3">
-                            <label for="title" class="form-label font-weight-bold">Título del Trabajo</label>
+                            <label for="title" class="form-label font-weight-bold">Título del trabajo</label>
                             <input type="text" class="form-control" id="title" name="title"
                                 value="{{ $job->job_opportunity->title }}" readonly>
                         </div>
 
                         <div class="mb-3">
-                            <label for="description" class="form-label font-weight-bold">Descripción del Trabajo</label>
+                            <label for="description" class="form-label font-weight-bold">Descripción del trabajo</label>
                             <textarea class="form-control" id="description" name="description"
                                 readonly>{{ $job->job_opportunity->description }}</textarea>
                         </div>
@@ -75,7 +75,7 @@
                         </div>
 
                         <div class="mb-3">
-                            <label for="cif" class="form-label font-weight-bold">CIF del Estudiante</label>
+                            <label for="cif" class="form-label font-weight-bold">CIF del estudiante</label>
                             <input type="text" class="form-control" id="cif" name="cif"
                                 value="{{ $job->student->user->cif }}" readonly>
                         </div>
@@ -86,12 +86,14 @@
                                 name="semester_id" required>
                                 <option value="">Seleccione semestre</option>
                                 @foreach($semesters as $semester)
+                                 @if($semester->status == 'active')
                                 <option value="{{ $semester->id }}" 
                                     data-start="{{ $semester->start_date }}" 
                                     data-end="{{ $semester->end_date }}"
                                     {{ old('semester_id') == $semester->id ? 'selected' : '' }}>
                                     {{ $semester->name }} - {{ $semester->year }}
                                 </option>
+                                 @endif
                                 @endforeach
                             </select>
                             @error('semester_id')
@@ -112,11 +114,11 @@
 
 
                         <div class="mb-3">
-                            <label for="hours_worked" class="form-label font-weight-bold">Horas Trabajadas</label>
+                            <label for="hours_worked" class="form-label font-weight-bold">Horas trabajadas</label>
                             <input type="number" class="form-control @error('hours_worked') is-invalid @enderror"
                                 id="hours_worked" name="hours_worked"
                                 value="{{ old('hours_worked') }}" min="1"
-                                max="{{ $job->job_opportunity->hours_validated }}" required>
+                                max="{{ $maxHours - $totalHoursWorked }}" required>
                             @error('hours_worked')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
@@ -133,7 +135,7 @@
                         </div>
                     -->
                         <div class = "text-center">
-                        <button type="submit" class="btn btn-primary"  style="background-color: #219EBC; border-color: #219EBC;">Registrar Horas</button>
+                        <button type="submit" class="btn btn-primary"  style="background-color: #219EBC; border-color: #219EBC;">Registrar horas</button>
                         </div>
                        
                     </form>
@@ -168,6 +170,23 @@ document.addEventListener('DOMContentLoaded', function() {
         updateDateRange();
     }
 });
+</script>
+
+<script>
+    // Obtener las horas máximas y las horas ya registradas del servidor
+    const totalHoursWorked = {{ $totalHoursWorked }};
+    const maxHours = {{ $maxHours }};
+    const remainingHours = maxHours - totalHoursWorked;
+
+    // Establecer el valor máximo dinámicamente
+    const hoursInput = document.getElementById('hours_worked');
+    hoursInput.setAttribute('max', remainingHours);
+
+    // Mostrar el número de horas restantes para que el usuario lo vea
+    const feedback = document.createElement('div');
+    feedback.classList.add('form-text');
+    feedback.textContent = `Horas restantes: ${remainingHours}`;
+    hoursInput.parentElement.appendChild(feedback);
 </script>
 
 

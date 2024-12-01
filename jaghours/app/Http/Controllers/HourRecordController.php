@@ -40,7 +40,9 @@ class HourRecordController extends Controller
         //
         $semesters = Semester::all();
         $job = Job::findOrFail($job_id);
-        return view('hourrecord.create', compact('job', 'semesters'));
+        $totalHoursWorked = $job->hourRecords()->sum('hours_worked');
+        $maxHours = $job->job_opportunity->hours_validated;
+        return view('hourrecord.create', compact('job', 'semesters', 'totalHoursWorked', 'maxHours'));
     }
 
     public function report(Request $request)
@@ -196,9 +198,28 @@ class HourRecordController extends Controller
                     if ($value < $semester->start_date || $value > $semester->end_date) {
                         $fail('La fecha de trabajo debe estar dentro del rango del semestre seleccionado.');
                     }
+                    
+                },
+
+                function ($attribute, $value, $fail) use ($request) {
+                    // Obtener la Job Opportunity relacionada
+                    $job = Job::findOrFail($request->job_id);
+                    $jobOpportunity = $job->job_opportunity;
+    
+                    // Validar que la fecha sea mayor o igual a la start_date de Job Opportunity
+                    if ($value < $jobOpportunity->start_date) {
+                        $fail('La fecha de trabajo debe ser posterior a la fecha de inicio de la oportunidad de trabajo.');
+                    }
                 },
             ],
+            
         ]);
+
+        $job = Job::findOrFail($request->job_id);
+        $jobOpportunity = $job->job_opportunity;
+
+
+
 
         $hourRecord = new HourRecord();
         $hourRecord->work_date = $request->work_date;
@@ -206,8 +227,7 @@ class HourRecordController extends Controller
         $hourRecord->hours_worked = $request->hours_worked;
         $hourRecord->semester_id = $request->semester_id;
 
-        $job = Job::findOrFail($request->job_id);
-        $jobOpportunity = $job->job_opportunity;
+        
 
         if (Auth::user()->role == 'areamanager') {
             $hourRecord->area_manager_id = auth()->user()->area_manager->id;

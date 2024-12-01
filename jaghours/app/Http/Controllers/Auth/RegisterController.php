@@ -8,6 +8,10 @@ use App\Models\Degree;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Auth\Events\Registered;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
+
 
 class RegisterController extends Controller
 {
@@ -79,6 +83,7 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+       
         $user= User::create([
             'cif' => $data['cif'],
             'name' => $data['name'],
@@ -87,13 +92,15 @@ class RegisterController extends Controller
             'phone' => $data['phone'],
             'password' => Hash::make($data['password']),
         ]);
-
+      
         $user->student()->create([
             'student_id' => $user->id, 
             'degree_id' => $data['degree_id'],
             'skills' => $data['skills'],
            'fecha_de_ingreso' => $data['fecha_de_ingreso'],
         ]);
+
+        $user->sendEmailVerificationNotification();
 
         return $user;
     }
