@@ -37,7 +37,7 @@ class StudentController extends Controller
     
         // Mostrar todos los estudiantes si el parámetro 'show_all' está presente
         if (!$request->filled('show_all')) {
-            $query->where('status', 'active');
+            $query->get();
         }
         
         $users = $query->paginate(10);

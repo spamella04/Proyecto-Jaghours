@@ -247,7 +247,6 @@ class JobOportunityController extends Controller
     {
         
       
-       
         $joboportunity = JobOportunity::with('applications.student.user')->findOrFail($id);
         $query = Application::query()->where('job_opportunity_id', $id);
         
@@ -266,7 +265,7 @@ class JobOportunityController extends Controller
         // Usar el decorador correspondiente basado en el valor de match
         if ($joboportunity->match) {
 
-            $joboportunityId = JobOportunity::findOrFail($$id);
+            $joboportunityId = JobOportunity::findOrFail($id);
             $handler = new MatchApplicationHandler($applications, $joboportunityId);
         } else {
             $handler = new RegularApplicationHandler($applications);

@@ -67,7 +67,7 @@ class RegisterController extends Controller
             'cif' => ['required', 'string', 'max:255', 'unique:users'],
             'name' => ['required', 'string', 'max:255'],
             'lastname' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users','regex:/@uamv\.edu\.ni$/',],
             'phone' => ['required', 'string', 'regex:/^[0-9]{8}$/', 'unique:users'],
             'skills' => ['required', 'string', 'max:255'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],

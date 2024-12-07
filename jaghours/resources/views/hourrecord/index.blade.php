@@ -309,7 +309,7 @@
                     </div>
                     <div class="job-card-applicants">
                         @if($joboportunity->match == 1)
-                        <a href="{{ route('joboportunity.showapplicants', encrypt($joboportunity->id)) }}" class="btn btn-info btn-sm btn-action">Convalidar</a>
+                        <a href="{{ route('joboportunity.showapplicants', $joboportunity->id) }}" class="btn btn-info btn-sm btn-action">Convalidar</a>
                         @else
                         <a href="{{ route('jobs.students', encrypt($joboportunity->id)) }}" class="btn btn-info btn-sm btn-action">Convalidar</a>
                         @endif
