@@ -127,7 +127,7 @@
     <form action="{{ route('students.import') }}" method="POST" enctype="multipart/form-data" class="d-inline">
                 @csrf
                 <input type="file" name="file" class="form-control-file d-inline" required>
-                <button type="submit" class="btn btn-primary btn-create btn-md">Importar Estudiantes</button>
+                <button type="submit" class="btn btn-primary btn-create btn-md">Importar estudiantes</button>
             </form>
     </div>
 

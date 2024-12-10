@@ -28,7 +28,7 @@
     }
 
     .image-card img {
-        max-height: 150px; /* Limitar altura para que no se vea demasiado grande */
+        max-height: 150px; 
         max-width: 100%;
         border-radius: 15px;
         margin-bottom: 0.5rem;
@@ -47,7 +47,8 @@
                     <h3 class="mb-0">Detalles de la Solicitud</h3>
                 </div>
                 <div class="card-body p-4">
-                    <form action="{{ route('adminjobopportunities.update', $jobOpportunity->id) }}" method="POST" enctype="multipart/form-data">
+                <form method="POST" action="{{ route('adminjobopportunities.saveChanges', $jobOpportunity) }}" enctype="multipart/form-data">
+
                         @csrf
                         @method('PUT')
 
@@ -92,7 +93,7 @@
                             <div class="col-md-4">
                                 <div class="mb-3">
                                     <label for="area" class="form-label font-weight-bold">Área</label>
-                                    <input type="text" class="form-control @error('area') is-invalid @enderror" id="area" name="area" value="{{ $jobOpportunity->area_managers->areas->name }}" required>
+                                    <input type="text" class="form-control @error('area') is-invalid @enderror" id="area" name="area" value="{{ $jobOpportunity->area_managers->areas->name }}" readonly>
                                     @error('area')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
@@ -102,7 +103,7 @@
                             <div class="col-md-4">
                                 <div class="mb-3">
                                     <label for="hours_validated" class="form-label font-weight-bold">Horas convalidadas</label>
-                                    <input type="number" class="form-control @error('hours_validated') is-invalid @enderror" id="hours_validated" name="hours_validated" value="{{ $jobOpportunity->hours_validated }}" required>
+                                    <input type="number" class="form-control @error('hours_validated') is-invalid @enderror" id="hours_validated" name="hours_validated" value="{{ $jobOpportunity->hours_validated }}" min="{{ $jobOpportunity->hours_validated }}" required>
                                     @error('hours_validated')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
@@ -112,7 +113,7 @@
                             <div class="col-md-4">
                                 <div class="mb-3">
                                     <label for="number_applicants" class="form-label font-weight-bold">Número de aplicantes</label>
-                                    <input type="number" class="form-control @error('number_applicants') is-invalid @enderror" id="number_applicants" name="number_applicants" value="{{ $jobOpportunity->number_applicants }}" required>
+                                    <input type="number" class="form-control @error('number_applicants') is-invalid @enderror" id="number_applicants" name="number_applicants" value="{{ $jobOpportunity->number_applicants }}" min = "{{ $jobOpportunity->number_applicants }}" required>
                                     @error('number_applicants')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
@@ -124,7 +125,7 @@
                             <div class="col-md-4">
                                 <div class="mb-3">
                                     <label for="number_vacancies" class="form-label font-weight-bold">Número de vacantes</label>
-                                    <input type="number" class="form-control @error('number_vacancies') is-invalid @enderror" id="number_vacancies" name="number_vacancies" value="{{ $jobOpportunity->number_vacancies }}" required>
+                                    <input type="number" class="form-control @error('number_vacancies') is-invalid @enderror" id="number_vacancies" name="number_vacancies" value="{{ $jobOpportunity->number_vacancies }}" min="{{ $jobOpportunity->number_vacancies }}" required>
                                     @error('number_vacancies')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
@@ -155,15 +156,12 @@
                         <div class="form-group mt-5">
                             <div class="row">
                                 <div class="col">
-                                    <button type="submit" class="btn btn-warning btn-action">Guardar Cambios</button>
-                                   
+                                <button type="submit" class="btn btn-warning btn-action">Guardar cambios</button>
                                 </div>
                                 <div class="col">
-                                    <a href="{{ route('adminjobopportunities.publish', $jobOpportunity->id) }}" class="btn btn-info btn-action">Publicar</a>
+                                <a href="{{ route('adminjobopportunities.allJobOpportunities') }}" class="btn btn-danger">Cancelar</a>
                                 </div>
-                                <div class="col">
-                                    <a href="{{ route('adminjobopportunities.reject', $jobOpportunity->id) }}" class="btn btn-danger">Rechazar</a>
-                                </div>
+                               
                             </div>
                         </div>
                     </form>

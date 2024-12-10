@@ -51,6 +51,5 @@
         </tbody>
     </table>
 
-    <a href="{{ route('hourrecords.report') }}" class="btn btn-secondary">Regresar</a>
 </div>
 @endsection

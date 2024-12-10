@@ -116,7 +116,7 @@
 
 <div class="container py-5">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2 class="font-weight-bold">Listado de Carreras</h2>
+        <h2 class="font-weight-bold">Listado de carreras</h2>
         <a href="{{ route('degrees.create') }}" class="btn btn-primary btn-lg btn-create">Crear nueva carrera</a>
     </div>
 

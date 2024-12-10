@@ -39,6 +39,13 @@
                             @enderror
                         </div>
 
+                        <div class="mb-4">
+                                <label for="numero_estudiantes" class="form-label font-weight-bold">Número de estudiantes a convalidar</label>
+                                <input type="number" class="form-control @error('numero_estudiantes') is-invalid @enderror" id="numero_estudiantes" name="numero_estudiantes" value="{{ old('numero_estudiantes') }}" min="1" required>
+                                @error('numero_estudiantes')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
                      
                         <div class="mb-4">
                             <label for="image" class="form-label font-weight-bold">Imagen</label>

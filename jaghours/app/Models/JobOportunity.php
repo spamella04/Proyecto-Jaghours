@@ -5,6 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Enums\JobOportunityStatus;
+use App\Models\AreaManager;
+use App\Models\Application;
+use App\Models\HourRecord;
+use App\Models\Job;
+
 
 class JobOportunity extends Model
 {
@@ -69,4 +74,35 @@ class JobOportunity extends Model
     {
         return $this->hasMany(Job::class, 'job_opportunity_id', 'id');
     }
+
+    public function checkAndClose()
+{
+    // Obtener todos los trabajos relacionados con esta oportunidad
+    $jobs = $this->job;
+
+    // Verificar si todos los trabajos tienen registros de horas que sumen las horas validadas
+    $totalHoursRecorded = 0;
+
+    foreach ($jobs as $job) {
+        // Sumar las horas registradas en los HourRecords de cada Job
+        $jobHours = $job->hourRecords()->sum('hours_worked');
+        $totalHoursRecorded += $jobHours;
+
+        // Si algún trabajo no tiene registros o las horas no suman, retornar false
+        if ($jobHours <= 0) {
+            return false;
+        }
+    }
+
+    // Verificar si las horas totales registradas alcanzan o superan las horas validadas de la oportunidad
+    if ($totalHoursRecorded >= $this->hours_validated) {
+        // Cambiar estado a "cerrado"
+        $this->status = \App\Enums\JobOportunityStatus::Closed;
+        $this->save();
+        return true;
+    }
+
+    return false;
+}
+
 }

@@ -128,6 +128,9 @@ Route::middleware('auth','verified')->group(
 
         //JobOpportunity - Admin
         Route::get('/adminjobopportunities/show', [AdminJobOpportunityController::class, 'index'])->name('adminjobopportunities.index');
+        Route::get('/adminjobopportunities/all', [AdminJobOpportunityController::class, 'allJobOpportunities'])->name('adminjobopportunities.allJobOpportunities');
+        Route::get('/adminjobopportunities/all/edit/{jobopportunityId}', [AdminJobOpportunityController::class, 'editJobOpportunity'])->name('adminjobopportunities.editJobOpportunities');
+        Route::put('/adminjobopportunities/all/savechanges/{jobOpportunity}', [AdminJobOpportunityController::class, 'saveChanges'])->name('adminjobopportunities.saveChanges'); 
         Route::get('/adminjobopportunities/create', [AdminJobOpportunityController::class, 'create'])->name('adminjobopportunities.create');
         Route::post('/adminjobopportunities', [AdminJobOpportunityController::class, 'store'])->name('adminjobopportunities.store');
         Route::get('/adminjobopportunities/{adminjobopportunity}', [AdminJobOpportunityController::class, 'show'])->name('adminjobopportunities.show');
@@ -137,6 +140,10 @@ Route::middleware('auth','verified')->group(
         Route::get('/adminjobopportunities/{adminjobopportunity}/publish', [AdminJobOpportunityController::class, 'publish'])->name('adminjobopportunities.publish');
         Route::get('/adminjobopportunities/{adminjobopportunity}/reject', [AdminJobOpportunityController::class, 'reject'])->name('adminjobopportunities.reject');
 
+        Route::put('/adminjobopportunities/active/{jobopportunityId}', [AdminJobOpportunityController::class, 'active'])->name('adminjobopportunities.active');
+        Route::put('/adminjobopportunities/inactive/{jobopportunityId}', [AdminJobOpportunityController::class, 'inactive'])->name('adminjobopportunities.inactive');
+
+
         //Applications
         Route::get('/applications/showstudent', [ApplicationController::class, 'index'])->name('applications.index');
         Route::get('/applications/create', [ApplicationController::class, 'create'])->name('applications.create');
@@ -145,6 +152,10 @@ Route::middleware('auth','verified')->group(
         Route::get('/applications/{application}/edit', [ApplicationController::class, 'edit'])->name('applications.edit');
         Route::put('/applications/{application}', [ApplicationController::class, 'update'])->name('applications.update');
         Route::delete('/applications/{application}', [ApplicationController::class, 'destroy'])->name('applications.destroy');
+
+        Route::get('/student/{studentId}/profile', [StudentController::class, 'showProfile'])->name('student.seeprofile');
+
+
         //Jobs
         Route::get('/job/show', [JobController::class, 'index'])->name('job.index');
         Route::post('/job/save', [JobController::class, 'store'])->name('job.store');

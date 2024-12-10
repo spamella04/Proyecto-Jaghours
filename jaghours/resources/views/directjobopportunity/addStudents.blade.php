@@ -51,7 +51,7 @@
     </style>
 </head>
 <div class="container">
-    <h1 class="mb-4">Seleccionar Estudiante</h1>
+    <h1 class="mb-4">Seleccionar estudiante</h1>
    
     <form method="GET" action="{{ route('directjobopportunity.addStudents', ['jobOpportunityId' => $jobOpportunityId]) }}" class="mb-4">
         <div class="input-group">
@@ -110,7 +110,7 @@
                                 <input type="hidden" name="job_opportunity_id" value="{{ $jobOpportunityId}}">
 
                                 <select name="semester_id" class="form-select" required>
-                                    @foreach(App\Models\Semester::all() as $semester)
+                                    @foreach(App\Models\Semester::where('status', 'active')->get() as $semester)
                                         <option value="{{ $semester->id }}">{{ $semester->name }} - {{ $semester->year }}</option>
                                     @endforeach
                                 </select>

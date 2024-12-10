@@ -158,7 +158,7 @@
 
 <div class="container py-5">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2 class="font-weight-bold">Listado de Áreas</h2>
+        <h2 class="font-weight-bold">Listado de áreas</h2>
         <a href="{{ route('areas.create') }}" class="btn btn-primary btn-lg btn-create">Crear nueva área</a>
     </div>
 
@@ -166,7 +166,7 @@
         <form action="{{ route('areas.index') }}" method="GET" class="w-100 d-flex">
             <input type="text" name="search" class="form-control search-input" placeholder="Buscar por código o nombre" value="{{ request('search') }}">
             <button class="btn search-button" type="submit">Buscar</button>
-            <a href="{{ route('areas.index') }}" class="btn reset-button">Mostrar Todos</a>
+            <a href="{{ route('areas.index') }}" class="btn reset-button">Mostrar todos</a>
         </form>
     </div>
 

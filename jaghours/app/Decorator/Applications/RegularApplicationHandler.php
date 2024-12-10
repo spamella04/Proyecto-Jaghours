@@ -28,12 +28,15 @@ class RegularApplicationHandler extends ApplicationHandler
             }
 
             $output .= '<tr>';
-            $output .= "<td>{$application->student->user->cif}</td>"; // Cif del estudiante
+            
+            // Convertir el Cif en un enlace al perfil del estudiante
+            $studentProfileUrl = route('student.seeprofile', ['studentId' => $application->student->student_id]);
+            $output .= "<td><a href='{$studentProfileUrl}' style='color: #219EBC; text-decoration: none;'>{$application->student->user->cif}</a></td>"; // Cif del estudiante como enlace
             $output .= "<td>{$application->student->user->name}</td>"; // Nombre del estudiante
             $output .= "<td>{$application->status}</td>"; // Estado de la aplicación
 
             // Solo mostrar el botón de aceptar si el estado es 'Pendiente'
-            if($application->status == 'Pendiente') {
+            if ($application->status == 'Pendiente') {
                 $output .= '<td>'; // Columna de acciones
                 $output .= "<form method='POST' action='" . route('job.store') . "'>";
                 $output .= csrf_field(); // Incluir el token CSRF
@@ -47,7 +50,7 @@ class RegularApplicationHandler extends ApplicationHandler
                 $output .= "<button class='btn btn-secondary' disabled>Aceptar</button>"; // Botón deshabilitado
                 $output .= '</td>'; // Cerrar la columna de acciones    
             }
-          
+
         }
 
         $output .= '</tbody>';
@@ -56,4 +59,3 @@ class RegularApplicationHandler extends ApplicationHandler
         return $output;
     }
 }
-
