@@ -86,7 +86,7 @@
 
         .job-card-placeholder {
             width: 100%;
-            height: 200px;
+            height: 300px;
             background-color: #E0F2F1;
             border: 1px solid #ccc;
             display: flex;
@@ -101,7 +101,7 @@
         }
 
         .job-card-placeholder:before {
-            content: "Sin Imagen";
+            content: "";
             position: absolute;
             font-size: 1rem;
             color: #666;
@@ -202,7 +202,7 @@
 
 <div class="container mt-4">
     @if(Auth::user()->role === 'admin' || Auth::user()->role === 'areamanager')
-    <h1 class="">Trabajos a Convalidar</h1>
+    <h1 class="">Trabajos a convalidar</h1>
 
     <form action="{{ route('job.index') }}" method="GET" class="mb-4">
         <div class="row">
@@ -290,14 +290,14 @@
                 <img src="{{ asset($joboportunity->image_path) }}" alt="Imagen de {{ $joboportunity->title }}" class="job-card-image" data-bs-toggle="modal" data-bs-target="#imageModal{{ $joboportunity->id }}">
                 @else
                 <div class="job-card-placeholder">
-                    Sin Imagen
+                    
                 </div>
                 @endif
                 <div class="job-card-description mt-3">
                     {{ $joboportunity->description }}
                 </div>
                 <div class="job-card-details mt-3">
-                    <span class="fw-bold" style="color:#219EBC;">Total Horas Convalidadas:</span>
+                    <span class="fw-bold" style="color:#219EBC;">Total horas convalidadas:</span>
                     <span class="fw-light" style="color:gray;"> {{ $joboportunity->hours_validated }} horas</span>
                     <br>
                     <span class="fw-bold" style="color:#219EBC;">Fecha de Inicio:</span>
@@ -309,7 +309,7 @@
                     </div>
                     <div class="job-card-applicants">
                         @if($joboportunity->match == 1)
-                        <a href="{{ route('joboportunity.showapplicants', encrypt($joboportunity->id)) }}" class="btn btn-info btn-sm btn-action">Convalidar</a>
+                        <a href="{{ route('joboportunity.showapplicants', $joboportunity->id) }}" class="btn btn-info btn-sm btn-action">Convalidar</a>
                         @else
                         <a href="{{ route('jobs.students', encrypt($joboportunity->id)) }}" class="btn btn-info btn-sm btn-action">Convalidar</a>
                         @endif

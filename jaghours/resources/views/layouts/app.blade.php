@@ -92,8 +92,7 @@
         <nav class="navbar navbar-expand-md shadow-sm">
             <div class="container">
                 <div class="logo-nav pl-2">
-                    <img src="{{ asset('assets/images/LogoJagHours.png') }}" alt="Logo Jaghours"
-                        class="nav-image">
+                   
                     @auth
                     @if(Auth::user()->role === 'student'|| Auth::user()->role === 'admin'|| Auth::user()->role === 'areamanager')
                     <a href="{{ url('/home') }}" class="navbar-brand h1">
@@ -154,6 +153,12 @@
                         <li class="nav-item">
                             <a class="nav-link {{ request()->is('adminjobopportunities/show') ? 'active' : '' }}"
                                 href="{{ route('adminjobopportunities.index') }}">Solicitudes</a>
+                        </li>
+
+                        <li class="nav-item">
+                        <a class="nav-link {{ request()->is('adminjobopportunities/all') ? 'active' : '' }}"
+                            href="{{ route('adminjobopportunities.allJobOpportunities') }}">Oportunidades</a>
+
                         </li>
 
                         <li class="nav-item dropdown">

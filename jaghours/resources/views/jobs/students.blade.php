@@ -84,6 +84,19 @@
 <div class="container mt-4">
     <h1>Estudiantes Aplicantes</h1>
 
+    <!-- Mensajes de alerta -->
+    @if(session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
+
+    @if(session('error'))
+        <div class="alert alert-danger">
+            {{ session('error') }}
+        </div>
+    @endif
+    
     <!-- Verificación del estado -->
     <div class="container mt-2">
         @if(trim($jobOpportunity->status) === 'Asignacion Directa')

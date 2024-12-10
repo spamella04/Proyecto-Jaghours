@@ -26,7 +26,6 @@
             box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
         }
 
-      
         .job-card-area {
             display: flex;
             align-items: center;
@@ -50,7 +49,6 @@
             font-weight: bold;
         }
 
-      
         .job-card-title {
             font-size: 1.5rem;
             font-weight: bold;
@@ -58,15 +56,15 @@
             margin-bottom: 10px;
         }
 
-  
         .job-card-image {
             width: 100%;
-            height: 220px; 
+            height: 300px; 
             border-radius: 10px;
             object-fit: cover;
             margin-bottom: 15px;
             transition: transform 0.3s ease;
         }
+
         .job-card-image:hover {
             transform: scale(1.05);
             cursor: pointer;
@@ -74,7 +72,7 @@
 
         .job-card-placeholder {
             width: 100%;
-            height: 200px;
+            height: 300px;
             background-color: #E0F2F1;
             border: 1px solid #ccc;
             display: flex;
@@ -88,12 +86,6 @@
             position: relative;
         }
 
-        .job-card-placeholder:before {
-            content: "Sin Imagen";
-            position: absolute;
-            font-size: 1rem;
-            color: #666;
-        }
         .job-card-description {
             margin-top: 10px;
             color: #555;
@@ -101,7 +93,6 @@
             line-height: 1.5;
         }
 
-    
         .job-card-details {
             margin-top: 15px;
             font-size: 0.9rem;
@@ -113,7 +104,6 @@
             color: #219EBC;
         }
 
-        
         .btn-action {
             background-color: #219EBC;
             border: none;
@@ -144,7 +134,6 @@
             width: 100%; 
         }
 
-        
         .pagination {
             margin-top: 20px; 
             justify-content: center; 
@@ -173,8 +162,7 @@
             margin-bottom: 20px;
         }
 
-         
-             .filter-container {
+        .filter-container {
             margin-bottom: 20px;
             padding: 15px;
             background-color: #f7f7f7;
@@ -204,8 +192,44 @@
         .filter-container button:hover {
             background-color: #1b82a6;
         }
+
+        /* Media queries para hacer responsivo */
+        @media (max-width: 768px) {
+            .job-card {
+                flex: 0 0 100%; 
+            }
+
+            .container h1 {
+                font-size: 2rem;
+            }
+
+            .filter-container select {
+                margin-bottom: 10px;
+                width: 100%;
+            }
+
+            .filter-container button {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .job-card-title {
+                font-size: 1.2rem;
+            }
+
+            .job-card-details {
+                font-size: 0.8rem;
+            }
+
+            .btn-action {
+                font-size: 0.9rem;
+                padding: 8px 15px;
+            }
+        }
     </style>
 </head>
+
 
 <div class="container mt-4">
     <h1>Publicaciones</h1>
@@ -246,7 +270,7 @@
                 <img src="{{ asset($joboportunity->image_path) }}" alt="Imagen de {{ $joboportunity->title }}" class="job-card-image" data-bs-toggle="modal" data-bs-target="#imageModal{{ $joboportunity->id }}">
                 @else
                 <div class="job-card-placeholder" style="background-color: #E0F2F1; padding: 50px; text-align: center; border-radius: 10px; color: #666;">
-                    Sin Imagen
+                  
                 </div>
                 @endif
 
@@ -284,7 +308,7 @@
     </div>
 
     {{-- Paginación fuera del contenedor de publicaciones --}}
-    <div class="d-flex justify-content-center mt-4">
+    <div class="d-flex justify-content-center">
         {{ $jobOportunities->links() }} {{-- Esto generará los enlaces de paginación --}}
     </div>
 </div>

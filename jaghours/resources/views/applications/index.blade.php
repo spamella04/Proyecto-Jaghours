@@ -58,38 +58,56 @@
     }
 
     .form-check-input {
-
         border-color: #989898;
     }
 
     .pagination .page-link {
-            color: #219EBC;
-            background-color: white;
-            border: 1px solid #ddd;
+        color: #219EBC;
+        background-color: white;
+        border: 1px solid #ddd;
+    }
+
+    .pagination .page-link:hover {
+        background-color: #f1f1f1;
+    }
+
+    .pagination .page-item.active .page-link {
+        background-color: #219EBC;
+        color: white;
+    }
+
+    .pagination .page-item.disabled .page-link {
+        color: #ccc;
+    }
+
+    /* Responsividad adicional */
+    @media (max-width: 576px) {
+        .job-card-avatar {
+            width: 50px;
+            height: 50px;
+            font-size: 20px;
+            line-height: 50px;
         }
 
-        .pagination .page-link:hover {
-            background-color: #f1f1f1;
+        .job-card-title {
+            font-size: 1em;
         }
 
-        .pagination .page-item.active .page-link {
-            background-color: #219EBC;
-            color: white;
+        .job-card-description {
+            font-size: 0.85em;
         }
 
-        .pagination .page-item.disabled .page-link {
-            color: #ccc;
+        .job-card-details {
+            font-size: 0.85em;
         }
-
+    }
 </style>
 
 <div class="container mt-4">
     <h1>Mis Postulaciones</h1>
 
     <!-- Filtro de Estado Compacto -->
-    <form method="GET" action="{{ route('applications.index') }}" class="mb-4 d-flex align-items-center">
-        
-        
+    <form method="GET" action="{{ route('applications.index') }}" class="mb-4 d-flex flex-wrap align-items-center">
         <!-- Opción Todos -->
         <div class="form-check form-check-inline">
             <input type="checkbox" name="status_filter[]" value="Todos"
@@ -117,8 +135,8 @@
                    {{ in_array('No Aceptado', (array)$status_filter ?? []) ? 'checked' : '' }}>
             <label for="status_noaceptado" class="form-check-label">No Aceptado</label>
         </div>
-        
-        <button type="submit" class="btn btn-custom btn-sm ms-2">Aplicar</button>
+
+        <button type="submit" class="btn btn-custom btn-sm ms-2 mt-2 mt-sm-0">Aplicar</button>
     </form>
 
     @if($applications->isEmpty() || $activeapplicationcount == 0)
@@ -127,7 +145,7 @@
         <div class="row">
             @foreach($applications as $application)
                 @if($application->job_opportunities->area_managers->users->status == 'active')
-                    <div class="col-md-4 mb-4">
+                    <div class="col-12 col-md-6 col-lg-4 mb-4">
                         <div class="job-card shadow-lg p-3 bg-white rounded d-flex flex-column h-100">
                             <div class="job-card-header d-flex align-items-center">
                                 <!-- Círculo con la inicial del área -->
@@ -166,11 +184,8 @@
 </div>
 
 {{-- Paginación --}}
-    <div class="d-flex justify-content-center">
+<div class="d-flex justify-content-center">
     {{ $applications->appends(request()->except('page'))->links() }}
-    </div>
+</div>
 
 @endsection
-
-
-

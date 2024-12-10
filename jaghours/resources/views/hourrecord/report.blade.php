@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container">
-    <h1>Reporte de Horas Trabajadas</h1>
+    <h1>Reporte de horas trabajadas</h1>
 
     <!-- Filtros -->
     <form method="GET" action="{{ route('hourrecords.report') }}" class="mb-4">
@@ -37,7 +37,7 @@
 
             <div class="col-md-3">
                 <div class="form-group">
-                    <label for="status_filter">Estado de Horas</label>
+                    <label for="status_filter">Estado de horas</label>
                     <select id="status_filter" name="status_filter" class="form-control">
                         <option value="">Seleccione un estado</option>
                         <option value="Completadas" {{ request('status_filter') == 'Completadas' ? 'selected' : '' }}>Completadas</option>
@@ -75,9 +75,16 @@
     </form>
 
     <!-- Mensaje de error si no se selecciona un semestre -->
-    @if(isset($error))
-        <div class="alert alert-warning">
-            {{ $error }}
+ 
+   @if(session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
+
+    @if(session('error'))
+        <div class="alert alert-danger">
+            {{ session('error') }}
         </div>
     @endif
 

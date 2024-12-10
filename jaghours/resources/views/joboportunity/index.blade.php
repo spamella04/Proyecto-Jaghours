@@ -79,20 +79,20 @@
         height: auto;
         border-radius: 10px;
         margin-bottom: 15px;
-        max-height: 200px; /* Limitar la altura máxima de la imagen */
-        object-fit: cover; /* Ajustar la imagen */
+        max-height: 200px; 
+        object-fit: cover; 
     }
 
     .job-card-placeholder {
         width: 100%;
-        height: 200px; /* Altura del cuadro de color */
-        background-color: #E0F2F1; /* Color de fondo */
+        height: 200px; 
+        background-color: #E0F2F1;
         border-radius: 10px;
         display: flex;
         justify-content: center;
         align-items: center;
-        font-size: 1.5rem; /* Tamaño de texto */
-        color: #666; /* Color del texto */
+        font-size: 1.5rem; 
+        color: #666; 
         font-weight: bold;
     }
 
@@ -137,8 +137,8 @@
     }
 
     .calendar-icon {
-        font-size: 1.2rem; /* Tamaño del icono */
-        color: #219EBC; /* Color del icono */
+        font-size: 1.2rem; 
+        color: #219EBC; 
     }
 </style>
 

@@ -9,6 +9,7 @@ use App\Models\JobOportunity;
 use App\Events\StudentAcceptedForJob;
 use App\Models\Student;
 
+
 class JobController extends Controller
 {
     /**
@@ -28,6 +29,8 @@ class JobController extends Controller
      
          // Iniciar la consulta con las relaciones necesarias
          $query = JobOportunity::with(['area_managers.areas']);
+
+         $query->whereNotIn('status', ['Solicitud', 'Cerrado']);
         
          // Ordena las oportunidades de trabajo por la fecha de inicio en desc
         if ($year === null || $month === null) {
@@ -67,6 +70,7 @@ class JobController extends Controller
 
     public function showStudents(Request $request, $jobOpportunityId)
     {
+       
         // Desencriptar el ID de la oportunidad de trabajo
         $id = decrypt($jobOpportunityId);
        
@@ -105,6 +109,7 @@ class JobController extends Controller
             'jobs' => $jobs,
             'students' => $students,
         ]);
+        
     }
 
 

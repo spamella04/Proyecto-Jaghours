@@ -48,6 +48,8 @@ class JobOportunityController extends Controller
         return redirect()->route('home'); // Redirigir a una página de inicio o de error si el usuario no es un area manager
     }
 
+    
+
     public function indexAreaManager()
     {
         if (Auth::user()->role == 'areamanager') {
@@ -178,6 +180,7 @@ class JobOportunityController extends Controller
         'title' => 'required|string|max:255',
         'description' => 'required|string',
         'hours_validated' => 'required|integer|min:1',
+        'numero_estudiantes' => 'required|integer|min:1',
         'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048', // Validación de la imagen
     ]);
 
@@ -195,8 +198,8 @@ class JobOportunityController extends Controller
     $jobOportunity->description = $request->description;
     $jobOportunity->start_date = now();
     $jobOportunity->hours_validated = $request->hours_validated;
-    $jobOportunity->number_applicants = 10;
-    $jobOportunity->number_vacancies = 10;
+    $jobOportunity->number_applicants = $request->numero_estudiantes;
+    $jobOportunity->number_vacancies = $request->numero_estudiantes;
     $jobOportunity->requirements = "No se requiere";
     $jobOportunity->status = 'Asignacion Directa';
     $adminAreaManagerId = 1; // ID del Administrador del Sistema
@@ -213,13 +216,11 @@ class JobOportunityController extends Controller
 
     {
          
-       
-
         try	{
             $jobOportunity = JobOportunity::findOrFail($id);
 
             // Obtener semestres
-            $semesters = Semester::all();
+            $semesters = Semesters::where('status', 'active')->get();
         
             // Obtener estudiantes según criterio de búsqueda (si existe un filtro)
             $search = $request->get('search'); // El término de búsqueda viene del frontend
@@ -246,8 +247,6 @@ class JobOportunityController extends Controller
     public function showApplicants(Request $request,$id)
     {
         
-      
-       
         $joboportunity = JobOportunity::with('applications.student.user')->findOrFail($id);
         $query = Application::query()->where('job_opportunity_id', $id);
         
@@ -266,7 +265,7 @@ class JobOportunityController extends Controller
         // Usar el decorador correspondiente basado en el valor de match
         if ($joboportunity->match) {
 
-            $joboportunityId = JobOportunity::findOrFail($$id);
+            $joboportunityId = JobOportunity::findOrFail($id);
             $handler = new MatchApplicationHandler($applications, $joboportunityId);
         } else {
             $handler = new RegularApplicationHandler($applications);

@@ -7,7 +7,7 @@
         <div class="col-lg-6">
             <div class="card border-0 shadow-sm rounded-lg">
                 <div class="card-header bg-dark text-white text-center py-3">
-                    <h2 class="mb-0">{{ __('Crear Carrera') }}</h2>
+                    <h2 class="mb-0">{{ __('Crear carrera') }}</h2>
                 </div>
                 <div class="card-body p-4">
                     <form action="{{ route('degrees.store') }}" method="POST">

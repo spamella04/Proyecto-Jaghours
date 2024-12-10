@@ -111,6 +111,7 @@ class StudentController extends Controller
                 'degree_id' => $request->degree_id,
                 'skills' => $request->skills,
                 'fecha_de_ingreso' => $request->fecha_de_ingreso,
+                'image_path' => null,
 
             ]);
             
@@ -268,23 +269,62 @@ class StudentController extends Controller
 
     public function updateProfile(Request $request)
     {
+        // Validación de los campos
         $request->validate([
             'phone' => 'required|string|max:20',
             'skills' => 'required|string|max:255',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048', // Validación para la imagen
         ]);
     
+        // Obtener el usuario autenticado y el estudiante
         $user = Auth::user();
         $student = $user->student;
     
-        // Update phone in the users table
+        // Actualizar el teléfono en la tabla users
         $user->phone = $request->phone;
         $user->save();
     
-        // Update skills in the students table
+        // Actualizar las habilidades en la tabla students
         $student->skills = $request->skills;
+    
+        // Verificar si se subió una nueva imagen
+        if ($request->hasFile('image')) {
+            // Si ya hay una imagen anterior, la eliminamos
+            if ($student->image_path && file_exists(public_path($student->image_path))) {
+                unlink(public_path($student->image_path));
+            }
+    
+            // Subir la nueva imagen
+            $image = $request->file('image');
+            $imageName = time() . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path('assets/images'), $imageName); // Guardar en assets/images
+            $imagePath = 'assets/images/' . $imageName; // Ruta completa
+    
+            // Asignar la ruta de la imagen a la columna image_path
+            $student->image_path = $imagePath;
+        }
+    
+        // Guardar cambios en la base de datos
         $student->save();
     
         return redirect()->route('student.profile')->with('success', 'Profile updated successfully!');
+    }
+    
+    public function showProfile($studentId)
+    {
+        // Obtener el estudiante con las relaciones user y degree
+        $student = Student::with('user', 'degree') // Eager loading de las relaciones
+                          ->where('student_id', $studentId)
+                          ->first();
+
+        // Verificamos si el estudiante existe
+        if (!$student) {
+            // Si no se encuentra el estudiante, redirigir a una página de error o mostrar mensaje
+            return redirect()->route('home')->with('error', 'Estudiante no encontrado');
+        }
+
+        // Pasamos el estudiante a la vista
+        return view('student.seeprofile', compact('student'));
     }
     
     public function import(Request $request)

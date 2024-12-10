@@ -181,64 +181,71 @@ class HourRecordController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // Validación del formulario
         $request->validate([
             'job_id' => 'required|exists:jobs,id',
-            'hours_worked' => 'required|numeric',
-            'description' => 'required',
+            'hours_worked' => 'required|numeric|min:1',
+            'description' => 'required|string|max:255',
+            'semester_id' => 'required|exists:semesters,id',
             'work_date' => [
                 'required',
                 'date',
-                // Regla personalizada para validar la fecha dentro del rango del semestre
+                // Validar que la fecha esté dentro del rango del semestre
                 function ($attribute, $value, $fail) use ($request) {
-                    // Obtener el semestre seleccionado
                     $semester = Semester::findOrFail($request->semester_id);
-
-                    // Validar que la fecha de trabajo esté dentro del rango del semestre
                     if ($value < $semester->start_date || $value > $semester->end_date) {
                         $fail('La fecha de trabajo debe estar dentro del rango del semestre seleccionado.');
                     }
-                    
                 },
-
+                // Validar que la fecha sea válida según la oportunidad de trabajo
                 function ($attribute, $value, $fail) use ($request) {
-                    // Obtener la Job Opportunity relacionada
                     $job = Job::findOrFail($request->job_id);
                     $jobOpportunity = $job->job_opportunity;
-    
-                    // Validar que la fecha sea mayor o igual a la start_date de Job Opportunity
                     if ($value < $jobOpportunity->start_date) {
                         $fail('La fecha de trabajo debe ser posterior a la fecha de inicio de la oportunidad de trabajo.');
                     }
                 },
             ],
-            
         ]);
-
+    
+        $semester = Semester::findOrFail($request->semester_id);
+        // Obtener Job y JobOpportunity
         $job = Job::findOrFail($request->job_id);
         $jobOpportunity = $job->job_opportunity;
-
-
-
-
+    
+        // Crear el registro de horas
         $hourRecord = new HourRecord();
         $hourRecord->work_date = $request->work_date;
         $hourRecord->job_id = $request->job_id;
         $hourRecord->hours_worked = $request->hours_worked;
         $hourRecord->semester_id = $request->semester_id;
-
-        
-
-        if (Auth::user()->role == 'areamanager') {
-            $hourRecord->area_manager_id = auth()->user()->area_manager->id;
-        }
-        if (Auth::user()->role == 'admin') {
+    
+        // Asignar area_manager_id según el rol del usuario
+        if (Auth::user()->role === 'areamanager') {
+            $hourRecord->area_manager_id = Auth::user()->area_manager->id;
+        } elseif (Auth::user()->role === 'admin') {
             $hourRecord->area_manager_id = $jobOpportunity->area_managers->id;
         }
+    
+       // Verificar si el estudiante ha alcanzado el límite de horas para este semestre
+      /*  if (!$semester->checkStudentHours($job->student_id, $request->semester_id)) {
+            return redirect()->back()->with('error', 'El estudiante ha alcanzado el límite de horas requeridas para este semestre.');
+        }*/
 
+        // Si no ha alcanzado el límite, guardar el registro de horas
         $hourRecord->save();
-        return redirect()->route('job.index')->with('success', 'Horas registradas correctamente');
+
+        // Verificar si la oportunidad puede cerrarse
+        $jobOpportunity->checkAndClose();
+
+        // Redirigir con un mensaje de éxito
+        return redirect()->route('job.index')->with('success', 'Horas registradas correctamente.');
+
+    
+       
     }
+
+    
 
 
     public function storeMatch(Request $request)
